@@ -1,4 +1,4 @@
-# EasyCMS
+#EasyCMS
 
 ## 描述
 
@@ -53,13 +53,25 @@
 
 ## 数据库设计
 
+![db](https://raw.githubusercontent.com/Coderhypo/EasyCMS/master/db.png)
+
+使用了SQLAlchemy模块，model类设计如下：
+
 ### 用户表
 
 ### 文章表
 
 ### 页面表
 
-### 分类表
+### 文章分类
 
-### 标签表
+#### 分类表
+
+#### 文章分类表
+
+### 文章标签
+
+#### 标签表
+
+#### 文章标签表
 
