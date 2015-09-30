@@ -4,4 +4,3 @@ from .posts import *
 from .pages import *
 from .labels import *
 from .metas import *
-
