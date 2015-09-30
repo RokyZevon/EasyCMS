@@ -1,8 +1,9 @@
+# coding=utf-8
 from app import db
 
 class Page(db.Model):
 
-    """页面表"""
+    '''页面表'''
 
     __tablename__ = 'pages'
     page_id = db.Column(db.Integer,primary_key=True)
@@ -14,6 +15,6 @@ class Page(db.Model):
     user_id = db.Column(db.Integer,db.ForeignKey('users.user_id'))
 
     def __repr__(self):
-        return '<Page % r>' % self.name
+        return '<Page % r>' % self.page_id
 
 

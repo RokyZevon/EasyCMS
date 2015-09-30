@@ -1,9 +1,10 @@
+# coding=utf-8
 from app import db
 
 class Post(db.Model):
 
-    """文章表"""
-    
+    '''文章表'''
+
     __tablename__ = 'posts'
     post_id = db.Column(db.Integer,primary_key=True)
     post_title = db.Column(db.Text,nullable=False)
@@ -17,4 +18,4 @@ class Post(db.Model):
     postlabels = db.relationship('Postlabel',backref='posts')
 
     def __repr__(self):
-        return '<Post % r>' % self.name
+        return '<Post % r>' % self.post_id

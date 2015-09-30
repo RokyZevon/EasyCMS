@@ -15,7 +15,7 @@ class DevelopmentConfig(Config):
         os.environ.get('DATABASE_USERNAME', 'root'),
         os.environ.get('DATABASE_PASSWORD', 'password'),
         os.environ.get('DATABASE_HOST', 'localhost'),
-        os.environ.get('DATABASE_DB', 'dev'),
+        os.environ.get('DATABASE_DB', 'cms'),
     )
 
 
@@ -25,7 +25,7 @@ class TestingConfig(Config):
         os.environ.get('DATABASE_USERNAME', 'root'),
         os.environ.get('DATABASE_PASSWORD', 'password'),
         os.environ.get('DATABASE_HOST', 'localhost'),
-        os.environ.get('DATABASE_DB', 'test'),
+        os.environ.get('DATABASE_DB', 'cms'),
     )
 
 
