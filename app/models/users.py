@@ -20,9 +20,6 @@ class User(db.Model):
     def __repr__(self):
         return '<Users %r>' % self.user_id
 
-    def __init__(self):
-        pass
-
 UserRule = {
     'ADMIN': 1,   # 管理员
     'EDITOR': 2,  # 编辑
