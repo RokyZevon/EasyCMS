@@ -26,3 +26,6 @@ def getPostsByLabelId(labelId):
 def getPostsRand():
     pass
 
+# 相关文章推荐（猜你喜欢）
+def maybeYouLike(postId):
+    pass
