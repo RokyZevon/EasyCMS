@@ -3,7 +3,6 @@
 from app import db
 from ..models import Postmeta, Postlabel, Post
 
-
 # 文章设置文章分组 and 文章更新文章分类
 def setPostMeta(metaInfo):
 
@@ -29,16 +28,17 @@ def setPostMeta(metaInfo):
         postMeta.meta_id = 1
         postMeta.post_id = postId
 
+    postMetaList = []
+
     for metaId in metaList:
         postMeta = Postmeta()
         postMeta.meta_id = metaId
         postMeta.post_id = postId
+        postMetaList.append(postMeta)
 
-        db.session.add(postMeta)
-
+    db.session.add_all(postMetaList)
     db.session.commit()
     db.session.close()
-
 
 # 文章设置文章标签 and 文章更新文章标签
 def setPostLabel(labelInfo):
@@ -58,12 +58,25 @@ def setPostLabel(labelInfo):
     for oldLabel in oldList:
         db.session.query(Postlabel).filter(Postlabel.post_id == postId).filter(Postlabel.meta_id == oldLabel).delete()
 
+    postLabelList = []
+
     for labelId in labetList:
         postLabel = Postlabel()
         postLabel.post_id = postId
         postLabel.label_id = labelId
+        postLabelList.append(postLabel)
 
-        db.session.add(postLabel)
-
+    db.session.add_all(postLabelList)
     db.session.commit()
     db.session.close()
+
+# 删除文章分组信息
+def delPostMetas(postId):
+
+    Postmeta.query.filter_by(post_id=postId).delete()
+
+# 删除文章标签信息
+def delPostLabels(postId):
+
+    Postlabel.query.filter_by(post_id=postId).delete()
+
