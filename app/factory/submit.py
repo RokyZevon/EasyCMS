@@ -1,6 +1,7 @@
 # -*- coding=utf-8 -*-
 
 from app.models import User, Post, Page, Meta, Label
+from ..catch import getPostById, getUserById, getPageById, getMetaById, getLabelById
 from app import db
 from .subpost import setPostLabel, setPostMeta
 import hashlib
@@ -15,7 +16,7 @@ def addUser(userinfo):
     if 'id' in userinfo:
         # 获取到ID说明是老用户修改信息流程
 
-        user = User.query.filter_by(user_id=userinfo['id']).first()
+        user = getUserById(userinfo['id'])
         getId = True
     else:
         # 获取不到ID说明为注册流程
@@ -60,7 +61,7 @@ def addPost(postInfo):
 
     # 获取文章ID
     if 'id' in postInfo:
-        post = Post.query.filter_by(post_id=postInfo['id']).first()
+        post = getPostById(postInfo['id'])
         getId = True
 
     if len(postInfo['title']) > 30:
@@ -102,11 +103,11 @@ def addPage(pageInfo):
 
     # 获取页面ID
     if 'id' in pageInfo:
-        page = Page.query.filter_by(page_id = pageInfo['id']).first()
+        page = getPageById(pageInfo['id'])
         getId = True
 
     if len(pageInfo['title']) > 30:
-        pageInfo['title'] = pageInfo['title'][0,30]
+        pageInfo['title'] = pageInfo['title'][0:30]
     page.page_title = pageInfo['title']
 
     if len(pageInfo['content']) > 5000:
@@ -132,9 +133,13 @@ def addPage(pageInfo):
     return page
 
 
-# 添加文章分类 and 修改文章页面
+# 添加文章分类 and 修改文章分类信息
 def addMeta(metaInfo):
     meta = Meta()
+
+    if 'id' in metaInfo:
+        meta = getMetaById(metaInfo['id'])
+        getId = True
 
     if len(metaInfo['name']) > 30:
         metaInfo['name'] = metaInfo['name'][0:30]
@@ -155,9 +160,15 @@ def addMeta(metaInfo):
 
     return meta
 
-# 添加标签 and 修改标签
+# 添加标签 and 修改标签信息
 def addLabel(labelInfo):
     label = Label()
+
+    getId = False
+
+    if 'id' in labelInfo:
+        label = getLabelById(labelInfo['id'])
+        getId = True
 
     if len(labelInfo['name']) > 30:
         labelInfo['name'] = labelInfo['name'][0:30]
