@@ -110,6 +110,12 @@ def addPage(pageInfo):
         pageInfo['title'] = pageInfo['title'][0:30]
     page.page_title = pageInfo['title']
 
+    # 默认短地址为标题
+    if 'slug' in pageInfo:
+        page.page_slug = pageInfo['slug']
+    else:
+        page.page_slug = page.page_title
+
     if len(pageInfo['content']) > 5000:
         pageInfo['content'] = pageInfo['content'][0:5000]
     page.page_content = pageInfo['content']
