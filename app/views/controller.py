@@ -26,6 +26,11 @@ def label():
 def meta():
     return 'Hello World'
 
+# 登陆页面
+@app.route('/login')
+def login():
+    return 'Hello World'
+
 # 文章存档
 @app.route('/archive')
 def archive():
