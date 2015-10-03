@@ -8,6 +8,7 @@ class Page(db.Model):
     __tablename__ = 'pages'
     page_id = db.Column(db.Integer, primary_key=True)
     page_title = db.Column(db.Text, nullable=False)
+    page_slug = db.Column(db.Text, nullable=False)
     page_content = db.Column(db.Text)
     page_status = db.Column(db.Integer)
     page_password = db.Column(db.String(64))
