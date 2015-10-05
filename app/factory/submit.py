@@ -44,10 +44,10 @@ def addUser(userinfo):
     # 数据持久化
     db.session.add(user)
 
-    if getId is False:
+    if getId is True:
         db.session.flush()
 
-    db.commit()
+    db.session.commit()
     db.session.close()
 
 
@@ -82,7 +82,7 @@ def addPost(postInfo):
 
     db.session.add(post)
 
-    if getId is False:
+    if getId is True:
         db.session.flush()
 
     db.commit()
@@ -130,7 +130,7 @@ def addPage(pageInfo):
 
     db.session.add(page)
 
-    if getId is False:
+    if getId is True:
         db.session.flush()
 
     db.session.commit()
@@ -160,7 +160,9 @@ def addMeta(metaInfo):
     meta.meta_describe = metaInfo['describe']
 
     db.session.add(meta)
-    db.session.flush()
+
+    if getId is True:
+        db.session.flush()
     db.session.commit()
     db.session.close()
 
@@ -185,7 +187,9 @@ def addLabel(labelInfo):
     label.label_slug = labelInfo['slug']
 
     db.session.add(label)
-    db.session.flush()
+
+    if getId is True:
+        db.session.flush()
     db.session.commit()
     db.session.close()
 

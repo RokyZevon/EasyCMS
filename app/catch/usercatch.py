@@ -9,7 +9,7 @@ def getUserById(userId):
     return user
 
 # 根据邮箱获取用户
-def getUserEmail(Email):
+def getUserByEmail(Email):
 
     user = User.query.filter_by(user_email=Email).first()
     return user
