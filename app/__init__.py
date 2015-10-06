@@ -18,5 +18,9 @@ with app.app_context():
 
     db.init_app(app)
     login_manager.init_app(app)
+    @login_manager.user_loader
+    def load_user(userid):
+        return User.query.filter_by(user_id=userid).first()
 
 from .views import *
+from .models import User
