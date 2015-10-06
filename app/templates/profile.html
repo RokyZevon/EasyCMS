@@ -1,10 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends 'blog.html' %}
+{% block title %}{{ user.user_nicename }}个人中心{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-4">
+            <img alt="" class="img-rounded" height="230" src="{{ avatar }}" width="230">
+            <h1 class="vcard-names">
+                <span class="vcard-fullname" itemprop="name">{{ user.user_nicename }}</span>
+                <span class="vcard-username" itemprop="additionalName">{{ user.user_login }}</span>
+            </h1>
+            <ul class="vcard-details" style="padding: 0;margin-top: 0;margin-bottom: 0;">
+                <li class="vcard-detail">个人主页： <a href="{% if user.user_url %}{{ user.user_url }}{% else %}{{ url_for('index', _external=True) }}{% endif %}" target="_blank">{% if user.user_url %}{{ user.user_url }}{% else %}{{ url_for('index', _external=True) }}{% endif %}</a></li>
+                <li class="vcard-detail">邮箱：<a href="mailto:{{ user.user_email }}" target="_blank">{{ user.user_email }}</a></li>
+                <li class="vcard-detail">最后登录时间：</li>
+            </ul>
+            {% if current_user.user_id == user.user_id %}
+                <div class="btn-group btn-group-sm" role="group">
+                    <a class="btn btn-primary btn-sm">修改资料</a>
+                    <a class="btn btn-danger btn-sm">修改密码</a>
+                    {% if current_user.user_rule == 1 %}
+                        <a class="btn btn-success btn-sm">禁用用户</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        <br/>
+        </div>
+        <div class="col-md-8">
+            <div>
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">已发表</a></li>
+                    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">未发表</a></li>
+                    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">发布评论</a></li>
+                    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">获得评论</a></li>
+                </ul>
 
-</body>
-</html>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="home">...</div>
+                    <div role="tabpanel" class="tab-pane" id="profile">...</div>
+                    <div role="tabpanel" class="tab-pane" id="messages">...</div>
+                    <div role="tabpanel" class="tab-pane" id="settings">...</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
