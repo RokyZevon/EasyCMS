@@ -30,6 +30,22 @@ class RegisterForm(Form):
         if getUserByLoginName(field.data):
             raise ValidationError('登录名已被使用！')
 
+# 修改个人信息表单
+class EditUserInfoFrom(Form):
+    nicename = StringField(u'昵称', validators=[Required(), Length(1, 64)])
+    url = StringField(u'个人主页', validators=[Required(), Length(1, 64)])
+    submit = SubmitField(u'更新资料')
+
+# 修改个人密码表单
+class EditUserPassFrom(Form):
+    password = PasswordField(u'密码', validators=[Required(), EqualTo('password2', message='两次输入的密码不一致！')])
+    password2 = PasswordField(u'确认密码', validators=[Required()])
+    submit = SubmitField(u'更新密码')
+
+# 禁用用户表单
+class UnableUserFrom(Form):
+    submit = SubmitField(u'确认禁用')
+
 # 文章提交表单
 
 # 文章搜索表单

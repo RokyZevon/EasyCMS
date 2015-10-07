@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, redirect, request, url_for, flash
-from flask.ext.login import login_user, logout_user, login_required
+from flask import render_template, redirect, request, url_for, flash, abort
+from flask.ext.login import login_user, logout_user, login_required, current_user
 from .forms import *
 
 from app import app
@@ -87,7 +87,7 @@ def register():
         userInfo['email'] = registerForm.email.data
         userInfo['nicename'] = registerForm.nicename.data
         userInfo['pass'] = registerForm.password.data
-        userInfo['rule'] = 1
+        userInfo['rule'] = UserRule['READER']
         addUser(userInfo)
         flash("注册成功，请验证邮箱后登录！")
         return redirect(url_for('login'))
@@ -98,8 +98,24 @@ def register():
 @app.route('/user/<string:userlogin>')
 def profile(userlogin):
     user = getUserByLoginName(userlogin)
+    if user is None:
+        abort(404)
+
+    infoForm = EditUserInfoFrom()
+    passForm = EditUserPassFrom()
+    unableUserForm = UnableUserFrom()
+
+    if current_user.is_authenticated:
+        if current_user.isAdmin() or current_user == user:
+            infoForm.nicename.data = user.user_nicename
+            if user.user_url is None:
+                infoForm.url.data = 'http://'
+            else:
+                infoForm.url.data = user.user_url
+
     avatar ='http://gravatar.duoshuo.com/avatar/' + hashlib.md5(user.user_email).hexdigest() + '?s=230'
-    return render_template('profile.html', user=user, avatar=avatar)
+    return render_template('profile.html', user=user, avatar=avatar,
+                           infoForm=infoForm, passForm=passForm, unableUserForm=unableUserForm)
 
 # 文章存档
 @app.route('/archive')
