@@ -28,12 +28,32 @@ class User(UserMixin, db.Model):
             return True
         return False
 
+    def isAdmin(self):
+        if self.user_rule == 4:
+            return True
+        return False
+
+    def isEditor(self):
+        if self.user_rule > 2:
+            return True
+        return False
+
+    def isAuther(self):
+        if self.user_rule > 1:
+            return True
+        return False
+
+    def is_active(self):
+        if self.user_rule != 1:
+            return True
+        return False
+
     def __repr__(self):
         return '<Users %r>' % self.user_id
 
 UserRule = {
-    'ADMIN': 1,   # 管理员
-    'EDITOR': 2,  # 编辑
-    'AUTHER': 3,  # 作者
-    'READER': 4   # 订阅者，读者
+    'ADMIN': 4,   # 管理员
+    'EDITOR': 3,  # 编辑
+    'AUTHER': 2,  # 作者
+    'READER': 1   # 订阅者，读者
 }
