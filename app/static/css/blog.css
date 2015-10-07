@@ -198,8 +198,18 @@ h6, .h6 {
 .vcard-details {
     list-style: none;
     padding-top: 15px;
+    padding-left: 0;
     padding-bottom: 15px;
     border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+.vcard-detail {
+    width: 100%;
+    padding: 2px 0 2px 24px;
+    overflow-x: hidden;
+    white-space: nowrap;
+    font-size: 14px;
+    text-overflow: ellipsis;
 }
 
 /*
