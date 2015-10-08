@@ -59,6 +59,7 @@ def login():
 
         if user is not None and User.verify_password(user, loginForm.password.data):
             login_user(user, loginForm.remberme.data)
+            print request.args.get('next')
             return redirect(request.args.get('next') or url_for('index'))
 
         print user
@@ -89,7 +90,7 @@ def register():
         userInfo['pass'] = registerForm.password.data
         userInfo['rule'] = UserRule['READER']
         addUser(userInfo)
-        flash("注册成功，请验证邮箱后登录！")
+        flash(u"注册成功，请验证邮箱后登录！")
         return redirect(url_for('login'))
 
     return render_template('register.html', form=registerForm)
@@ -98,6 +99,7 @@ def register():
 @app.route('/user/<string:userlogin>')
 def profile(userlogin):
     user = getUserByLoginName(userlogin)
+
     if user is None:
         abort(404)
 
@@ -107,15 +109,89 @@ def profile(userlogin):
 
     if current_user.is_authenticated:
         if current_user.isAdmin() or current_user == user:
+            infoForm.login.data = user.user_login
             infoForm.nicename.data = user.user_nicename
             if user.user_url is None:
                 infoForm.url.data = 'http://'
             else:
                 infoForm.url.data = user.user_url
+            passForm.login.data = user.user_login
+            unableUserForm.login.data = user.user_login
 
     avatar ='http://gravatar.duoshuo.com/avatar/' + hashlib.md5(user.user_email).hexdigest() + '?s=230'
     return render_template('profile.html', user=user, avatar=avatar,
                            infoForm=infoForm, passForm=passForm, unableUserForm=unableUserForm)
+
+# 个人中心信息修改
+@app.route('/proEdit', methods=['POST'])
+@login_required
+def proEdit():
+
+    infoForm = EditUserInfoFrom()
+    passForm = EditUserPassFrom()
+    unableUserForm = UnableUserFrom()
+
+    if infoForm.validate_on_submit():
+        userLogin = infoForm.login.data
+        if current_user.user_login == userLogin or current_user.isAdmin():
+            user = getUserByLoginName(userLogin)
+            user.user_nicename = infoForm.nicename.data
+            user.user_url = infoForm.url.data
+            db.session.add(user)
+            db.session.commit()
+            flash(u'资料修改成功！')
+        else:
+            abort(403)
+
+        return redirect(url_for('profile', userlogin=userLogin))
+
+    if passForm.validate_on_submit():
+        userLogin = passForm.login.data
+        if current_user.user_login == userLogin or current_user.isAdmin():
+            user = getUserByLoginName(userLogin)
+
+            user.updatePassword(passForm.password.data)
+            db.session.add(user)
+            db.session.commit()
+            flash(u'密码修改成功，下次登录将使用新密码！')
+        else:
+            abort(403)
+        return redirect(url_for('profile', userlogin=userLogin))
+
+    if unableUserForm.validate_on_submit():
+        userLogin = unableUserForm.login.data
+        if current_user.user_login == userLogin or current_user.isAdmin():
+            user = getUserByLoginName(userLogin)
+
+            user.user_rule = UserRule['DISABLE']
+            db.session.add(user)
+            db.session.commit()
+            flash(u'用户：' + userLogin + u' 已经被禁用，如需启用请联系管理员！')
+        else:
+            abort(403)
+        return redirect(url_for('profile', userlogin=userLogin))
+
+    abort(403)
+
+# 仪表盘
+@app.route('/admin')
+@login_required
+def admin():
+    return render_template('admin/base.html')
+
+# 仪表盘 所有文章
+@app.route('/admin/posts')
+@login_required
+def posts():
+    return render_template('admin/posts.html')
+
+# 仪表盘 新建文章 编辑文章
+@app.route('/admin/editpost')
+@login_required
+def editpost():
+    editForm = EditPostForm()
+
+    return render_template('admin/editpost.html', form=editForm)
 
 # 文章存档
 @app.route('/archive')

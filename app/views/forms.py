@@ -1,8 +1,9 @@
 # coding=utf-8
 
 from flask.ext.wtf import Form
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, ValidationError
-from  wtforms.validators import Required, Length, Email, Regexp, EqualTo
+from wtforms import StringField, PasswordField, \
+    BooleanField, SubmitField, ValidationError, HiddenField, TextAreaField, DateTimeField
+from wtforms.validators import Required, Length, Email, Regexp, EqualTo
 from ..catch import getUserByLoginName, getUserByEmail
 
 # 登陆表单
@@ -30,27 +31,40 @@ class RegisterForm(Form):
         if getUserByLoginName(field.data):
             raise ValidationError('登录名已被使用！')
 
-# 修改个人信息表单
+# 个人中心修改个人信息表单
 class EditUserInfoFrom(Form):
+    login = HiddenField()
     nicename = StringField(u'昵称', validators=[Required(), Length(1, 64)])
     url = StringField(u'个人主页', validators=[Required(), Length(1, 64)])
     submit = SubmitField(u'更新资料')
 
-# 修改个人密码表单
+# 个人中心修改个人密码表单
 class EditUserPassFrom(Form):
+    login = HiddenField()
     password = PasswordField(u'密码', validators=[Required(), EqualTo('password2', message='两次输入的密码不一致！')])
     password2 = PasswordField(u'确认密码', validators=[Required()])
     submit = SubmitField(u'更新密码')
 
-# 禁用用户表单
+# 个人中心禁用用户表单
 class UnableUserFrom(Form):
+    login = HiddenField()
     submit = SubmitField(u'确认禁用')
 
-# 文章提交表单
+# 仪表盘 文章提交表单
+class EditPostForm(Form):
+    title = StringField(u'标题', validators=[Required(), Length(1, 64)])
+    content = TextAreaField(u'内容', validators=[Required()])
+    datetime = DateTimeField(u'发表时间', validators=[Required()])
+    password = PasswordField(u'密码', validators=[Required(), Length(0, 64)])
+    status = StringField(u'状态', validators=[Required(), Length(1, 4)])
+    metas = StringField(u'分类目录', validators=[Required(), Length(1, 64)])
+    labels = StringField(u'标签', validators=[Required(), Length(1, 64)])
+    submit = SubmitField(u'发布')
+    save = SubmitField(u'保存')
+
+# 仪表盘 页面提交表单
 
 # 文章搜索表单
-
-# 页面提交表单
 
 # 文章分类信息提交表单
 
