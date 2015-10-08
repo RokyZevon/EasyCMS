@@ -34,8 +34,8 @@ def addUser(userinfo):
         userinfo['nicename'] = userinfo['nicename'][0:30]
     user.user_nicename = userinfo['nicename']
 
-    # 密码 用Email加盐MD5加密
-    user.user_pass = hashlib.md5(userinfo['pass'] + user.user_email).hexdigest()
+    # 密码
+    user.updatePassword(userinfo['pass'])
 
     # 修改用户权限
     if 'rule' in userinfo:
