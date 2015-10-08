@@ -28,6 +28,9 @@ class User(UserMixin, db.Model):
             return True
         return False
 
+    def updatePassword(self, password):
+        self.user_pass = hashlib.md5(password + self.user_email).hexdigest()
+
     def isAdmin(self):
         if self.user_rule == 4:
             return True
@@ -44,7 +47,7 @@ class User(UserMixin, db.Model):
         return False
 
     def is_active(self):
-        if self.user_rule != 1:
+        if self.user_rule >= 1:
             return True
         return False
 
@@ -55,5 +58,6 @@ UserRule = {
     'ADMIN': 4,   # 管理员
     'EDITOR': 3,  # 编辑
     'AUTHER': 2,  # 作者
-    'READER': 1   # 订阅者，读者
+    'READER': 1,  # 订阅者，读者
+    'DISABLE': 0  # 用户被禁用
 }
