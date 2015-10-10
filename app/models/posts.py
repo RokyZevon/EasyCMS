@@ -24,5 +24,14 @@ PostStatus = {
     'UNAUDITED': 1,  # 未审核状态
     'DRAFT': 2,      # 草稿状态
     'RELEASED': 3,   # 已发布
-    'PRIVATE': 4     # 私有状态
+    'PROTECTED': 4,  # 受保护的（加密的）
+    'PRIVATE': 5     # 私有状态
 }
+
+
+
+
+
+
+
+
