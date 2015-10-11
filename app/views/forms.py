@@ -2,9 +2,13 @@
 
 from flask.ext.wtf import Form
 from wtforms import StringField, PasswordField, \
-    BooleanField, SubmitField, ValidationError, HiddenField, TextAreaField, DateTimeField
+    BooleanField, SubmitField, ValidationError, HiddenField, \
+    DateTimeField
+from wtforms.fields import SelectField
+from flask.ext.pagedown.fields import PageDownField
 from wtforms.validators import Required, Length, Email, Regexp, EqualTo
 from ..catch import getUserByLoginName, getUserByEmail
+from ..models import PostStatus
 
 # 登陆表单
 class LoginForm(Form):
@@ -53,11 +57,11 @@ class UnableUserFrom(Form):
 # 仪表盘 文章提交表单
 class EditPostForm(Form):
     title = StringField(u'标题', validators=[Required(), Length(1, 64)])
-    content = TextAreaField(u'内容', validators=[Required()])
+    content = PageDownField(u'编辑内容', validators=[Required()])
     datetime = DateTimeField(u'发表时间', validators=[Required()])
     password = PasswordField(u'密码', validators=[Required(), Length(0, 64)])
-    status = StringField(u'状态', validators=[Required(), Length(1, 4)])
-    metas = StringField(u'分类目录', validators=[Required(), Length(1, 64)])
+    status = SelectField(u'状态', default=[(PostStatus['RELEASED'], u"已发布")])
+    metas = SelectField(u'分类目录', default=[("1", u"默认分类")])
     labels = StringField(u'标签', validators=[Required(), Length(1, 64)])
     submit = SubmitField(u'发布')
     save = SubmitField(u'保存')
