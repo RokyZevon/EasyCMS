@@ -10,12 +10,14 @@ from wtforms.validators import Required, Length, Email, Regexp, EqualTo
 from ..catch import getUserByLoginName, getUserByEmail
 from ..models import PostStatus
 
+
 # 登陆表单
 class LoginForm(Form):
     login = StringField(u'用户名或邮箱', validators=[Required(), Length(1, 64)])
     password = PasswordField(u'密码', validators=[Required()])
     remberme = BooleanField(u'记住我', default=False)
     submit = SubmitField(u'登录')
+
 
 # 注册（用户信息修改）表单
 class RegisterForm(Form):
@@ -35,12 +37,14 @@ class RegisterForm(Form):
         if getUserByLoginName(field.data):
             raise ValidationError('登录名已被使用！')
 
+
 # 个人中心修改个人信息表单
 class EditUserInfoFrom(Form):
     login = HiddenField()
     nicename = StringField(u'昵称', validators=[Required(), Length(1, 64)])
     url = StringField(u'个人主页', validators=[Required(), Length(1, 64)])
     submit = SubmitField(u'更新资料')
+
 
 # 个人中心修改个人密码表单
 class EditUserPassFrom(Form):
@@ -49,10 +53,12 @@ class EditUserPassFrom(Form):
     password2 = PasswordField(u'确认密码', validators=[Required()])
     submit = SubmitField(u'更新密码')
 
+
 # 个人中心禁用用户表单
 class UnableUserFrom(Form):
     login = HiddenField()
     submit = SubmitField(u'确认禁用')
+
 
 # 仪表盘 文章提交表单
 class EditPostForm(Form):
@@ -66,7 +72,17 @@ class EditPostForm(Form):
     submit = SubmitField(u'发布')
     save = SubmitField(u'保存')
 
+# 仪表盘 删除文章提交表单
+
 # 仪表盘 页面提交表单
+
+# 仪表盘 删除页面提交表单
+
+# 仪表盘 添加用户提交表单
+
+# 仪表盘 修改用户提交表单
+
+# 仪表盘 删除用户提交表单
 
 # 文章搜索表单
 

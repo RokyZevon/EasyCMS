@@ -8,6 +8,7 @@ from ..models import *
 from ..catch import *
 from ..factory import *
 
+
 # 主页
 @app.route('/')
 def index():
@@ -24,25 +25,30 @@ def index():
         postList.append(postInfo)
     return render_template('index.html', postList=postList)
 
+
 # 文章页
 @app.route('/p/<string:id>.html')
 def post(id):
     return 'Post ' + id
+
 
 # 独立页面
 @app.route('/<string:slug>')
 def page(slug):
     return 'Page ' + slug
 
+
 # 标签页
 @app.route('/label/<string:slug>')
 def label(slug):
     return 'Label ' + slug
 
+
 # 分类页
 @app.route('/meta/<string:slug>')
 def meta(slug):
     return 'Meta ' + slug
+
 
 # 登陆页面
 @app.route('/login', methods=['GET', 'POST'])
@@ -66,6 +72,7 @@ def login():
         flash(u'用户名或密码错误！')
 
     return render_template('login.html', form=loginForm)
+
 
 # 登出
 @app.route('/logout')
@@ -95,6 +102,13 @@ def register():
 
     return render_template('register.html', form=registerForm)
 
+
+# 文章存档
+@app.route('/archive')
+def archive():
+    return 'Archive'
+
+
 # 个人中心
 @app.route('/user/<string:userlogin>')
 def profile(userlogin):
@@ -121,6 +135,7 @@ def profile(userlogin):
     avatar ='http://gravatar.duoshuo.com/avatar/' + hashlib.md5(user.user_email).hexdigest() + '?s=230'
     return render_template('profile.html', user=user, avatar=avatar,
                            infoForm=infoForm, passForm=passForm, unableUserForm=unableUserForm)
+
 
 # 个人中心信息修改
 @app.route('/proEdit', methods=['POST'])
@@ -172,30 +187,3 @@ def proEdit():
         return redirect(url_for('profile', userlogin=userLogin))
 
     abort(403)
-
-# 仪表盘
-@app.route('/admin')
-@login_required
-def admin():
-    return render_template('admin/base.html')
-
-# 仪表盘 所有文章
-@app.route('/admin/posts')
-@login_required
-def posts():
-    return render_template('admin/posts.html')
-
-# 仪表盘 新建文章 编辑文章
-@app.route('/admin/editpost')
-@login_required
-def editpost():
-    editForm = EditPostForm()
-    editForm.metas.choices = [(1, u'默认目录')]
-    editForm.status.choices = [(PostStatus['RELEASED'], u'已发布'), (PostStatus['DRAFT'], u'草稿'), (PostStatus['PRIVATE'], u'私有'),]
-
-    return render_template('admin/editpost.html', form=editForm)
-
-# 文章存档
-@app.route('/archive')
-def archive():
-    return 'Archive'
