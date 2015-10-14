@@ -1,7 +1,7 @@
 {% extends "admin/base.html" %}
 {% block content %}
 <h2>用户管理</h2>
-    <button type="button" class="btn btn-primary btn-sm">
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addUser">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
         添加用户
     </button>
@@ -26,7 +26,7 @@
                 <td><span class="label {{ user['label'] }}"> + {{ user['rule'] }} + </span></td>
                 <td>
                     <div class="btn-group" role="group" aria-label="...">
-                        <button type="button" class="btn btn-primary btn-sm">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editUser" data-id="{{ user['id'] }}" data-login="{{ user['login'] }}" data-name="{{ user['nicename'] }}" data-url="{{ user['url'] }}" data-rule="{{ user['ruleId'] }}">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </button>
                         <button type="button" class="btn btn-danger btn-sm">
@@ -38,7 +38,112 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <!-- 添加用户 -->
+    <div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="addUserLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="addUserLabel">添加新用户</h4>
+                </div>
+                <form>
+                    <div class="modal-body">
+                        {{ addForm.hidden_tag() }}
+                        <div class="form-group">
+                            {{ addForm.addLogin.label(class="control-label") }}
+                            {{ addForm.addLogin(class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ addForm.addNicename.label(class="control-label") }}
+                            {{ addForm.addNicename(class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ addForm.addEmail.label(class="control-label") }}
+                            {{ addForm.addEmail(class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ addForm.addPassword.label(class="control-label") }}
+                            {{ addForm.addPassword(class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ addForm.addRule.label(class="control-label") }}
+                            {{ addForm.addRule(class="form-control") }}
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        {{ addForm.addSubmit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- 修改用户信息 -->
+    <div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="editUserLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="editUserLabel">修改用户信息</h4>
+                </div>
+                <form>
+                    <div class="modal-body">
+                        {{ editFrom.hidden_tag() }}
+                        <div class="form-group">
+                            {{ editFrom.editLogin.label(class="control-label") }}
+                            {{ editFrom.editLogin(class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ editFrom.editNicename.label(class="control-label") }}
+                            {{ editFrom.editNicename(class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ editFrom.editUrl.label(class="control-label") }}
+                            {{ editFrom.editUrl(class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ editFrom.editPassword.label(class="control-label") }}
+                            {{ editFrom.editPassword(class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ editFrom.editRule.label(class="control-label") }}
+                            {{ editFrom.editRule(class="form-control") }}
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        {{ editFrom.editSubmit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block script %}
     {{ super() }}
+    <script type="text/javascript">
+        $('#editUser').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
+            var login = button.data('login')
+            var name = button.data('name')
+            var url = button.data('url')
+            var rule = button.data('rule')
+            var modal = $(this)
+            modal.find('#editId').val(id)
+            modal.find('#editLogin').val(login)
+            modal.find('#editNicename').val(name)
+            if(url != 'None'){
+
+                modal.find('#editUrl').val(url)
+            }else{
+
+                modal.find('#editUrl').val("http://")
+            }
+            modal.find('#editRule').val(rule)
+        })
+    </script>
 {% endblock %}
