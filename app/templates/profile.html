@@ -20,15 +20,15 @@
                 <li class="vcard-detail">
                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;
                     {% if user.isAdmin() %}
-                        <a style="color: #d9534f"><b>管理</b></a>
+                        <span class="label label-warning"> + 管理员 + </span>
                     {% elif user.isEditor() %}
-                        <a style="color: #5bc0de"><b>编辑</b></a>
+                        <span class="label label-success"> + 编辑 + </span>
                     {% elif user.isAuther() %}
-                        <a style="color: #5cb85c"><b>作者</b></a>
+                        <span class="label label-primary"> + 作者 + </span>
                     {% elif not user.is_active() %}
-                        <a style="color: #777777"><b>用户被禁用</b></a>
+                        <span class="label label-default"> + 用户被禁用 + </span>
                     {% else %}
-                        <a style="color: #f0ad4e"><b>订阅者</b></a>
+                        <span class="label label-info"> + 订阅者 + </span>
                     {% endif %}
                 </li>
                 <li class="vcard-detail">
