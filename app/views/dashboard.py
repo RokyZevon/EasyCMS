@@ -42,7 +42,7 @@ def useredit():
     userList = getAllUsers()
 
     list = []
-    rule = {0: u'用户被禁用', 1: u'订阅者', 2: u'作者', 3: u'编辑', 4: u'管理员'}
+    rule = {0: u'用户被禁用', 1: u'订阅者', 2: u'作 者', 3: u'编 辑', 4: u'管理员'}
     label = {0: 'label-default', 1: 'label-info', 2: 'label-primary', 3: 'label-success', 4: 'label-warning'}
     for user in userList:
         tmp = {}
@@ -50,9 +50,16 @@ def useredit():
         tmp['login'] = user.user_login
         tmp['nicename'] = user.user_nicename
         tmp['email'] = user.user_email
+        tmp['url'] = user.user_url
         tmp['rule'] = rule[user.user_rule]
+        tmp['ruleId'] = user.user_rule
         tmp['label'] = label[user.user_rule]
 
         list.append(tmp)
 
-    return render_template('admin/users.html', list=list)
+    addForm = AddUserForm()
+    addForm.addRule.choices = [("1", u"订阅者"), ("2", u"作者"), ("3", u"编辑"), ("4", u"管理员"), ("0", u"未激活用户")]
+    editFrom = EditUserFrom()
+    editFrom.editRule.choices = [("1", u"订阅者"), ("2", u"作者"), ("3", u"编辑"), ("4", u"管理员"), ("0", u"禁用用户")]
+
+    return render_template('admin/users.html', list=list, addForm=addForm, editFrom=editFrom)
