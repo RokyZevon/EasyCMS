@@ -1,6 +1,44 @@
 {% extends "admin/base.html" %}
 {% block content %}
-
+<h2>用户管理</h2>
+    <button type="button" class="btn btn-primary btn-sm">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+        添加用户
+    </button>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>登录名</th>
+            <th>昵称</th>
+            <th>邮箱</th>
+            <th>权限</th>
+            <th>编辑</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in list %}
+            <tr>
+                <th scope="row">{{ user['id'] }}</th>
+                <td>{{ user['login'] }}</td>
+                <td>{{ user['nicename'] }}</td>
+                <td>{{ user['email'] }}</td>
+                <td><span class="label {{ user['label'] }}"> + {{ user['rule'] }} + </span></td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button type="button" class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
 {% block script %}
+    {{ super() }}
 {% endblock %}
