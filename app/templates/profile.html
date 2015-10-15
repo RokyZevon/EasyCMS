@@ -123,17 +123,17 @@
                             {{ infoForm.hidden_tag() }}
                             <div class="modal-body">
                                 <div class="form-group">
-                                    {{ infoForm.nicename.label(class='control-label') }}
-                                    {{ infoForm.nicename(class='form-control') }}
+                                    {{ infoForm.editINicename.label(class='control-label') }}
+                                    {{ infoForm.editINicename(class='form-control') }}
                                 </div>
                                 <div class="form-group">
-                                    {{ infoForm.url.label(class='control-label') }}
-                                    {{ infoForm.url(class='form-control') }}
+                                    {{ infoForm.editIUrl.label(class='control-label') }}
+                                    {{ infoForm.editIUrl(class='form-control') }}
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                {{ infoForm.submit(class='btn btn-primary') }}
+                                {{ infoForm.editISubmit(class='btn btn-primary') }}
                             </div>
                         </form>
                     </div>
@@ -151,17 +151,17 @@
                             {{ passForm.hidden_tag() }}
                             <div class="modal-body">
                                 <div class="form-group">
-                                    {{ passForm.password.label(class='control-label') }}
-                                    {{ passForm.password(class='form-control') }}
+                                    {{ passForm.editPpassword.label(class='control-label') }}
+                                    {{ passForm.editPpassword(class='form-control') }}
                                 </div>
                                 <div class="form-group">
-                                    {{ passForm.password2.label(class='control-label') }}
-                                    {{ passForm.password2(class='form-control') }}
+                                    {{ passForm.editPassword2.label(class='control-label') }}
+                                    {{ passForm.editPassword2(class='form-control') }}
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                {{ passForm.submit(class='btn btn-primary') }}
+                                {{ passForm.editSubmit(class='btn btn-primary') }}
                             </div>
                         </form>
                     </div>
@@ -178,12 +178,16 @@
                         <form action="/proEdit" method="post">
                             {{ unableUserForm.hidden_tag() }}
                             <div class="modal-body">
-                                <p>用户 <b>{{ unableUserForm.login.data }}</b> 被禁用后将不能再登陆，直到被管理员在<b>后台</b>解除禁用。</p>
-                                <p>你确认禁用用户？</p>
+                                <p>用户 <b>{{ unableUserForm.unableLogin.data }}</b> 被禁用后将不能再登陆，直到被管理员在<b>后台</b>解除禁用。</p>
+                                <p>如果您确认需要禁用用户，请输入用户登录名以确认：</p>
+                                <div class="form-group">
+                                    {{ unableUserForm.unableName.label(class='control-label') }}
+                                    {{ unableUserForm.unableName(class='form-control') }}
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                {{ unableUserForm.submit(class='btn btn-danger') }}
+                                {{ unableUserForm.unableSubmit(class='btn btn-danger') }}
                             </div>
                         </form>
                     </div>
