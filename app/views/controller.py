@@ -87,7 +87,6 @@ def logout():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     registerForm = RegisterForm()
-    print "start"
 
     if registerForm.validate_on_submit():
         userInfo = {}
@@ -123,14 +122,14 @@ def profile(userlogin):
 
     if current_user.is_authenticated:
         if current_user.isAdmin() or current_user == user:
-            infoForm.login.data = user.user_login
-            infoForm.nicename.data = user.user_nicename
-            if user.user_url is None:
-                infoForm.url.data = 'http://'
+            infoForm.editILogin.data = user.user_login
+            infoForm.editINicename.data = user.user_nicename
+            if user.user_url is None or user.user_url == '':
+                infoForm.editIUrl.data = 'http://'
             else:
-                infoForm.url.data = user.user_url
-            passForm.login.data = user.user_login
-            unableUserForm.login.data = user.user_login
+                infoForm.editIUrl.data = user.user_url
+            passForm.editLogin.data = user.user_login
+            unableUserForm.unableLogin.data = user.user_login
 
     avatar ='http://gravatar.duoshuo.com/avatar/' + hashlib.md5(user.user_email).hexdigest() + '?s=230'
     return render_template('profile.html', user=user, avatar=avatar,
@@ -146,44 +145,52 @@ def proEdit():
     passForm = EditUserPassFrom()
     unableUserForm = UnableUserFrom()
 
-    if infoForm.validate_on_submit():
-        userLogin = infoForm.login.data
-        if current_user.user_login == userLogin or current_user.isAdmin():
-            user = getUserByLoginName(userLogin)
-            user.user_nicename = infoForm.nicename.data
-            user.user_url = infoForm.url.data
-            db.session.add(user)
-            db.session.commit()
-            flash(u'资料修改成功！')
-        else:
-            abort(403)
+    if request.method == 'POST':
+        if infoForm.validate_on_submit():
+            userLogin = infoForm.editILogin.data
+            if current_user.user_login == userLogin or current_user.isAdmin():
+                user = getUserByLoginName(userLogin)
+                user.user_nicename = infoForm.editINicename.data
+                user.user_url = infoForm.editIUrl.data
+                db.session.add(user)
+                db.session.commit()
+                flash(u'资料修改成功！')
+            else:
+                abort(403)
 
-        return redirect(url_for('profile', userlogin=userLogin))
+            return redirect(url_for('profile', userlogin=userLogin))
 
-    if passForm.validate_on_submit():
-        userLogin = passForm.login.data
-        if current_user.user_login == userLogin or current_user.isAdmin():
-            user = getUserByLoginName(userLogin)
+        if passForm.validate_on_submit():
+            userLogin = passForm.editLogin.data
+            if current_user.user_login == userLogin or current_user.isAdmin():
+                user = getUserByLoginName(userLogin)
 
-            user.updatePassword(passForm.password.data)
-            db.session.add(user)
-            db.session.commit()
-            flash(u'密码修改成功，下次登录将使用新密码！')
-        else:
-            abort(403)
-        return redirect(url_for('profile', userlogin=userLogin))
+                user.updatePassword(passForm.editPpassword.data)
+                db.session.add(user)
+                db.session.commit()
+                flash(u'密码修改成功，下次登录将使用新密码！')
+            else:
+                abort(403)
+            return redirect(url_for('profile', userlogin=userLogin))
 
-    if unableUserForm.validate_on_submit():
-        userLogin = unableUserForm.login.data
-        if current_user.user_login == userLogin or current_user.isAdmin():
-            user = getUserByLoginName(userLogin)
+        if unableUserForm.validate_on_submit():
+            userLogin = unableUserForm.unableLogin.data
+            if current_user.user_login == userLogin or current_user.isAdmin():
+                user = getUserByLoginName(userLogin)
 
-            user.user_rule = UserRule['DISABLE']
-            db.session.add(user)
-            db.session.commit()
-            flash(u'用户：' + userLogin + u' 已经被禁用，如需启用请联系管理员！')
-        else:
-            abort(403)
-        return redirect(url_for('profile', userlogin=userLogin))
+                if user:
+                    if user.user_login == unableUserForm.unableName.data:
+                        user.user_rule = UserRule['DISABLE']
+                        db.session.add(user)
+                        db.session.commit()
+                        flash(u'用户：' + userLogin + u' 已经被禁用，如需启用请联系管理员！')
+                    else:
+                        flash(u'用户登录名确认失败！')
 
-    abort(403)
+            else:
+                abort(403)
+            return redirect(url_for('profile', userlogin=userLogin))
+
+    userLogin = unableUserForm.unableLogin.data
+
+    return redirect(url_for('profile', userlogin=userLogin))
