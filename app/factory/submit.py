@@ -15,12 +15,10 @@ def addUser(userinfo):
     # 获取ID
     if 'id' in userinfo:
         # 获取到ID说明是老用户修改信息流程
-
         user = getUserById(userinfo['id'])
         getId = True
     else:
         # 获取不到ID说明为注册流程
-
         # 登陆名长度限制
         if len(userinfo['login']) > 30:
             userinfo['login'] = userinfo['login'][0:30]
@@ -35,7 +33,11 @@ def addUser(userinfo):
     user.user_nicename = userinfo['nicename']
 
     # 密码
-    user.updatePassword(userinfo['pass'])
+    if len(userinfo['pass']) > 0:
+        user.updatePassword(userinfo['pass'])
+
+    if 'url' in userinfo:
+        user.user_url = userinfo['url']
 
     # 修改用户权限
     if 'rule' in userinfo:
@@ -48,8 +50,6 @@ def addUser(userinfo):
         db.session.flush()
 
     db.session.commit()
-    db.session.close()
-
 
     return user
 
@@ -86,7 +86,6 @@ def addPost(postInfo):
         db.session.flush()
 
     db.commit()
-    db.session.close()
 
     # 添加文章分类
     setPostMeta(dict(id=post.post_id, list=postInfo['metas']))
@@ -134,7 +133,6 @@ def addPage(pageInfo):
         db.session.flush()
 
     db.session.commit()
-    db.session.close()
 
     return page
 
@@ -164,7 +162,6 @@ def addMeta(metaInfo):
     if getId is True:
         db.session.flush()
     db.session.commit()
-    db.session.close()
 
     return meta
 
@@ -191,6 +188,5 @@ def addLabel(labelInfo):
     if getId is True:
         db.session.flush()
     db.session.commit()
-    db.session.close()
 
     return label

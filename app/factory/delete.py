@@ -15,16 +15,16 @@ def delUser(userId):
     postList = getPostsByUserId(userId)
 
     # 该用户发表的文章设置为默认编辑发表
-    for post in postList:
-        post.user_id = 1
+    if postList:
+        for post in postList:
+            post.user_id = 1
 
-    db.session.add_all(postList)
+        db.session.add_all(postList)
 
     # 删除用户信息
     User.query.filter_by(user_id=userId).delete()
 
     db.session.commit()
-    db.session.close()
 
 # 删除文章
 def delPost(postId):

@@ -78,11 +78,47 @@ class EditPostForm(Form):
 
 # 仪表盘 删除页面提交表单
 
+
 # 仪表盘 添加用户提交表单
+class AddUserForm(Form):
+    addLogin = StringField(u'登录名', validators=[Required(), Length(1, 64),
+                                               Regexp('^[A-Za-z][A-Za-z0-9_]*$', 0, '登录名只允许是字母，数字，下划线')])
+    addEmail = StringField(u'常用邮箱', validators=[Required(), Length(1, 64), Email()])
+    addNicename = StringField(u'昵称', validators=[Required(), Length(1, 64)])
+    addPassword = PasswordField(u'密码', validators=[Required()])
+    addRule = SelectField(u'用户权限', default=[("1", u"订阅者")])
+    addSubmit = SubmitField(u'添加新账户')
+
+    def validate_email(self, field):
+        if getUserByEmail(field.data):
+            raise ValidationError('邮箱已被使用！')
+
+    def validate_login(self, field):
+        if getUserByLoginName(field.data):
+            raise ValidationError('登录名已被使用！')
+
 
 # 仪表盘 修改用户提交表单
+class EditUserFrom(Form):
+    editId = HiddenField()
+    editLogin = StringField(u'登录名', validators=[Required(), Length(1, 64),
+                                               Regexp('^[A-Za-z][A-Za-z0-9_]*$', 0, '登录名只允许是字母，数字，下划线')])
+    editNicename = StringField(u'昵称', validators=[Required(), Length(1, 64)])
+    editPassword = PasswordField(u'密码', validators=[Required()])
+    editUrl = StringField(u'个人主页', validators=[Required(), Length(1, 64)])
+    editRule = SelectField(u'用户权限', default=[("1", u"订阅者")])
+    editSubmit = SubmitField(u'更新资料')
+
+    def validate_login(self, field):
+        if getUserByLoginName(field.data):
+            raise ValidationError('登录名已被使用！')
+
 
 # 仪表盘 删除用户提交表单
+class DelUser(Form):
+    delId = HiddenField()
+    delSubmit = SubmitField(u'确认删除')
+
 
 # 文章搜索表单
 
