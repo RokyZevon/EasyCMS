@@ -1,10 +1,120 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends "admin/base.html" %}
+{% block content %}
+    <h2>文章分类管理</h2>
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addMeta">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+        添加新分类目录
+    </button>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>名称</th>
+            <th>别名</th>
+            <th>文章数</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in list %}
+            <tr>
+                <td>{{ meta['name'] }}</td>
+                <td>{{ meta['slug'] }}</td>
+                <td>{{ meta['name'] }}</td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editMeta" data-id="{{ meta['id'] }}">
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delMeta" data-id="{{ meta['id'] }}" data-name="{{ meta['name'] }}">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-</body>
-</html>
+    <!-- 添加分类目录 -->
+    <div class="modal fade" id="addMeta" tabindex="-1" role="dialog" aria-labelledby="addMetaLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="addMetaLabel">添加新用户</h4>
+                </div>
+                <form method="POST" action="/admin/users">
+                    <div class="modal-body">
+                        {{ addForm.hidden_tag() }}
+                        <div class="form-group">
+                            {{ addForm.addLogin.label(class="control-label") }}
+                            {{ addForm.addLogin(class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ addForm.addNicename.label(class="control-label") }}
+                            {{ addForm.addNicename(class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ addForm.addEmail.label(class="control-label") }}
+                            {{ addForm.addEmail(class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ addForm.addPassword.label(class="control-label") }}
+                            {{ addForm.addPassword(class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ addForm.addRule.label(class="control-label") }}
+                            {{ addForm.addRule(class="form-control") }}
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        {{ addForm.addSubmit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- 删除分类目录信息 -->
+    <div class="modal fade" id="delMeta" tabindex="-1" role="dialog" aria-labelledby="delMetaLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="delMetaLabel">删除用户</h4>
+                </div>
+                <form method="POST" action="/admin/users">
+                    {{ delForm.hidden_tag() }}
+                    <div class="modal-body">
+                        <p style="color: red">请注意，您在进行一项危险的操作！</p>
+                        <p>您现在将删除用户 <b id="createDelLogin"></b> ,确认后，用户所有的信息将在程序中抹去，操作不可逆！</p>
+                        <p>您确认删除的用户名：</p>
+                        <div class="form-group">
+                            {{ delForm.delLogin.label(class="control-label") }}
+                            {{ delForm.delLogin(class="form-control") }}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        {{ delForm.delSubmit(class="btn btn-danger") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    {{ super() }}
+    <script type="text/javascript">
+        $('#delMeta').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
+            var login = button.data('login')
+            var modal = $(this)
+            modal.find('#delId').val(id)
+            document.getElementById("createDelLogin").innerHTML = login;
+
+        })
+    </script>
+{% endblock %}
