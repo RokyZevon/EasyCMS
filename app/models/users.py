@@ -47,7 +47,7 @@ class User(UserMixin, db.Model):
         return False
 
     def is_active(self):
-        if self.user_rule >= 1:
+        if int(self.user_rule) >= 1:
             return True
         return False
 
