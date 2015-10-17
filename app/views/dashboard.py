@@ -28,11 +28,95 @@ def posts():
 @login_required
 def editpost():
     editForm = EditPostForm()
-    editForm.metas.choices = [(1, u'默认目录')]
+    choices = []
+
+    metalist = getAllMetas()
+    for meta in metalist:
+        tmp = (meta.meta_id, meta.meta_name)
+        choices.append(tmp)
+
+    editForm.metas.choices = choices
     editForm.status.choices = [(PostStatus['RELEASED'], u'已发布'), (PostStatus['DRAFT'], u'草稿'), (PostStatus['PRIVATE'], u'私有'),]
 
     return render_template('admin/editpost.html', form=editForm)
 
+
+# 仪表盘 分类目录管理 添加目录 删除目录
+@app.route('/admin/metas', methods=['GET', 'POST'])
+@login_required
+def metaedit():
+
+    addForm = AddMetaForm()
+    delForm = DelMetaForm()
+
+    if request.method == 'POST':
+
+        if addForm.validate_on_submit():
+            metaInfo = {}
+            metaInfo['name'] = addForm.addName.data
+            metaInfo['slug'] = addForm.addSlug.data
+            metaInfo['describe'] = addForm.addDescribe.data
+            addMeta(metaInfo)
+
+        editForm = EditMetaForm()
+
+        if editForm.validate_on_submit():
+            metaInfo = {}
+            metaInfo['id'] = editForm.editId.data
+            metaInfo['name'] = editForm.editName.data
+            metaInfo['slug'] = editForm.editSlug.data
+            metaInfo['describe'] = editForm.editDescribe.data
+            addMeta(metaInfo)
+
+        if delForm.validate_on_submit():
+            meta = getMetaById(delForm.delId.data)
+            print meta
+            if meta.meta_name == delForm.delName.data:
+                delMeta(meta.meta_id)
+
+    if request.method == 'GET':
+
+        if request.args.get('metaid'):
+            metaid = int(request.args.get('metaid'))
+            meta = getMetaById(metaid)
+
+            editForm = EditMetaForm()
+            editForm.editId.data = meta.meta_id
+            editForm.editName.data = meta.meta_name
+            editForm.editSlug.data = meta.meta_slug
+            editForm.editDescribe.data = meta.meta_describe
+            return render_template('admin/editmeta.html', editForm=editForm)
+
+    metas = getAllMetas()
+    list = []
+    for meta in metas:
+        tmp = {}
+        tmp['name'] = meta.meta_name
+        tmp['slug'] = meta.meta_slug
+        tmp['id'] = meta.meta_id
+        tmp['num'] = 0
+
+        list.append(tmp)
+
+    return render_template('admin/metas.html', list=list, addForm=addForm, delForm=delForm)
+
+
+# 仪表盘 页面管理
+@app.route('/admin/pages')
+@login_required
+def pages():
+    return render_template('admin/pages.html')
+
+
+# 仪表盘 新建页面 编辑页面
+@app.route('/admin/editpages')
+@login_required
+def editpage():
+    editForm = EditPageForm()
+
+    editForm.status.choices = [(PostStatus['RELEASED'], u'已发布'), (PostStatus['DRAFT'], u'草稿'), (PostStatus['PRIVATE'], u'私有'),]
+
+    return render_template('admin/editpage.html', form=editForm)
 
 # 仪表盘 用户管理
 @app.route('/admin/users', methods=['GET', 'POST'])
