@@ -43,7 +43,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="addMetaLabel">添加新用户</h4>
                 </div>
-                <form method="POST" action="/admin/users">
+                <form method="POST" action="/admin/metas">
                     <div class="modal-body">
                         {{ addForm.hidden_tag() }}
                         <div class="form-group">
@@ -84,11 +84,11 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="delMetaLabel">删除用户</h4>
                 </div>
-                <form method="POST" action="/admin/users">
+                <form method="POST" action="/admin/metas">
                     {{ delForm.hidden_tag() }}
                     <div class="modal-body">
                         <p style="color: red">请注意，您在进行一项危险的操作！</p>
-                        <p>您现在将删除用户 <b id="createDelLogin"></b> ,确认后，用户所有的信息将在程序中抹去，操作不可逆！</p>
+                        <p>您现在将删除用户 <b id="createDelName"></b> ,确认后，用户所有的信息将在程序中抹去，操作不可逆！</p>
                         <p>您确认删除的用户名：</p>
                         <div class="form-group">
                             {{ delForm.delLogin.label(class="control-label") }}
@@ -110,10 +110,10 @@
         $('#delMeta').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
             var id = button.data('id')
-            var login = button.data('login')
+            var name = button.data('name')
             var modal = $(this)
             modal.find('#delId').val(id)
-            document.getElementById("createDelLogin").innerHTML = login;
+            document.getElementById("createDelName").innerHTML = name;
 
         })
     </script>
