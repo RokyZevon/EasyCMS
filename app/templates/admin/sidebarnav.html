@@ -1,6 +1,6 @@
 <ul class="nav nav-sidebar">
     <li>
-        <a href="#">
+        <a href="{{ url_for('admin', _external=True) }}">
             <span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span>&nbsp;
             仪表盘
         </a>
@@ -9,7 +9,7 @@
         <li>
             <a href="#">
                 <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;
-                日志
+                运行日志
             </a>
         </li>
     {% endif %}
@@ -43,7 +43,7 @@
             </a>
         </li>
         <li>
-            <a href="">
+            <a href="{{ url_for('labeledit', _external=True) }}">
                 <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;
                 标签
             </a>
