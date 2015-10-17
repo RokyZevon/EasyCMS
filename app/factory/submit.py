@@ -145,6 +145,8 @@ def addMeta(metaInfo):
     if 'id' in metaInfo:
         meta = getMetaById(metaInfo['id'])
         getId = True
+    else:
+        meta.meta_num = 0
 
     if len(metaInfo['name']) > 30:
         metaInfo['name'] = metaInfo['name'][0:30]
@@ -162,6 +164,7 @@ def addMeta(metaInfo):
 
     if getId:
         db.session.flush()
+
     db.session.commit()
 
     return meta
@@ -175,6 +178,8 @@ def addLabel(labelInfo):
     if 'id' in labelInfo:
         label = getLabelById(labelInfo['id'])
         getId = True
+    else:
+        label.label_num = 0
 
     if len(labelInfo['name']) > 30:
         labelInfo['name'] = labelInfo['name'][0:30]
