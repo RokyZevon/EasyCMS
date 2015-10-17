@@ -4,7 +4,7 @@
     <link href="../static/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 {% endblock %}
 {% block content %}
-    <h2>编辑文章</h2>
+    <h2>编辑页面</h2>
     <form>
         <div class="form-group">
             <div class="row">
@@ -32,13 +32,9 @@
         </div>
         <div class="form-group">
             <div class="row">
-                <div class="col-md-3">
-                    {{ form.metas.label }}
-                    {{ form.metas(class="form-control", placeholder="分类目录") }}
-                </div>
-                <div class="col-md-3">
-                    {{ form.labels.label }}
-                    {{ form.labels(class="form-control", placeholder="用英文逗号分割") }}
+                <div class="col-md-6">
+                    {{ form.slug.label }}
+                    {{ form.slug(class="form-control", placeholder="用来快速访问的短地址") }}
                 </div>
                 <div class="col-md-3">
                     {{ form.status.label }}
