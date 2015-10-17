@@ -146,7 +146,7 @@ class AddMetaForm(Form):
     addSubmit = SubmitField(u'添加分类')
 
 
-# 仪表盘 添加分类目录提交表单
+# 仪表盘 修改分类目录提交表单
 class EditMetaForm(Form):
     editId = HiddenField()
     editName = StringField(u'分类名', validators=[Required(), Length(1, 64)])
@@ -155,13 +155,27 @@ class EditMetaForm(Form):
     editSubmit = SubmitField(u'更新')
 
 
-# 仪表盘 添加分类目录提交表单
+# 仪表盘 删除分类目录提交表单
 class DelMetaForm(Form):
     delId = HiddenField()
     delName = StringField(u'分类目录名称', validators=[Required(), Length(1, 64)])
     delSubmit = SubmitField(u'确认删除')
 
 
+# 仪表盘 添加分类目录提交表单
+class EditLabelForm(Form):
+    editId = HiddenField()
+    editName = StringField(u'标签', validators=[Required(), Length(1, 64)])
+    editSlug = StringField(u'别名', validators=[Required(), Length(1, 64)])
+    editSubmit = SubmitField(u'更新')
+
+
+# 仪表盘 删除分类目录提交表单
+class DelLabelForm(Form):
+    delId = HiddenField()
+    delName = StringField(u'标签名称', validators=[Required(), Length(1, 64)])
+    delSubmit = SubmitField(u'确认删除')
+
 # 文章搜索表单
 
-# 标签信息提交表单
+
