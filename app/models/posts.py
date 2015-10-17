@@ -9,6 +9,7 @@ class Post(db.Model):
     post_id = db.Column(db.Integer, primary_key=True)
     post_title = db.Column(db.Text, nullable=False)
     post_content = db.Column(db.Text)
+    post_content_html = db.Column(db.Text)
     post_status = db.Column(db.Integer, nullable=False)
     post_password = db.Column(db.String(64))
     post_date = db.Column(db.DateTime, nullable=False)
@@ -24,8 +25,9 @@ PostStatus = {
     'UNAUDITED': 1,  # 未审核状态
     'DRAFT': 2,      # 草稿状态
     'RELEASED': 3,   # 已发布
-    'PROTECTED': 4,  # 受保护的（加密的）
-    'PRIVATE': 5     # 私有状态
+    'PROTECTED': 4,  # 受保护（已加密）
+    'PRIVATE': 5,    # 私有状态
+    'OVERHEAD': 6    # 置顶状态（推荐状态）
 }
 
 
