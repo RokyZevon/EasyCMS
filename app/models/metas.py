@@ -9,6 +9,7 @@ class Meta(db.Model):
     meta_id = db.Column(db.Integer, primary_key=True)
     meta_name = db.Column(db.String(64), nullable=False, unique=True)
     meta_slug = db.Column(db.String(64), nullable=False, unique=True)
+    meta_num = db.Column(db.Integer, nullable=False)
     meta_describe = db.Column(db.Text)
 
     postmetas = db.relationship('Postmeta',backref='meta')
