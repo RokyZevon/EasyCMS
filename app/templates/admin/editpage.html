@@ -9,8 +9,10 @@
         <div class="form-group">
             <div class="row">
                 <div class="col-md-8">
-                    {{ form.title.label }}
-                    {{ form.title(class="form-control", placeholder="标题") }}
+                    <div class="form-group">
+                        {{ form.title.label }}
+                        {{ form.title(class="form-control", placeholder="标题") }}
+                    </div>
                 </div>
                 <div class="col-md-4">
                     {{ form.datetime.label }}
@@ -25,29 +27,43 @@
         <div class="form-group">
             <div class="row">
                 <div class="col-md-12">
-                    {{ form.content.label }}
-                    {{ form.content(class="form-control", rows="20", placeholder="Markdown编辑器") }}
+                    <div class="form-group">
+                        {{ form.content.label }}
+                        {{ form.content(class="form-control", rows="20", placeholder="Markdown编辑器") }}
+                    </div>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="row">
                 <div class="col-md-6">
-                    {{ form.slug.label }}
-                    {{ form.slug(class="form-control", placeholder="用来快速访问的短地址") }}
+                    <div class="form-group">
+                        {{ form.slug.label }}
+                        <div class="input-group">
+                            <div class="input-group-addon">{{ url_for('index', _external=True) }}</div>
+                            {{ form.slug(class="form-control", placeholder="用来快速访问的短地址") }}
+                            <div class="input-group-addon">/</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-3">
-                    {{ form.status.label }}
-                    {{ form.status(class="form-control", placeholder="Status") }}
+                    <div class="form-group">
+                        {{ form.status.label }}
+                        {{ form.status(class="form-control", placeholder="Status") }}
+                    </div>
                 </div>
                 <div class="col-md-3">
-                    {{ form.password.label }}
-                    {{ form.password(class="form-control", placeholder="置空为不加密") }}
+                    <div class="form-group">
+                        {{ form.password.label }}
+                        {{ form.password(class="form-control", placeholder="置空为不加密") }}
+                    </div>
                 </div>
             </div>
         </div>
-        {{ form.submit(class="btn btn-primary") }}
-        {{ form.save(class="btn btn-default") }}
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+            {{ form.save(class="btn btn-default") }}
+        </div>
     </form>
 {% endblock %}
 {% block script %}
