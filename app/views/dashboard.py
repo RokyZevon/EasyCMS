@@ -13,7 +13,7 @@ from ..factory import *
 @app.route('/admin')
 @login_required
 def admin():
-    return render_template('admin/base.html')
+    return render_template('admin/index.html')
 
 
 # 仪表盘 所有文章
@@ -36,7 +36,7 @@ def editpost():
         choices.append(tmp)
 
     editForm.metas.choices = choices
-    editForm.status.choices = [(PostStatus['RELEASED'], u'已发布'), (PostStatus['DRAFT'], u'草稿'), (PostStatus['PRIVATE'], u'私有'),]
+    editForm.status.choices = [(PostStatus['RELEASED'], u'已发布'), (PostStatus['DRAFT'], u'草稿'), (PostStatus['PRIVATE'], u'私有'), (PostStatus['OVERHEAD'], u'推荐')]
 
     return render_template('admin/editpost.html', form=editForm)
 
@@ -94,7 +94,7 @@ def metaedit():
         tmp['name'] = meta.meta_name
         tmp['slug'] = meta.meta_slug
         tmp['id'] = meta.meta_id
-        tmp['num'] = 0
+        tmp['num'] = meta.meta_num
 
         list.append(tmp)
 
@@ -106,39 +106,35 @@ def metaedit():
 @login_required
 def labeledit():
 
-    delForm = DelMetaForm()
-    editForm = EditMetaForm()
+    delForm = DelLabelForm()
+    editForm = EditLabelForm()
 
     if request.method == 'POST':
 
         if editForm.validate_on_submit():
-            metaInfo = {}
-            metaInfo['id'] = editForm.editId.data
-            metaInfo['name'] = editForm.editName.data
-            metaInfo['slug'] = editForm.editSlug.data
-            metaInfo['describe'] = editForm.editDescribe.data
-            addMeta(metaInfo)
+            labelInfo = {}
+            labelInfo['id'] = editForm.editId.data
+            labelInfo['name'] = editForm.editName.data
+            labelInfo['slug'] = editForm.editSlug.data
+            addLabel(labelInfo)
 
         if delForm.validate_on_submit():
-            meta = getMetaById(delForm.delId.data)
-            print meta
-            if meta.meta_name == delForm.delName.data:
-                delMeta(meta.meta_id)
+            label = getLabelById(delForm.delId.data)
+            if label.label_name == delForm.delName.data:
+                delMeta(label.label_id)
 
-    metas = getAllMetas()
+    labels = getAllLabel()
     list = []
-    for meta in metas:
+    for label in labels:
         tmp = {}
-        tmp['name'] = meta.meta_name
-        tmp['slug'] = meta.meta_slug
-        tmp['id'] = meta.meta_id
-        tmp['num'] = 0
+        tmp['name'] = label.label_name
+        tmp['slug'] = label.label_slug
+        tmp['id'] = label.label_id
+        tmp['num'] = label.label_num
 
         list.append(tmp)
 
     return render_template('admin/labels.html', list=list, editForm=editForm, delForm=delForm)
-
-
 
 
 # 仪表盘 页面管理
@@ -154,9 +150,10 @@ def pages():
 def editpage():
     editForm = EditPageForm()
 
-    editForm.status.choices = [(PostStatus['RELEASED'], u'已发布'), (PostStatus['DRAFT'], u'草稿'), (PostStatus['PRIVATE'], u'私有'),]
+    editForm.status.choices = [(PostStatus['RELEASED'], u'已发布'), (PostStatus['DRAFT'], u'草稿'), (PostStatus['PRIVATE'], u'私有')]
 
     return render_template('admin/editpage.html', form=editForm)
+
 
 # 仪表盘 用户管理
 @app.route('/admin/users', methods=['GET', 'POST'])
