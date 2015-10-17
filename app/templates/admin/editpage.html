@@ -1,0 +1,96 @@
+{% extends "admin/posts.html" %}
+{% block head %}
+    {{ super() }}
+    <link href="../static/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <h2>编辑文章</h2>
+    <form>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-8">
+                    {{ form.title.label }}
+                    {{ form.title(class="form-control", placeholder="标题") }}
+                </div>
+                <div class="col-md-4">
+                    {{ form.datetime.label }}
+                    <div class="input-group date form_datetime" data-date-format="yyyy MM dd - hh:ii" data-link-field="dtp_input1">
+                        {{ form.datetime(class="form-control", size="16", type="text") }}
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-12">
+                    {{ form.content.label }}
+                    {{ form.content(class="form-control", rows="20", placeholder="Markdown编辑器") }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-3">
+                    {{ form.metas.label }}
+                    {{ form.metas(class="form-control", placeholder="分类目录") }}
+                </div>
+                <div class="col-md-3">
+                    {{ form.labels.label }}
+                    {{ form.labels(class="form-control", placeholder="用英文逗号分割") }}
+                </div>
+                <div class="col-md-3">
+                    {{ form.status.label }}
+                    {{ form.status(class="form-control", placeholder="Status") }}
+                </div>
+                <div class="col-md-3">
+                    {{ form.password.label }}
+                    {{ form.password(class="form-control", placeholder="置空为不加密") }}
+                </div>
+            </div>
+        </div>
+        {{ form.submit(class="btn btn-primary") }}
+        {{ form.save(class="btn btn-default") }}
+    </form>
+{% endblock %}
+{% block script %}
+    {{ super() }}
+    <script type="text/javascript" src="../static/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../static/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    {{ pagedown.include_pagedown() }}
+
+    <script type="text/javascript">
+        $('.form_datetime').datetimepicker({
+            language:  'zh-CN',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1
+        });
+        $('.form_date').datetimepicker({
+            language:  'zh-CN',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
+        $('.form_time').datetimepicker({
+            language:  'zh-CN',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 1,
+            minView: 0,
+            maxView: 1,
+            forceParse: 0
+        });
+    </script>
+{% endblock %}

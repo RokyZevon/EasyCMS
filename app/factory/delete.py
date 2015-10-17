@@ -73,7 +73,6 @@ def delMeta(metaId):
     Meta.query.filter_by(meta_id=metaId).delete()
 
     db.session.commit()
-    db.session.close()
 
 # 删除标签
 def delLabel(labelId):
