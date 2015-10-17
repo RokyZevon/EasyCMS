@@ -41,7 +41,7 @@ def editpost():
     return render_template('admin/editpost.html', form=editForm)
 
 
-# 仪表盘 分类目录管理 添加目录 删除目录
+# 仪表盘 分类目录管理 添加目录 删除目录 修改目录
 @app.route('/admin/metas', methods=['GET', 'POST'])
 @login_required
 def metaedit():
@@ -99,6 +99,46 @@ def metaedit():
         list.append(tmp)
 
     return render_template('admin/metas.html', list=list, addForm=addForm, delForm=delForm)
+
+
+# 仪表盘 标签管理 修改标签 删除目录
+@app.route('/admin/labels', methods=['GET', 'POST'])
+@login_required
+def labeledit():
+
+    delForm = DelMetaForm()
+    editForm = EditMetaForm()
+
+    if request.method == 'POST':
+
+        if editForm.validate_on_submit():
+            metaInfo = {}
+            metaInfo['id'] = editForm.editId.data
+            metaInfo['name'] = editForm.editName.data
+            metaInfo['slug'] = editForm.editSlug.data
+            metaInfo['describe'] = editForm.editDescribe.data
+            addMeta(metaInfo)
+
+        if delForm.validate_on_submit():
+            meta = getMetaById(delForm.delId.data)
+            print meta
+            if meta.meta_name == delForm.delName.data:
+                delMeta(meta.meta_id)
+
+    metas = getAllMetas()
+    list = []
+    for meta in metas:
+        tmp = {}
+        tmp['name'] = meta.meta_name
+        tmp['slug'] = meta.meta_slug
+        tmp['id'] = meta.meta_id
+        tmp['num'] = 0
+
+        list.append(tmp)
+
+    return render_template('admin/labels.html', list=list, editForm=editForm, delForm=delForm)
+
+
 
 
 # 仪表盘 页面管理
