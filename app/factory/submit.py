@@ -140,6 +140,7 @@ def addPage(pageInfo):
 # 添加文章分类 and 修改文章分类信息
 def addMeta(metaInfo):
     meta = Meta()
+    getId = False
 
     if 'id' in metaInfo:
         meta = getMetaById(metaInfo['id'])
@@ -159,7 +160,7 @@ def addMeta(metaInfo):
 
     db.session.add(meta)
 
-    if getId is True:
+    if getId:
         db.session.flush()
     db.session.commit()
 
