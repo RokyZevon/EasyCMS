@@ -3,7 +3,7 @@
 from flask.ext.wtf import Form
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms import BooleanField, ValidationError, HiddenField
-from wtforms import DateTimeField, SelectField, SelectMultipleField
+from wtforms import DateTimeField, SelectField, TextAreaField
 
 from wtforms.validators import Required, Length, Email, Regexp, EqualTo
 from flask.ext.pagedown.fields import PageDownField
@@ -78,10 +78,20 @@ class EditPostForm(Form):
     submit = SubmitField(u'发布')
     save = SubmitField(u'保存')
 
+
 # 仪表盘 删除文章提交表单
 
-# 仪表盘 页面提交表单
 
+# 仪表盘 页面提交表单
+class EditPageForm(Form):
+    title = StringField(u'标题', validators=[Required(), Length(1, 64)])
+    slug = StringField(u'短地址', validators=[Required(), Length(1, 64)])
+    content = PageDownField(u'编辑内容', validators=[Required()])
+    datetime = DateTimeField(u'发表时间', validators=[Required()])
+    password = PasswordField(u'密码', validators=[Required(), Length(0, 64)])
+    status = SelectField(u'状态', coerce=int, default=PostStatus['RELEASED'])
+    submit = SubmitField(u'发布')
+    save = SubmitField(u'保存')
 # 仪表盘 删除页面提交表单
 
 
@@ -120,7 +130,6 @@ class EditUserForm(Form):
             field.data = ''
 
 
-
 # 仪表盘 删除用户提交表单
 class DelUserForm(Form):
     delId = HiddenField()
@@ -129,8 +138,30 @@ class DelUserForm(Form):
     delSubmit = SubmitField(u'确认删除')
 
 
-# 文章搜索表单
+# 仪表盘 添加分类目录提交表单
+class AddMetaForm(Form):
+    addName = StringField(u'分类名', validators=[Required(), Length(1, 64)])
+    addSlug = StringField(u'别名', validators=[Required(), Length(1, 64)])
+    addDescribe = TextAreaField(u'描述')
+    addSubmit = SubmitField(u'添加分类')
 
-# 文章分类信息提交表单
+
+# 仪表盘 添加分类目录提交表单
+class EditMetaForm(Form):
+    editId = HiddenField()
+    editName = StringField(u'分类名', validators=[Required(), Length(1, 64)])
+    editSlug = StringField(u'别名', validators=[Required(), Length(1, 64)])
+    editDescribe = TextAreaField(u'描述')
+    editSubmit = SubmitField(u'更新')
+
+
+# 仪表盘 添加分类目录提交表单
+class DelMetaForm(Form):
+    delId = HiddenField()
+    delName = StringField(u'分类目录名称', validators=[Required(), Length(1, 64)])
+    delSubmit = SubmitField(u'确认删除')
+
+
+# 文章搜索表单
 
 # 标签信息提交表单
