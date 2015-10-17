@@ -9,6 +9,7 @@ class Label(db.Model):
     label_id = db.Column(db.Integer, primary_key=True)
     label_name = db.Column(db.String(60), nullable=False, unique=True)
     label_slug = db.Column(db.String(60), nullable=False, unique=True)
+    label_num = db.Column(db.Integer, nullable=False)
 
     postlabels = db.relationship('Postlabel', backref='label')
 
