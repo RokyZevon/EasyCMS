@@ -37,7 +37,7 @@
             </a>
         </li>
         <li>
-            <a href="">
+            <a href="{{ url_for('metaedit', _external=True) }}">
                 <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>&nbsp;
                 分类目录
             </a>
@@ -53,13 +53,13 @@
 {% if current_user.isEditor() %}
     <ul class="nav nav-sidebar">
         <li>
-            <a href="">
+            <a href="{{ url_for('pages', _external=True) }}">
                 <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>&nbsp;
                 所有页面
             </a>
         </li>
         <li>
-            <a href="">
+            <a href="{{ url_for('editpage', _external=True) }}">
                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;
                 新建页面
             </a>
