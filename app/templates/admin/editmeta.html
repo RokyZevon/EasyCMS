@@ -1,10 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "admin/base.html" %}
+{% block content %}
+    <h2>编辑分类目录</h2>
+    <form method="POST" action="/admin/metas">
+        {{ editForm.hidden_tag() }}
+        <div class="form-group">
+            {{ editForm.editName.label(class="control-label") }}
+            {{ editForm.editName(class="form-control") }}
+            <small>这将是它在站点上显示的名字。</small>
+        </div>
+        <div class="form-group">
+            {{ editForm.editSlug.label(class="control-label") }}
+            {{ editForm.editSlug(class="form-control") }}
+            <small>“别名”是在URL中使用的别称，它可以令URL更美观。通常使用小写，只能包含字母，数字和连字符（-）。</small>
+        </div>
+        <div class="form-group">
+            {{ editForm.editDescribe.label(class="control-label") }}
+            {{ editForm.editDescribe(class="form-control", rows="4") }}
+            <small>描述只会在一部分主题中显示。</small>
+        </div>
+        <div class="form-group">
+            {{ editForm.editSubmit(class="btn btn-primary") }}
+            <a href="{{ url_for('metaedit', _external=True) }}" class="btn btn-default">返回</a>
+        </div>
+    </form>
+{% endblock %}
