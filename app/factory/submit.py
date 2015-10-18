@@ -78,7 +78,9 @@ def addPost(postInfo):
         post.post_password = hashlib.md5(postInfo['pass']).hexdigest()
 
     post.post_status = postInfo['status']
-    post.user_id = postInfo['userId']
+
+    if 'userId' in postInfo:
+        post.user_id = postInfo['userId']
 
     db.session.add(post)
 
