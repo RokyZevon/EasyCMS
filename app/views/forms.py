@@ -68,6 +68,7 @@ class UnableUserFrom(Form):
 
 # 仪表盘 文章提交表单
 class EditPostForm(Form):
+    id = HiddenField()
     title = StringField(u'标题', validators=[Required(), Length(1, 64)])
     content = PageDownField(u'编辑内容', validators=[Required()])
     datetime = DateTimeField(u'发表时间', validators=[Required()])
@@ -84,6 +85,7 @@ class EditPostForm(Form):
 
 # 仪表盘 页面提交表单
 class EditPageForm(Form):
+    id = HiddenField()
     title = StringField(u'标题', validators=[Required(), Length(1, 64)])
     slug = StringField(u'短地址', validators=[Required(), Length(1, 64)])
     content = PageDownField(u'编辑内容', validators=[Required()])
