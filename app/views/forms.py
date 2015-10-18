@@ -8,7 +8,7 @@ from wtforms import DateTimeField, SelectField, TextAreaField
 from wtforms.validators import Required, Length, Email, Regexp, EqualTo
 from flask.ext.pagedown.fields import PageDownField
 
-from ..catch import getUserByLoginName, getUserByEmail
+from ..catch import getUserByLoginName, getUserByEmail, getAllMetas
 from ..models import PostStatus
 
 
@@ -71,10 +71,14 @@ class EditPostForm(Form):
     id = HiddenField()
     title = StringField(u'标题', validators=[Required(), Length(1, 64)])
     content = PageDownField(u'编辑内容')
-    datetime = DateTimeField(u'发表时间')
+    datetime = StringField(u'发表时间')
     password = PasswordField(u'密码', validators=[Length(0, 64)])
-    status = SelectField(u'状态', coerce=int, choices=[], default=PostStatus['RELEASED'])
-    metas = SelectField(u'分类目录', coerce=int, choices=[], default=1)
+    metas = SelectField(u'分类目录', coerce=int, choices=[(1, u"默认分类")])
+    status = SelectField(u'用户权限', coerce=int, choices=[(int(PostStatus['RELEASED']), u'已发布'),
+                            (int(PostStatus['DRAFT']), u'草稿'), (int(PostStatus['PRIVATE']), u'私有'),
+                                                       (int(PostStatus['OVERHEAD']), u'推荐')])
+    # status = SelectField(u'状态', coerce=int, choices=[(1, u"默认分类")])
+    # status = StringField(u'状态')
     labels = StringField(u'标签', validators=[Length(0, 64)])
     submit = SubmitField(u'发布')
     save = SubmitField(u'保存')
@@ -88,10 +92,10 @@ class EditPageForm(Form):
     id = HiddenField()
     title = StringField(u'标题', validators=[Required(), Length(1, 64)])
     slug = StringField(u'短地址', validators=[Required(), Length(1, 64)])
-    content = PageDownField(u'编辑内容', validators=[Required()])
-    datetime = DateTimeField(u'发表时间', validators=[Required()])
-    password = PasswordField(u'密码', validators=[Required(), Length(0, 64)])
-    status = SelectField(u'状态', coerce=int, choices=[], default=PostStatus['RELEASED'])
+    content = PageDownField(u'编辑内容')
+    datetime = DateTimeField(u'发表时间')
+    password = PasswordField(u'密码', validators=[Length(0, 64)])
+    status = SelectField(u'状态', coerce=int, choices=[])
     submit = SubmitField(u'发布')
     save = SubmitField(u'保存')
 # 仪表盘 删除页面提交表单
