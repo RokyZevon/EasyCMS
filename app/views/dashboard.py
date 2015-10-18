@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from flask import render_template, redirect, request, url_for, flash, abort
 from flask.ext.login import login_user, logout_user, login_required, current_user
 from .forms import *
@@ -24,19 +25,58 @@ def posts():
 
 
 # 仪表盘 新建文章 编辑文章
-@app.route('/admin/editpost')
+@app.route('/admin/editpost', methods=['GET', 'POST'])
 @login_required
 def editpost():
     editForm = EditPostForm()
+
+    if request.method == 'POST':
+
+        if editForm.validate_on_submit():
+            postinfo = {}
+            if editForm.id.data:
+                postinfo['id'] = editForm.id.data
+            postinfo['title'] = editForm.title.data
+            postinfo['content'] = editForm.content.data
+            if editForm.datetime.data:
+                tmp = editForm.datetime.data.split(' ')
+                date = tmp[0].split('-')
+                mon = {1: u'一月', 2: u'二月', 3: u'三月', 4: u'四月', 5: u'五月', 6: u'六月',
+                       7: u'七月', 8: u'八月', 9: u'九月', 10: u'十月', 11: u'十一月', 12: u'十二月'}
+
+                string = ''
+                for num in mon:
+                    if mon[num] == date[1]:
+                        string = '%s-%s-%s %s' % (date[0], num, date[2], tmp[1])
+
+                postinfo['date'] = datetime.strptime(string, "%Y-%m-%d %H:%M:%S")
+            else:
+                postinfo['date'] = datetime.now()
+
+            if editForm.password.data:
+                postinfo['pass'] = editForm.password.data
+
+            postinfo['status'] = editForm.status.data
+            if postinfo['status'] == PostStatus['RELEASED'] or postinfo['status'] == PostStatus['OVERHEAD']:
+                if not current_user.isEditor():
+                    postinfo['status'] = PostStatus['UNAUDITED']
+
+            if editForm.save.data:
+                postinfo['status'] = PostStatus['DRAFT']
+
+            postinfo['metas'] = [editForm.metas.data]
+            postinfo['labels'] = editForm.labels.data.split(',')
+            print postinfo
+            addPost(postinfo)
+
     choices = []
 
     metalist = getAllMetas()
     for meta in metalist:
-        tmp = (meta.meta_id, meta.meta_name)
+        tmp = (int(meta.meta_id), meta.meta_name)
         choices.append(tmp)
 
     editForm.metas.choices = choices
-    editForm.status.choices = [(PostStatus['RELEASED'], u'已发布'), (PostStatus['DRAFT'], u'草稿'), (PostStatus['PRIVATE'], u'私有'), (PostStatus['OVERHEAD'], u'推荐')]
 
     return render_template('admin/editpost.html', form=editForm)
 
