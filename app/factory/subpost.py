@@ -38,7 +38,6 @@ def setPostMeta(metaInfo):
 
     db.session.add_all(postMetaList)
     db.session.commit()
-    db.session.close()
 
 # 文章设置文章标签 and 文章更新文章标签
 def setPostLabel(labelInfo):
@@ -68,7 +67,6 @@ def setPostLabel(labelInfo):
 
     db.session.add_all(postLabelList)
     db.session.commit()
-    db.session.close()
 
 # 删除文章分组信息
 def delPostMetas(postId):
