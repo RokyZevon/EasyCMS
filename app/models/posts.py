@@ -38,9 +38,8 @@ PostStatus = {
     'UNAUDITED': 1,  # 未审核状态
     'DRAFT': 2,      # 草稿状态
     'RELEASED': 3,   # 已发布
-    'PROTECTED': 4,  # 受保护（已加密）
-    'PRIVATE': 5,    # 私有状态
-    'OVERHEAD': 6    # 置顶状态（推荐状态）
+    'PRIVATE': 4,    # 私有状态
+    'OVERHEAD': 5    # 置顶状态（推荐状态）
 }
 
 
