@@ -5,7 +5,8 @@
 {% endblock %}
 {% block content %}
     <h2>编辑文章</h2>
-    <form>
+    <form method="POST" action="/admin/editpost">
+        {{ form.hidden_tag() }}
         <div class="form-group">
             <div class="row">
                 <div class="col-md-8">
@@ -14,7 +15,7 @@
                 </div>
                 <div class="col-md-4">
                     {{ form.datetime.label }}
-                    <div class="input-group date form_datetime" data-date-format="yyyy MM dd - hh:ii" data-link-field="dtp_input1">
+                    <div class="input-group date form_datetime" data-date-format="yyyy-MM-dd hh:ii:ss" data-link-field="dtp_input1">
                         {{ form.datetime(class="form-control", size="16", type="text") }}
                         <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
