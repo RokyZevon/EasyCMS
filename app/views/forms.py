@@ -70,12 +70,12 @@ class UnableUserFrom(Form):
 class EditPostForm(Form):
     id = HiddenField()
     title = StringField(u'标题', validators=[Required(), Length(1, 64)])
-    content = PageDownField(u'编辑内容', validators=[Required()])
-    datetime = DateTimeField(u'发表时间', validators=[Required()])
-    password = PasswordField(u'密码', validators=[Required(), Length(0, 64)])
-    status = SelectField(u'状态', coerce=int, default=PostStatus['RELEASED'])
-    metas = SelectField(u'分类目录', coerce=int, default=1)
-    labels = StringField(u'标签', validators=[Required(), Length(1, 64)])
+    content = PageDownField(u'编辑内容')
+    datetime = DateTimeField(u'发表时间')
+    password = PasswordField(u'密码', validators=[Length(0, 64)])
+    status = SelectField(u'状态', coerce=int, choices=[], default=PostStatus['RELEASED'])
+    metas = SelectField(u'分类目录', coerce=int, choices=[], default=1)
+    labels = StringField(u'标签', validators=[Length(0, 64)])
     submit = SubmitField(u'发布')
     save = SubmitField(u'保存')
 
@@ -91,7 +91,7 @@ class EditPageForm(Form):
     content = PageDownField(u'编辑内容', validators=[Required()])
     datetime = DateTimeField(u'发表时间', validators=[Required()])
     password = PasswordField(u'密码', validators=[Required(), Length(0, 64)])
-    status = SelectField(u'状态', coerce=int, default=PostStatus['RELEASED'])
+    status = SelectField(u'状态', coerce=int, choices=[], default=PostStatus['RELEASED'])
     submit = SubmitField(u'发布')
     save = SubmitField(u'保存')
 # 仪表盘 删除页面提交表单
