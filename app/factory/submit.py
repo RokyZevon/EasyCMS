@@ -87,10 +87,10 @@ def addPost(postInfo):
     if getId is True:
         db.session.flush()
 
-    db.commit()
+    db.session.commit()
 
     # 添加文章分类
-    setPostMeta(dict(id=post.post_id, list=postInfo['metas']))
+    setPostMeta(dict(id=post.post_id, list=postInfo['meta']))
 
     # 添加文章标签
     setPostLabel(dict(id=post.post_id, list=postInfo['labels']))
