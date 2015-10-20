@@ -26,7 +26,7 @@ class Post(db.Model):
                         'li', 'ol', 'pre', 'strong', 'ul', 'h1', 'h2', 'h3', 'h4', 'p']
         target.post_content_html = bleach.linkify(bleach.clean(
             markdown(value, output_format='html'),
-            tars=allowed_tags, strip=True
+            tags=allowed_tags, strip=True
         ))
 
     def __repr__(self):
