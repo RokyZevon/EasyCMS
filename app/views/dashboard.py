@@ -36,6 +36,8 @@ def editpost():
             postinfo = {}
             if editForm.id.data:
                 postinfo['id'] = editForm.id.data
+            else:
+                postinfo['userId'] = current_user.user_id
             postinfo['title'] = editForm.title.data
             postinfo['content'] = editForm.content.data
             if editForm.datetime.data:
