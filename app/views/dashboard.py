@@ -64,9 +64,9 @@ def editpost():
             if editForm.save.data:
                 postinfo['status'] = PostStatus['DRAFT']
 
-            postinfo['metas'] = [editForm.metas.data]
+            postinfo['meta'] = [editForm.metas.data]
             postinfo['labels'] = editForm.labels.data.split(',')
-            print postinfo
+
             addPost(postinfo)
 
     choices = []
