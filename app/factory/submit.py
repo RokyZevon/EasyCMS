@@ -1,7 +1,7 @@
 # -*- coding=utf-8 -*-
 
 from app.models import User, Post, Page, Meta, Label
-from ..catch import getPostById, getUserById, getPageById, getMetaById, getLabelById
+from ..catch import getPostById, getUserById, getPageById, getMetaById, getLabelById, getLabelByName
 from app import db
 from .subpost import setPostLabel, setPostMeta
 import hashlib
@@ -93,7 +93,16 @@ def addPost(postInfo):
     setPostMeta(dict(id=post.post_id, list=postInfo['meta']))
 
     # 添加文章标签
-    setPostLabel(dict(id=post.post_id, list=postInfo['labels']))
+    labellist = []
+
+    for labelname in postInfo['labels']:
+        if labelname:
+            label = getLabelByName(labelname)
+            if not label:
+                label = addLabel(dict(name=labelname, slug=labelname))
+            labellist.append(label)
+
+    setPostLabel(dict(id=post.post_id, list=labellist))
 
     return post
 
