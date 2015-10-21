@@ -24,6 +24,13 @@ def getLabelBySlug(slug):
 
     return label
 
+# 根据标签缩写获得标签
+def getLabelByName(name):
+
+    label = Label.query.filter_by(label_name=name).first()
+
+    return label
+
 # 获得文章的全部标签
 def getPostLabels(postId):
 
