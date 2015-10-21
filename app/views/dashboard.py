@@ -21,8 +21,26 @@ def admin():
 @app.route('/admin/posts')
 @login_required
 def posts():
-    return render_template('admin/posts.html')
+    allpost = getAllPosts()
+    list = []
 
+    for post in allpost:
+        tmp = {}
+        tmp['id'] = post.post_id
+        tmp['title'] = post.post_title
+        tmp['auther'] = getUserById(post.user_id).user_nicename
+        tmp['meta'] = ''
+        tmp['label'] = ''
+        tmp['talk'] = ''
+        tmp['datatime'] = ''
+        tmp['status'] = ''
+
+        list.append(tmp)
+    return render_template('admin/posts.html', list=list)
+
+
+mon = {1: u'一月', 2: u'二月', 3: u'三月', 4: u'四月', 5: u'五月', 6: u'六月',
+                       7: u'七月', 8: u'八月', 9: u'九月', 10: u'十月', 11: u'十一月', 12: u'十二月'}
 
 # 仪表盘 新建文章 编辑文章
 @app.route('/admin/editpost', methods=['GET', 'POST'])
@@ -43,8 +61,6 @@ def editpost():
             if editForm.datetime.data:
                 tmp = editForm.datetime.data.split(' ')
                 date = tmp[0].split('-')
-                mon = {1: u'一月', 2: u'二月', 3: u'三月', 4: u'四月', 5: u'五月', 6: u'六月',
-                       7: u'七月', 8: u'八月', 9: u'九月', 10: u'十月', 11: u'十一月', 12: u'十二月'}
 
                 string = ''
                 for num in mon:
@@ -66,7 +82,7 @@ def editpost():
             if editForm.save.data:
                 postinfo['status'] = PostStatus['DRAFT']
 
-            postinfo['meta'] = [editForm.metas.data]
+            postinfo['meta'] = editForm.metas.data
             postinfo['labels'] = editForm.labels.data.split(',')
 
             addPost(postinfo)
@@ -79,6 +95,20 @@ def editpost():
         choices.append(tmp)
 
     editForm.metas.choices = choices
+
+    if request.method == 'GET':
+        id = request.args.get('postid')
+        if id:
+            post = getPostById(id)
+            editForm.id.data = id
+            editForm.title.data = post.post_title
+            editForm.content.data = post.post_content
+            editForm.datetime.data = post.post_date.strftime("%Y-") +\
+                            mon[int(post.post_date.strftime("%m"))] + post.post_date.strftime("-%d %H:%M:%S")
+            editForm.metas.data = 1
+            editForm.labels.data = '1,2,3'
+            editForm.password.data = post.post_password
+            editForm.status.data = post.post_status
 
     return render_template('admin/editpost.html', form=editForm)
 
@@ -163,7 +193,7 @@ def labeledit():
         if delForm.validate_on_submit():
             label = getLabelById(delForm.delId.data)
             if label.label_name == delForm.delName.data:
-                delMeta(label.label_id)
+                delLabel(label.label_id)
 
     labels = getAllLabel()
     list = []
