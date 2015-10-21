@@ -5,6 +5,11 @@
     <div class="row">
         <div class="col-md-5">
             <h4>热名标签</h4>
+            {% for label in list %}
+                <a href="{{ url_for('posts', labelid=label['id'], _external=True) }}" style="font-size: {{ label['num'] + 10 }}">
+                    {{ label['name'] }}
+                </a>&nbsp;
+            {% endfor %}
         </div>
         <div class="col-md-7">
             <h4>标签管理</h4>
@@ -25,10 +30,10 @@
                         <td>{{ label['num'] }}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="...">
-                                <a type="button" class="btn btn-success btn-sm" href="{{ url_for('labeledit', labelid=label['id'], _external=True) }}">
+                                <a type="button" class="btn btn-success btn-sm" href="{{ url_for('posts', labelid=label['id'], _external=True) }}">
                                     <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                 </a>
-                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editLabel" data-name="{{ label['name'] }}" data-slug="{{ label['slug'] }}">
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editLabel" data-id="{{ label['id'] }}" data-name="{{ label['name'] }}" data-slug="{{ label['slug'] }}">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                 </button>
                                 <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delLabel" data-id="{{ label['id'] }}" data-name="{{ label['name'] }}">
@@ -42,20 +47,48 @@
             </table>
         </div>
     </div>
-    <!-- 删除分类目录信息 -->
-    <div class="modal fade" id="delMeta" tabindex="-1" role="dialog" aria-labelledby="delMetaLabel">
+    <!-- 修改标签信息 -->
+    <div class="modal fade" id="editLabel" tabindex="-1" role="dialog" aria-labelledby="editLabelLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="delMetaLabel">删除分类目录</h4>
+                    <h4 class="modal-title" id="editLabelLabel">修改标签信息</h4>
                 </div>
-                <form method="POST" action="/admin/metas">
+                <form method="POST" action="/admin/labels">
+                    <div class="modal-body">
+                        {{ editForm.hidden_tag() }}
+                        <div class="form-group">
+                            {{ editForm.editName.label(class="control-label") }}
+                            {{ editForm.editName(class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ editForm.editSlug.label(class="control-label") }}
+                            {{ editForm.editSlug(class="form-control") }}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        {{ editForm.editSubmit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- 删除标签信息 -->
+    <div class="modal fade" id="delLabel" tabindex="-1" role="dialog" aria-labelledby="delLabelLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="delLabelLabel">删除标签</h4>
+                </div>
+                <form method="POST" action="/admin/labels">
                     {{ delForm.hidden_tag() }}
                     <div class="modal-body">
                         <p style="color: red">请注意，您在进行一项危险的操作！</p>
-                        <p>您现在将删除分类目录 <b id="createDelName"></b> ,确认后，该分类目录下所有的文章将归并到默认分类目录中。</p>
-                        <p>您确认删除的分类目录名称：</p>
+                        <p>您现在将删除标签 <b id="createDelName"></b> ,确认后，所有与此标签有关的文章将删除与此标签的关联，操作不可逆！</p>
+                        <p>您确认删除的标签名称：</p>
                         <div class="form-group">
                             {{ delForm.delName.label(class="control-label") }}
                             {{ delForm.delName(class="form-control") }}
@@ -73,7 +106,17 @@
 {% block script %}
     {{ super() }}
     <script type="text/javascript">
-        $('#delMeta').on('show.bs.modal', function (event) {
+        $('#editLabel').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
+            var name = button.data('name')
+            var slug = button.data('slug')
+            var modal = $(this)
+            modal.find('#editId').val(id)
+            modal.find('#editName').val(name)
+            modal.find('#editSlug').val(slug)
+        })
+        $('#delLabel').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
             var id = button.data('id')
             var name = button.data('name')
