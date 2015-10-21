@@ -77,8 +77,7 @@ def delMeta(metaId):
 # 删除标签
 def delLabel(labelId):
 
-    Label.query.filter_by(label_id=labelId).delete()
     Postlabel.query.filter_by(label_id=labelId).delete()
+    Label.query.filter_by(label_id=labelId).delete()
 
     db.session.commit()
-    db.session.close()
