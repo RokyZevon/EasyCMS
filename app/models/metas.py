@@ -27,4 +27,4 @@ class Postmeta(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('posts.post_id'))
 
     def __repr__(self):
-        return '<PostMeta postId:%r = metaId:%r>' % (self.post_id,self.meta_id)
+        return '<PostMeta postId:%r = metaId:%r>' % (self.post_id, self.meta_id)
