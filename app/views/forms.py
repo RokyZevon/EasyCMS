@@ -4,12 +4,13 @@ from flask.ext.wtf import Form
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms import BooleanField, ValidationError, HiddenField
 from wtforms import DateTimeField, SelectField, TextAreaField
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
 from wtforms.validators import Required, Length, Email, Regexp, EqualTo
 from flask.ext.pagedown.fields import PageDownField
 
-from ..catch import getUserByLoginName, getUserByEmail, getAllMetas
-from ..models import PostStatus
+from ..catch import getUserByLoginName, getUserByEmail
+from ..models import PostStatus, Meta
 
 
 # 登陆表单
@@ -74,11 +75,10 @@ class EditPostForm(Form):
     datetime = StringField(u'发表时间')
     password = PasswordField(u'密码', validators=[Length(0, 64)])
     metas = SelectField(u'分类目录', coerce=int, choices=[(1, u"默认分类")])
+    # metas = QuerySelectField(u'分类目录', query_factory=Meta.query)
     status = SelectField(u'用户权限', coerce=int, choices=[(int(PostStatus['RELEASED']), u'已发布'),
                             (int(PostStatus['DRAFT']), u'草稿'), (int(PostStatus['PRIVATE']), u'私有'),
                                                        (int(PostStatus['OVERHEAD']), u'推荐')])
-    # status = SelectField(u'状态', coerce=int, choices=[(1, u"默认分类")])
-    # status = StringField(u'状态')
     labels = StringField(u'标签', validators=[Length(0, 64)])
     submit = SubmitField(u'发布')
     save = SubmitField(u'保存')
@@ -168,7 +168,7 @@ class DelMetaForm(Form):
     delSubmit = SubmitField(u'确认删除')
 
 
-# 仪表盘 添加分类目录提交表单
+# 仪表盘 编辑标签提交表单
 class EditLabelForm(Form):
     editId = HiddenField()
     editName = StringField(u'标签', validators=[Required(), Length(1, 64)])
@@ -176,7 +176,7 @@ class EditLabelForm(Form):
     editSubmit = SubmitField(u'更新')
 
 
-# 仪表盘 删除分类目录提交表单
+# 仪表盘 删除标签提交表单
 class DelLabelForm(Form):
     delId = HiddenField()
     delName = StringField(u'标签名称', validators=[Required(), Length(1, 64)])
