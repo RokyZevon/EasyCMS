@@ -46,6 +46,9 @@
                         <td>{{ meta['num'] }}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="...">
+                                <a type="button" class="btn btn-success btn-sm" href="{{ url_for('posts', metaid=meta['id'], _external=True) }}">
+                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                </a>
                                 <a type="button" class="btn btn-primary btn-sm" href="{{ url_for('metaedit', metaid=meta['id'], _external=True) }}">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                 </a>
