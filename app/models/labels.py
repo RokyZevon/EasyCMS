@@ -20,7 +20,7 @@ class Postlabel(db.Model):
 
     '''文章，标签对应表'''
 
-    __tablename__ = 'psotlabels'
+    __tablename__ = 'postlabels'
     id = db.Column(db.Integer, primary_key=True)
     label_id = db.Column(db.Integer, db.ForeignKey('labels.label_id'))
     post_id = db.Column(db.Integer, db.ForeignKey('posts.post_id'))
