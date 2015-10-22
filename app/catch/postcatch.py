@@ -5,7 +5,7 @@ import random
 
 # 以ID获取文章
 def getPostById(postId):
-
+    postinfo = {}
     post = Post.query.filter_by(post_id=postId).first()
     return post
 
@@ -65,12 +65,14 @@ def maybeYouLike(postId):
 # 以ID获取页面
 def getPageById(postId):
 
+    postinfo = {}
     post = Page.query.filter_by(post_id=postId).first()
     return post
 
 # 获取全部页面
 def getAllPages():
 
+    postlist = {}
     postList = Page.query.all()
     return postList
 
