@@ -11,7 +11,7 @@ def getPostById(postId):
 
 # 获取全部文章
 def getAllPosts():
-
+    postinfo = {}
     postList = Post.query.all()
     return postList
 
