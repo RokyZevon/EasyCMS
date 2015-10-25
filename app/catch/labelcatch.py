@@ -3,12 +3,19 @@
 from ..models import Label, Postlabel
 from .postcatch import getPostsByLabelId
 
-# 获得全部标签
-def getAllLabel():
 
-    labelList = Label.query.all()
-    
-    return labelList
+# 获得全部标签
+def get_all_label(page=1, num=5):
+
+    if page == 0:
+        labelList = Label.query.all()
+        return labelList
+
+    pagination = Label.query.paginate(
+        page, per_page=num
+    )
+    return pagination
+
 
 # 根据标签ID获得标签
 def getLabelById(labelId):
