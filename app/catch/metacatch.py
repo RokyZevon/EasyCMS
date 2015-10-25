@@ -2,12 +2,20 @@
 
 from ..models import Meta, Postmeta
 
+
 # 获得全部分类
-def getAllMetas():
+def get_all_metas(page=1, num=5):
 
-    metaList = Meta.query.all()
+    if page == 0:
+        metaList = Meta.query.all()
+        return metaList
 
-    return metaList
+    pagination = Meta.query.paginate(
+        page, per_page=num
+    )
+
+    return pagination
+
 
 # 根据分类ID获得分类
 def getMetaById(metaId):
