@@ -1,9 +1,9 @@
 # -*- coding=utf-8 -*-
 
 from app.models import User, Post, Page, Meta, Label
-from ..catch import getPostById, getUserById, getPageById, getMetaById, getLabelById, getLabelByName
+from ..catch import getPostById, get_user_by_id, getPageById, getLabelById, getLabelByName, get_meta_by_id
 from app import db
-from .subpost import setPostLabel, setPostMeta
+from .subpost import set_post_label
 import hashlib
 
 # 添加用户 and 用户信息修改
@@ -15,7 +15,7 @@ def addUser(userinfo):
     # 获取ID
     if 'id' in userinfo:
         # 获取到ID说明是老用户修改信息流程
-        user = getUserById(userinfo['id'])
+        user = get_user_by_id(userinfo['id'])
         getId = True
     else:
         # 获取不到ID说明为注册流程
@@ -82,15 +82,14 @@ def addPost(postInfo):
     if 'userId' in postInfo:
         post.user_id = postInfo['userId']
 
+    post.post_meta = postInfo['meta']
+
     db.session.add(post)
 
     if getId is True:
         db.session.flush()
 
     db.session.commit()
-
-    # 添加文章分类
-    setPostMeta(dict(id=post.post_id, list=postInfo['meta']))
 
     # 添加文章标签
     labellist = []
@@ -102,7 +101,7 @@ def addPost(postInfo):
                 label = addLabel(dict(name=labelname, slug=labelname))
             labellist.append(label)
 
-    setPostLabel(dict(id=post.post_id, list=labellist))
+    set_post_label(dict(id=post.post_id, list=labellist))
 
     return post
 
@@ -154,7 +153,7 @@ def addMeta(metaInfo):
     getId = False
 
     if 'id' in metaInfo:
-        meta = getMetaById(metaInfo['id'])
+        meta = get_meta_by_id(metaInfo['id'])
         getId = True
     else:
         meta.meta_num = 0
