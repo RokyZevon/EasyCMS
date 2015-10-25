@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-5">
             <h4>热名标签</h4>
-            {% for label in list %}
+            {% for label in yun %}
                 <a href="{{ url_for('posts', labelid=label['id'], _external=True) }}" style="font-size: {{ label['num'] + 10 }}">
                     {{ label['name'] }}
                 </a>&nbsp;
@@ -45,6 +45,28 @@
                 {% endfor %}
                 </tbody>
             </table>
+            <div class="btn-group" role="group" style="align-content: center;">
+                {% if pagination.has_prev %}
+                    <a class="btn btn-default btn-group" role="group" href="{{ url_for('labeledit', page=pagination.page - 1) }}">&laquo;</a>
+                {% else %}
+                    <a class="btn btn-default btn-group" disabled="disabled" role="group" href="#">&laquo;</a>
+                {% endif %}
+                {% for p in pagination.iter_pages() %}
+                    {% if p %}
+                        {% if p == pagination.page %}
+                            <a class="btn btn-default active" href="{{ url_for('labeledit', page=p) }}">{{ p }}</a>
+                        {% else %}
+                            <a class="btn btn-default" role="group" href="{{ url_for('labeledit', page=p) }}">{{ p }}</a>
+                        {% endif %}
+                    {% else %}
+                    {% endif %}
+                {% endfor %}
+                {% if pagination.has_next %}
+                    <a class="btn btn-default btn-group" role="group" href="{{ url_for('labeledit', page=pagination.page + 1) }}">&raquo;</a>
+                {% else %}
+                    <a class="btn btn-default btn-group" disabled="disabled" role="group" href="#">&raquo;</a>
+                {% endif %}
+            </div>
         </div>
     </div>
     <!-- 修改标签信息 -->
