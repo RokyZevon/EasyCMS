@@ -3,7 +3,7 @@
 from app import db
 from ..models import User, Post, Page, Postlabel, Postmeta, Label, Meta
 from .subpost import delPostLabels, delPostMetas
-from ..catch import getPostMetas, getPostsByUserId, getPostsByMetaId
+from ..catch import getPostsByUserId, getPostsByMetaId
 
 # 删除用户
 def delUser(userId):
@@ -60,12 +60,6 @@ def delMeta(metaId):
     postMetaList = []
 
     # 直接删除会导致一些文章没有分组，则归属到默认分组
-    for post in postList:
-        if getPostMetas(post.post_id) is None:
-            postMeta = Postmeta()
-            postMeta.post_id = post.post_id
-            postMeta.meta_id = 1
-            postMetaList.append(postMeta)
 
     db.session.add_all(postMetaList)
 
