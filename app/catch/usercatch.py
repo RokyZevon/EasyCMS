@@ -3,7 +3,7 @@
 from ..models import User
 
 # 根据ID获取用户
-def getUserById(userId):
+def get_user_by_id(userId):
 
     user = User.query.filter_by(user_id=userId).first()
     return user
