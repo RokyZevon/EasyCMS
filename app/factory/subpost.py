@@ -2,36 +2,11 @@
 
 from app import db
 from ..models import Postmeta, Postlabel
-from ..catch import getLabelById, getMetaById
-
-# 文章设置文章分组 and 文章更新文章分类
-def setPostMeta(metaInfo):
-
-    postId = metaInfo['id']
-    metaid = metaInfo['list']
-
-    delmeta = Postmeta.query.filter_by(post_id=postId).first()
-    if delmeta:
-        umeta = getMetaById(delmeta.meta_id)
-        umeta.meta_num -= 1
-        db.session.add(umeta)
-
-    db.session.query(Postmeta).filter(Postmeta.post_id == postId).delete()
-
-    postMeta = Postmeta()
-    postMeta.meta_id = metaid
-    postMeta.post_id = postId
-
-    umeta = getMetaById(metaid)
-    umeta.meta_num += 1
-
-    db.session.add(umeta)
-    db.session.add(postMeta)
-    db.session.commit()
+from ..catch import getLabelById
 
 
 # 文章设置文章标签 and 文章更新文章标签
-def setPostLabel(labelinfo):
+def set_post_label(labelinfo):
 
     postid = labelinfo['id']
     labellist = labelinfo['list']
