@@ -198,7 +198,9 @@ def labeledit():
             if label.label_name == delForm.delName.data:
                 delLabel(label.label_id)
 
-    labels = getAllLabel()
+    page = request.args.get('page', 1, type=int)
+    pagination = get_all_label(page=page)
+    labels = pagination.items
     list = []
     for label in labels:
         tmp = {}
@@ -209,7 +211,17 @@ def labeledit():
 
         list.append(tmp)
 
-    return render_template('admin/labels.html', list=list, editForm=editForm, delForm=delForm)
+    labels = get_all_label(page=0)
+    yun = []
+    for label in labels:
+        tmp = {}
+        tmp['name'] = label.label_name
+        tmp['id'] = label.label_id
+        tmp['num'] = label.label_num
+
+        yun.append(tmp)
+
+    return render_template('admin/labels.html', yun=yun, list=list, pagination=pagination, editForm=editForm, delForm=delForm)
 
 
 # 仪表盘 页面管理
