@@ -89,7 +89,7 @@ def editpost():
 
     choices = []
 
-    metalist = getAllMetas()
+    metalist = get_all_metas(page=0)
     for meta in metalist:
         tmp = (int(meta.meta_id), meta.meta_name)
         choices.append(tmp)
@@ -159,7 +159,10 @@ def metaedit():
             editForm.editDescribe.data = meta.meta_describe
             return render_template('admin/editmeta.html', editForm=editForm)
 
-    metas = getAllMetas()
+    page = request.args.get('page', 1, type=int)
+    pagination = get_all_metas(page=page)
+    metas = pagination.items
+
     list = []
     for meta in metas:
         tmp = {}
@@ -170,7 +173,7 @@ def metaedit():
 
         list.append(tmp)
 
-    return render_template('admin/metas.html', list=list, addForm=addForm, delForm=delForm)
+    return render_template('admin/metas.html', list=list, pagination=pagination, addForm=addForm, delForm=delForm)
 
 
 # 仪表盘 标签管理 修改标签 删除目录
@@ -268,7 +271,7 @@ def useredit():
                 flash(u"删除失败！")
 
     page = request.args.get('page', 1, type=int)
-    pagination = getAllUsers(page=page)
+    pagination = get_all_user(page=page)
     userList = pagination.items
 
     list = []
