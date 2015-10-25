@@ -267,8 +267,9 @@ def useredit():
             else:
                 flash(u"删除失败！")
 
-
-    userList = getAllUsers()
+    page = request.args.get('page', 1, type=int)
+    pagination = getAllUsers(page=page)
+    userList = pagination.items
 
     list = []
     rule = {0: u'用户被禁用', 1: u'订阅者', 2: u'作 者', 3: u'编 辑', 4: u'管理员'}
@@ -286,4 +287,4 @@ def useredit():
 
         list.append(tmp)
 
-    return render_template('admin/users.html', list=list, addForm=addForm, editForm=editForm, delForm=delForm)
+    return render_template('admin/users.html', list=list, pagination=pagination, addForm=addForm, editForm=editForm, delForm=delForm)
