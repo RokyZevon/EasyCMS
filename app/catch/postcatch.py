@@ -1,6 +1,8 @@
 # coding=utf-8
 
 from ..models import Post, Postmeta, Postlabel, Page
+from .usercatch import get_user_by_id
+from .metacatch import get_meta_by_id
 import random
 
 # 以ID获取文章
@@ -10,10 +12,25 @@ def getPostById(postId):
     return post
 
 # 获取全部文章
-def getAllPosts():
-    postinfo = {}
-    postList = Post.query.all()
-    return postList
+def get_all_posts(page=1,num=5,type='ALL'):
+
+    list = {}
+    postlist = Post.query.all()
+
+    for post in postlist:
+        tmp = {}
+        tmp['id'] = post.post_id
+        tmp['title'] = post.post_title
+        tmp['auther'] = get_user_by_id(post.user_id).user_nicename
+        tmp['meta'] = post.post_meta
+        tmp['label'] = ''
+        tmp['talk'] = ''
+        tmp['datatime'] = ''
+        tmp['status'] = ''
+
+        list.append(tmp)
+
+    return list
 
 # 获取某人文章
 def getPostsByUserId(userId):
