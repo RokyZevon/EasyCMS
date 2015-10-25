@@ -18,9 +18,9 @@ def get_all_metas(page=1, num=5):
 
 
 # 根据分类ID获得分类
-def getMetaById(metaId):
+def get_meta_by_id(metaid):
 
-    meta = Meta.query.filter_by(meta_id=metaId).first()
+    meta = Meta.query.filter_by(meta_id=metaid).first()
 
     return meta
 
@@ -30,10 +30,3 @@ def getMetaBySlug(slug):
     meta = Meta.query.filter_by(meta_slug=slug).first()
 
     return meta
-
-# 获得文章的全部分组
-def getPostMetas(postId):
-
-    metaList = Postmeta.query.filter_by(post_id=postId).all()
-
-    return metaList
