@@ -27,7 +27,9 @@ def getUsersByRule(userRule):
     return user
 
 # 获取全部用户
-def getAllUsers():
+def getAllUsers(page=1, num=5):
 
-    userList = User.query.all()
-    return userList
+    pagination = User.query.paginate(
+        page, per_page=num
+    )
+    return pagination
