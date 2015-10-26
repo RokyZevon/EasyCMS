@@ -36,6 +36,7 @@ class Post(db.Model):
 db.event.listen(Post.post_content, 'set', Post.on_changed_post_content)
 
 PostStatus = {
+    'DELETED': 0,  # 回收站状态
     'UNAUDITED': 1,  # 未审核状态
     'DRAFT': 2,      # 草稿状态
     'RELEASED': 3,   # 已发布
