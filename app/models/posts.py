@@ -15,6 +15,7 @@ class Post(db.Model):
     post_status = db.Column(db.Integer, nullable=False)
     post_password = db.Column(db.String(64))
     post_date = db.Column(db.DateTime, nullable=False)
+    post_meta = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 
     postmetas = db.relationship('Postmeta', backref='post')
