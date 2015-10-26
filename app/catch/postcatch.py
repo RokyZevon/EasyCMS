@@ -22,9 +22,9 @@ def get_all_posts(page=1,num=5,type='ALL'):
         tmp['id'] = post.post_id
         tmp['title'] = post.post_title
         tmp['auther'] = get_user_by_id(post.user_id).user_nicename
-        tmp['meta'] = post.post_meta
+        tmp['meta'] = get_meta_by_id(post.post_meta).meta_name
         tmp['label'] = ''
-        tmp['talk'] = ''
+        tmp['talk'] = 0
         tmp['datatime'] = ''
         tmp['status'] = ''
 
