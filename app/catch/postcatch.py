@@ -59,7 +59,7 @@ def getPostsByLabelId(labelId):
     return postList
 
 # 随机获得文章
-def getPostsRand():
+def get_posts_rand():
 
     postList = Post.query.all()
     random.shuffle(postList)
@@ -67,7 +67,7 @@ def getPostsRand():
     return postList
 
 # 相关文章推荐（猜你喜欢）
-def maybeYouLike(postId):
+def maybe_you_like(postId):
 
     postLabelList = Postlabel.query.filter_by(post_id=postId).all()
     postList = []
@@ -87,14 +87,14 @@ def getPageById(postId):
     return post
 
 # 获取全部页面
-def getAllPages():
+def get_all_pages():
 
     postlist = {}
     postList = Page.query.all()
     return postList
 
 # 获取某人发表的页面
-def getPagesByUserId(userId):
+def get_pages_by_user_id(userId):
 
     post = Page.query.filter_by(user_id=userId).first()
     return post
