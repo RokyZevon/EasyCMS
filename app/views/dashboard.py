@@ -21,21 +21,11 @@ def admin():
 @app.route('/admin/posts')
 @login_required
 def posts():
-    allpost = getAllPosts()
-    list = []
 
-    for post in allpost:
-        tmp = {}
-        tmp['id'] = post.post_id
-        tmp['title'] = post.post_title
-        tmp['auther'] = getUserById(post.user_id).user_nicename
-        tmp['meta'] = ''
-        tmp['label'] = ''
-        tmp['talk'] = ''
-        tmp['datatime'] = ''
-        tmp['status'] = ''
+    page = request.args.get('page', 1, type=int)
+    type = request.args.get('page', 'ALL', type=str)
+    list = get_all_posts(page=page, type=type)
 
-        list.append(tmp)
     return render_template('admin/posts.html', list=list)
 
 
@@ -141,7 +131,7 @@ def metaedit():
             addMeta(metaInfo)
 
         if delForm.validate_on_submit():
-            meta = getMetaById(delForm.delId.data)
+            meta = get_meta_by_id(delForm.delId.data)
             print meta
             if meta.meta_name == delForm.delName.data:
                 delMeta(meta.meta_id)
@@ -150,7 +140,7 @@ def metaedit():
 
         if request.args.get('metaid'):
             metaid = int(request.args.get('metaid'))
-            meta = getMetaById(metaid)
+            meta = get_meta_by_id(metaid)
 
             editForm = EditMetaForm()
             editForm.editId.data = meta.meta_id
@@ -275,7 +265,7 @@ def useredit():
             flash(u"用户信息修改成功！")
 
         if delForm.validate_on_submit():
-            user = getUserById(delForm.delId.data)
+            user = get_user_by_id(delForm.delId.data)
             if user.user_login == delForm.delLogin.data:
                 delUser(int(delForm.delId.data))
                 flash(u"用户删除成功！")
