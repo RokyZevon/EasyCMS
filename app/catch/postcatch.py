@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from ..models import Post, Postmeta, Postlabel, Page
+from ..models import Post, Postmeta, Postlabel, Page, PostStatus
 from .usercatch import get_user_by_id
 from .metacatch import get_meta_by_id
 import random
@@ -12,10 +12,29 @@ def getPostById(postId):
     return post
 
 # 获取全部文章
-def get_all_posts(page=1,num=5,type='ALL'):
+def get_all_posts(page=1,num=5,type=0):
 
     list = {}
-    postlist = Post.query.all()
+    postlist = 0
+    if type == 0:
+        postlist = Post.query.paginate(
+        page, per_page=num
+    )
+    elif type == 1:
+        postlist = Post.query.filter_by(post_status=PostStatus['RELEASED']).paginate(
+        page, per_page=num
+    )
+    elif type == 2:
+        postlist = Post.query.filter_by(post_status=PostStatus['DRAFT']).paginate(
+        page, per_page=num
+    )
+    elif type == 3:
+        postlist = Post.query.filter_by(post_status=PostStatus['DELETED']).paginate(
+        page, per_page=num
+    )
+
+    rnt = {'pagination': postlist}
+    postlist = postlist.items
 
     for post in postlist:
         tmp = {}
@@ -23,14 +42,29 @@ def get_all_posts(page=1,num=5,type='ALL'):
         tmp['title'] = post.post_title
         tmp['auther'] = get_user_by_id(post.user_id).user_nicename
         tmp['meta'] = get_meta_by_id(post.post_meta).meta_name
-        tmp['label'] = ''
         tmp['talk'] = 0
-        tmp['datatime'] = ''
-        tmp['status'] = ''
+        tmp['datatime'] = post.post_date.strftime("%Y-%m-%d %H:%M:%S")
+
+        if post.post_status == PostStatus['RELEASED']:
+            tmp['status'] = u'已发布'
+        elif post.post_status == PostStatus['DRAFT']:
+            tmp['status'] = u'草稿'
+        elif post.post_status == PostStatus['OVERHEAD']:
+            tmp['status'] = u'置顶'
+        elif post.post_status == PostStatus['DELETED']:
+            tmp['status'] = u'回收站'
+        elif post.post_status == PostStatus['UNAUDITED']:
+            tmp['status'] = u'未审核'
+        elif post.post_status == PostStatus['PRIVATE']:
+            tmp['status'] = u'私有'
+        else:
+            tmp['status'] = u'ERROR'
 
         list.append(tmp)
 
-    return list
+    rnt['list'] = list
+
+    return rnt
 
 # 获取某人文章
 def getPostsByUserId(userId):
