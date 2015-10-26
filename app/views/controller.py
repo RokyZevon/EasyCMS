@@ -12,18 +12,10 @@ from ..factory import *
 # 主页
 @app.route('/')
 def index():
-    posts = getAllPages()
-    postList = []
+    posts = get_all_posts()
+    postlist = posts['list']
 
-    for post in posts:
-        postInfo = {}
-        postInfo['title'] = post.post_title
-        postInfo['datetime'] = post.post_date
-        postInfo['auther'] = (getUserById(post.user_id)).user_nicename
-        postInfo['content'] = post.post_content[0:200]
-
-        postList.append(postInfo)
-    return render_template('index.html', postList=postList)
+    return render_template('index.html', postList=postlist)
 
 
 # 文章页
