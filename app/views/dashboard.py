@@ -23,7 +23,7 @@ def admin():
 def posts():
 
     page = request.args.get('page', 1, type=int)
-    type = request.args.get('page', 'ALL', type=str)
+    type = request.args.get('page', 0, type=int)
     list = get_all_posts(page=page, type=type)
 
     return render_template('admin/posts.html', list=list)
