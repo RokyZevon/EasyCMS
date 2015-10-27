@@ -50,7 +50,7 @@
             </ul>
             {% if current_user.is_authenticated %}
                 {% if current_user.user_id == user.user_id or current_user.isAdmin() %}
-                    <div style="text-align: center; padding-bottom: 15px;">
+                    <div style="padding-bottom: 15px;">
                         <div class="btn-group btn-group-sm" role="group">
                             <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#userInfoEdit">
                                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;
