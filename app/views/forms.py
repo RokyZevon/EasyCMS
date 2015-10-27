@@ -88,7 +88,10 @@ class EditPostForm(Form):
 
 
 # 仪表盘 删除文章提交表单
-
+class DelPostForm(Form):
+    delId = HiddenField()
+    delCreateId = StringField(u'确认ID', validators=[Required(), Length(1, 64)])
+    delSubmit = SubmitField(u'删除')
 
 # 仪表盘 页面提交表单
 class EditPageForm(Form):
@@ -98,7 +101,7 @@ class EditPageForm(Form):
     content = PageDownField(u'编辑内容')
     datetime = DateTimeField(u'发表时间')
     password = PasswordField(u'密码', validators=[Length(0, 64)])
-    status = SelectField(u'状态', coerce=int, choices=[])
+    status = SelectField(u'状态', coerce=int, choices=[(PostStatus['RELEASED'], u'已发布'), (PostStatus['DRAFT'], u'草稿'), (PostStatus['PRIVATE'], u'私有')])
     submit = SubmitField(u'发布')
     save = SubmitField(u'保存')
 # 仪表盘 删除页面提交表单
