@@ -41,9 +41,9 @@
                 <tbody>
                 {% for meta in list %}
                     <tr>
-                        <td>{{ meta['name'] }}</td>
+                        <td><a href="{{ url_for('metaedit', metaid=meta['id'], _external=True) }}">{{ meta['name'] }}</a></td>
                         <td>{{ meta['slug'] }}</td>
-                        <td>{{ meta['num'] }}</td>
+                        <td><a href="{{ url_for('posts', metaid=meta['id'], _external=True) }}">{{ meta['num'] }}</a></td>
                         <td>
                             <div class="btn-group" role="group" aria-label="...">
                                 <a type="button" class="btn btn-success btn-sm" href="{{ url_for('posts', metaid=meta['id'], _external=True) }}">
@@ -61,28 +61,23 @@
                 {% endfor %}
                 </tbody>
             </table>
-            <div class="btn-group" role="group" style="align-content: center;">
-                {% if pagination.has_prev %}
-                    <a class="btn btn-default btn-group" role="group" href="{{ url_for('metaedit', page=pagination.page - 1) }}">&laquo;</a>
-                {% else %}
-                    <a class="btn btn-default btn-group" disabled="disabled" role="group" href="#">&laquo;</a>
-                {% endif %}
-                {% for p in pagination.iter_pages() %}
-                    {% if p %}
-                        {% if p == pagination.page %}
-                            <a class="btn btn-default active" href="{{ url_for('metaedit', page=p) }}">{{ p }}</a>
-                        {% else %}
-                            <a class="btn btn-default" role="group" href="{{ url_for('metaedit', page=p) }}">{{ p }}</a>
+            <nav>
+                <ul class="pagination">
+                    <li {% if not pagination.has_prev %}class="disabled"{% endif %}>
+                        <a {% if pagination.has_prev %}href="{{ url_for('metaedit', page=pagination.page - 1) }}"{% endif %} aria-label="Previous">&laquo;</a>
+                    </li>
+                    {% for p in pagination.iter_pages() %}
+                        {% if p %}
+                            <li {% if p == pagination.page %}class="active"{% endif %}>
+                                <a href="{{ url_for('metaedit', page=p) }}">{{ p }}</a>
+                            </li>
                         {% endif %}
-                    {% else %}
-                    {% endif %}
-                {% endfor %}
-                {% if pagination.has_next %}
-                    <a class="btn btn-default btn-group" role="group" href="{{ url_for('metaedit', page=pagination.page + 1) }}">&raquo;</a>
-                {% else %}
-                    <a class="btn btn-default btn-group" disabled="disabled" role="group" href="#">&raquo;</a>
-                {% endif %}
-            </div>
+                    {% endfor %}
+                    <li {% if not pagination.has_next %}class="disabled"{% endif %}>
+                        <a {% if pagination.has_next %}href="{{ url_for('metaedit', page=pagination.page + 1) }}"{% endif %} aria-label="Next">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
     <!-- 删除分类目录信息 -->
