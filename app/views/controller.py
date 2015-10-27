@@ -12,8 +12,9 @@ from ..factory import *
 # 主页
 @app.route('/')
 def index():
-    posts = get_all_posts()
-    postlist = posts['list']
+    # posts = get_all_posts()
+    # postlist = posts['list']
+    postlist = []
 
     return render_template('index.html', postList=postlist)
 
@@ -46,24 +47,24 @@ def meta(slug):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
-    loginForm = LoginForm()
+    loginform = LoginForm()
 
-    if loginForm.validate_on_submit():
+    if loginform.validate_on_submit():
 
         # 获取用户
-        user = getUserByEmail(loginForm.login.data)
+        user = getUserByEmail(loginform.login.data)
         if user is None:
-            user = getUserByLoginName(loginForm.login.data)
+            user = getUserByLoginName(loginform.login.data)
 
-        if user is not None and User.verify_password(user, loginForm.password.data):
-            login_user(user, loginForm.remberme.data)
+        if user is not None and User.verify_password(user, loginform.password.data):
+            login_user(user, loginform.remberme.data)
             print request.args.get('next')
             return redirect(request.args.get('next') or url_for('index'))
 
         print user
         flash(u'用户名或密码错误！')
 
-    return render_template('login.html', form=loginForm)
+    return render_template('login.html', form=loginform)
 
 
 # 登出
@@ -78,20 +79,20 @@ def logout():
 # 注册页面
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    registerForm = RegisterForm()
+    registerform = RegisterForm()
 
-    if registerForm.validate_on_submit():
+    if registerform.validate_on_submit():
         userInfo = {}
-        userInfo['login'] = registerForm.login.data
-        userInfo['email'] = registerForm.email.data
-        userInfo['nicename'] = registerForm.nicename.data
-        userInfo['pass'] = registerForm.password.data
+        userInfo['login'] = registerform.login.data
+        userInfo['email'] = registerform.email.data
+        userInfo['nicename'] = registerform.nicename.data
+        userInfo['pass'] = registerform.password.data
         userInfo['rule'] = UserRule['READER']
-        addUser(userInfo)
+        add_user(userInfo)
         flash(u"注册成功，请验证邮箱后登录！")
         return redirect(url_for('login'))
 
-    return render_template('register.html', form=registerForm)
+    return render_template('register.html', form=registerform)
 
 
 # 文章存档
