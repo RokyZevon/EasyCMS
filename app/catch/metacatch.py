@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from ..models import Meta, Postmeta
+from ..models import Meta
 
 
 # 获得全部分类
