@@ -18,38 +18,57 @@ def admin():
 
 
 # 仪表盘 所有文章
-@app.route('/admin/posts')
+@app.route('/admin/posts', methods=['GET', 'POST'])
 @login_required
 def posts():
 
-    page = request.args.get('page', 1, type=int)
-    type = request.args.get('page', 0, type=int)
-    list = get_all_posts(page=page, type=type)
+    delform = DelPostForm()
 
-    return render_template('admin/posts.html', list=list)
+    if request.method == 'POST':
+        if delform.validate_on_submit():
+            if delform.delId.data == delform.delCreateId.data:
+                del_post(int(delform.delId.data))
+
+    page = request.args.get('page', 1, type=int)
+    type = request.args.get('type', 0, type=int)
+    meta = request.args.get('metaid', 0, type=int)
+    label = request.args.get('labelid', 0, type=int)
+    user = request.args.get('userid', 0, type=int)
+
+    list = []
+
+    if meta != 0:
+        list = get_posts_by_meta_id(metaid=meta, page=page, type=type, userid=user)
+    elif label != 0:
+        list = get_posts_by_label_id(labelid=label, page=page, type=type, userid=user)
+    else:
+        list = get_all_posts(page=page, type=type, userid=user)
+
+    return render_template('admin/posts.html', list=list['list'], pagination=list['pagination'], delForm=delform)
 
 
 mon = {1: u'一月', 2: u'二月', 3: u'三月', 4: u'四月', 5: u'五月', 6: u'六月',
                        7: u'七月', 8: u'八月', 9: u'九月', 10: u'十月', 11: u'十一月', 12: u'十二月'}
 
+
 # 仪表盘 新建文章 编辑文章
 @app.route('/admin/editpost', methods=['GET', 'POST'])
 @login_required
 def editpost():
-    editForm = EditPostForm()
+    editform = EditPostForm()
 
     if request.method == 'POST':
 
-        if editForm.validate_on_submit():
+        if editform.validate_on_submit():
             postinfo = {}
-            if editForm.id.data:
-                postinfo['id'] = editForm.id.data
+            if editform.id.data:
+                postinfo['id'] = editform.id.data
             else:
                 postinfo['userId'] = current_user.user_id
-            postinfo['title'] = editForm.title.data
-            postinfo['content'] = editForm.content.data
-            if editForm.datetime.data:
-                tmp = editForm.datetime.data.split(' ')
+            postinfo['title'] = editform.title.data
+            postinfo['content'] = editform.content.data
+            if editform.datetime.data:
+                tmp = editform.datetime.data.split(' ')
                 date = tmp[0].split('-')
 
                 string = ''
@@ -61,46 +80,42 @@ def editpost():
             else:
                 postinfo['date'] = datetime.now()
 
-            if editForm.password.data:
-                postinfo['pass'] = editForm.password.data
+            if editform.password.data:
+                postinfo['pass'] = editform.password.data
 
-            postinfo['status'] = editForm.status.data
+            postinfo['status'] = editform.status.data
             if postinfo['status'] == PostStatus['RELEASED'] or postinfo['status'] == PostStatus['OVERHEAD']:
                 if not current_user.isEditor():
                     postinfo['status'] = PostStatus['UNAUDITED']
 
-            if editForm.save.data:
+            if editform.save.data:
                 postinfo['status'] = PostStatus['DRAFT']
 
-            postinfo['meta'] = editForm.metas.data
-            postinfo['labels'] = editForm.labels.data.split(',')
+            postinfo['meta'] = editform.metas.data
+            postinfo['labels'] = editform.labels.data.split(',')
 
-            addPost(postinfo)
-
-    choices = []
-
-    metalist = get_all_metas(page=0)
-    for meta in metalist:
-        tmp = (int(meta.meta_id), meta.meta_name)
-        choices.append(tmp)
-
-    editForm.metas.choices = choices
+            post = add_post(postinfo)
+            editform.id.data = post.post_id
 
     if request.method == 'GET':
         id = request.args.get('postid')
         if id:
-            post = getPostById(id)
-            editForm.id.data = id
-            editForm.title.data = post.post_title
-            editForm.content.data = post.post_content
-            editForm.datetime.data = post.post_date.strftime("%Y-") +\
-                            mon[int(post.post_date.strftime("%m"))] + post.post_date.strftime("-%d %H:%M:%S")
-            editForm.metas.data = 1
-            editForm.labels.data = '1,2,3'
-            editForm.password.data = post.post_password
-            editForm.status.data = post.post_status
+            post = get_post_by_id(id)
 
-    return render_template('admin/editpost.html', form=editForm)
+            if not post:
+                abort(404)
+
+            editform.id.data = id
+            editform.title.data = post.post_title
+            editform.content.data = post.post_content
+            editform.datetime.data = post.post_date.strftime("%Y-") +\
+                            mon[int(post.post_date.strftime("%m"))] + post.post_date.strftime("-%d %H:%M:%S")
+            editform.metas.data = post.post_meta
+            editform.labels.data = '1,2,3'
+            editform.password.data = post.post_password
+            editform.status.data = post.post_status
+
+    return render_template('admin/editpost.html', form=editform)
 
 
 # 仪表盘 分类目录管理 添加目录 删除目录 修改目录
@@ -118,7 +133,7 @@ def metaedit():
             metaInfo['name'] = addForm.addName.data
             metaInfo['slug'] = addForm.addSlug.data
             metaInfo['describe'] = addForm.addDescribe.data
-            addMeta(metaInfo)
+            add_meta(metaInfo)
 
         editForm = EditMetaForm()
 
@@ -128,7 +143,7 @@ def metaedit():
             metaInfo['name'] = editForm.editName.data
             metaInfo['slug'] = editForm.editSlug.data
             metaInfo['describe'] = editForm.editDescribe.data
-            addMeta(metaInfo)
+            add_meta(metaInfo)
 
         if delForm.validate_on_submit():
             meta = get_meta_by_id(delForm.delId.data)
@@ -181,10 +196,10 @@ def labeledit():
             labelInfo['id'] = editForm.editId.data
             labelInfo['name'] = editForm.editName.data
             labelInfo['slug'] = editForm.editSlug.data
-            addLabel(labelInfo)
+            add_label(labelInfo)
 
         if delForm.validate_on_submit():
-            label = getLabelById(delForm.delId.data)
+            label = get_label_by_id(delForm.delId.data)
             if label.label_name == delForm.delName.data:
                 delLabel(label.label_id)
 
@@ -222,14 +237,69 @@ def pages():
 
 
 # 仪表盘 新建页面 编辑页面
-@app.route('/admin/editpages')
+@app.route('/admin/editpages', methods=['GET', 'POST'])
 @login_required
 def editpage():
-    editForm = EditPageForm()
 
-    editForm.status.choices = [(PostStatus['RELEASED'], u'已发布'), (PostStatus['DRAFT'], u'草稿'), (PostStatus['PRIVATE'], u'私有')]
+    editform = EditPageForm()
 
-    return render_template('admin/editpage.html', form=editForm)
+    if request.method == 'POST':
+
+        if editform.validate_on_submit():
+            pageinfo = {}
+            if editform.id.data:
+                pageinfo['id'] = editform.id.data
+            else:
+                pageinfo['userId'] = current_user.user_id
+            pageinfo['title'] = editform.title.data
+            pageinfo['slug'] = editform.slug.data
+            pageinfo['content'] = editform.content.data
+            if editform.datetime.data:
+                tmp = editform.datetime.data.split(' ')
+                date = tmp[0].split('-')
+
+                string = ''
+                for num in mon:
+                    if mon[num] == date[1]:
+                        string = '%s-%s-%s %s' % (date[0], num, date[2], tmp[1])
+
+                pageinfo['date'] = datetime.strptime(string, "%Y-%m-%d %H:%M:%S")
+            else:
+                pageinfo['date'] = datetime.now()
+
+            if editform.password.data:
+                pageinfo['pass'] = editform.password.data
+
+            pageinfo['status'] = editform.status.data
+            if pageinfo['status'] == PostStatus['RELEASED'] or pageinfo['status'] == PostStatus['OVERHEAD']:
+                if not current_user.isEditor():
+                    pageinfo['status'] = PostStatus['UNAUDITED']
+
+            if editform.save.data:
+                pageinfo['status'] = PostStatus['DRAFT']
+
+            page = add_page(pageinfo)
+            editform.id.data = page.page_id
+
+    if request.method == 'GET':
+        id = request.args.get('pageid', type=int)
+        if id:
+            page = get_page_by_id(id)
+
+            if not page:
+                abort(404)
+
+            editform.id.data = id
+            editform.title.data = page.page_title
+            editform.content.data = page.page_content
+            editform.slug.data = page.page_slug
+            editform.datetime.data = page.page_date.strftime("%Y-") +\
+                            mon[int(page.page_date.strftime("%m"))] + page.page_date.strftime("-%d %H:%M:%S")
+            editform.password.data = page.page_password
+            editform.status.data = page.page_status
+
+
+    return render_template('admin/editpage.html', form=editform)
 
 
 # 仪表盘 用户管理
@@ -250,7 +320,7 @@ def useredit():
             userInfo['nicename'] = addForm.addNicename.data
             userInfo['pass'] = addForm.addPassword.data
             userInfo['rule'] = int(addForm.addRule.data)
-            addUser(userInfo)
+            add_user(userInfo)
             flash(u"注册成功，请验证邮箱后登录！")
 
         if editForm.validate_on_submit():
@@ -261,7 +331,7 @@ def useredit():
             userInfo['url'] = editForm.editUrl.data
             userInfo['pass'] = editForm.editPassword.data
             userInfo['rule'] = int(editForm.editRule.data)
-            addUser(userInfo)
+            add_user(userInfo)
             flash(u"用户信息修改成功！")
 
         if delForm.validate_on_submit():
