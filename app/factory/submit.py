@@ -1,22 +1,22 @@
 # -*- coding=utf-8 -*-
 
 from app.models import User, Post, Page, Meta, Label
-from ..catch import getPostById, get_user_by_id, getPageById, getLabelById, getLabelByName, get_meta_by_id
+from ..catch import get_post_by_id, get_user_by_id, getLabelByName, get_meta_by_id, get_label_by_id, get_page_by_id
 from app import db
-from .subpost import set_post_label
+from .subpost import set_post_label, update_post_meta
 import hashlib
 
 # 添加用户 and 用户信息修改
-def addUser(userinfo):
+def add_user(userinfo):
 
     user = User()
-    getId = False
+    getid = False
 
     # 获取ID
     if 'id' in userinfo:
         # 获取到ID说明是老用户修改信息流程
         user = get_user_by_id(userinfo['id'])
-        getId = True
+        getid = True
     else:
         # 获取不到ID说明为注册流程
         # 登陆名长度限制
@@ -46,7 +46,7 @@ def addUser(userinfo):
     # 数据持久化
     db.session.add(user)
 
-    if getId is True:
+    if getid is True:
         db.session.flush()
 
     db.session.commit()
@@ -54,15 +54,15 @@ def addUser(userinfo):
     return user
 
 # 添加文章 and 修改文章
-def addPost(postInfo):
+def add_post(postInfo):
 
     post = Post()
-    getId = False
+    getid = False
 
     # 获取文章ID
     if 'id' in postInfo:
-        post = getPostById(postInfo['id'])
-        getId = True
+        post = get_post_by_id(postInfo['id'])
+        getid = True
 
     if len(postInfo['title']) > 30:
         postInfo['title'] = postInfo['title'][0:30]
@@ -82,11 +82,14 @@ def addPost(postInfo):
     if 'userId' in postInfo:
         post.user_id = postInfo['userId']
 
+    oldmeta = post.post_meta
     post.post_meta = postInfo['meta']
 
     db.session.add(post)
+    update_post_meta(oldmeta)
+    update_post_meta(post.post_meta)
 
-    if getId is True:
+    if getid is True:
         db.session.flush()
 
     db.session.commit()
@@ -98,7 +101,7 @@ def addPost(postInfo):
         if labelname:
             label = getLabelByName(labelname)
             if not label:
-                label = addLabel(dict(name=labelname, slug=labelname))
+                label = add_label(dict(name=labelname, slug=labelname))
             labellist.append(label)
 
     set_post_label(dict(id=post.post_id, list=labellist))
@@ -106,13 +109,13 @@ def addPost(postInfo):
     return post
 
 # 添加页面 and 修改页面
-def addPage(pageInfo):
+def add_page(pageInfo):
     page = Page()
     getId = False
 
     # 获取页面ID
     if 'id' in pageInfo:
-        page = getPageById(pageInfo['id'])
+        page = get_page_by_id(pageInfo['id'])
         getId = True
 
     if len(pageInfo['title']) > 30:
@@ -148,13 +151,13 @@ def addPage(pageInfo):
 
 
 # 添加文章分类 and 修改文章分类信息
-def addMeta(metaInfo):
+def add_meta(metaInfo):
     meta = Meta()
-    getId = False
+    getid = False
 
     if 'id' in metaInfo:
         meta = get_meta_by_id(metaInfo['id'])
-        getId = True
+        getid = True
     else:
         meta.meta_num = 0
 
@@ -172,7 +175,7 @@ def addMeta(metaInfo):
 
     db.session.add(meta)
 
-    if getId:
+    if getid:
         db.session.flush()
 
     db.session.commit()
@@ -180,14 +183,14 @@ def addMeta(metaInfo):
     return meta
 
 # 添加标签 and 修改标签信息
-def addLabel(labelInfo):
+def add_label(labelInfo):
     label = Label()
 
-    getId = False
+    getid = False
 
     if 'id' in labelInfo:
-        label = getLabelById(labelInfo['id'])
-        getId = True
+        label = get_label_by_id(labelInfo['id'])
+        getid = True
     else:
         label.label_num = 0
 
@@ -201,7 +204,7 @@ def addLabel(labelInfo):
 
     db.session.add(label)
 
-    if getId is True:
+    if getid is True:
         db.session.flush()
     db.session.commit()
 
