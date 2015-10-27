@@ -6,12 +6,12 @@
         <div class="col-md-5">
             <h4>热名标签</h4>
             {% for label in yun %}
-                <a href="{{ url_for('posts', labelid=label['id'], _external=True) }}" style="font-size: {{ label['num'] * 3 + 10 }}px">
+                <a href="{{ url_for('posts', labelid=label['id'], _external=True) }}" style="font-size: {{ label['num'] * 2 + 9 }}px">
                     {{ label['name'] }}
                 </a>&nbsp;
             {% endfor %}
         </div>
-        <div class="col-md-7">
+        <nav class="col-md-7">
             <h4>标签管理</h4>
             <table class="table table-hover">
                 <thead>
@@ -27,10 +27,10 @@
                     <tr>
                         <td>{{ label['name'] }}</td>
                         <td>{{ label['slug'] }}</td>
-                        <td>{{ label['num'] }}</td>
+                        <td><a href="{{ url_for('posts', labelid=label['id']) }}">{{ label['num'] }}</a></td>
                         <td>
                             <div class="btn-group" role="group" aria-label="...">
-                                <a type="button" class="btn btn-success btn-sm" href="{{ url_for('posts', labelid=label['id'], _external=True) }}">
+                                <a type="button" class="btn btn-success btn-sm" href="{{ url_for('posts', labelid=label['id']) }}">
                                     <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                 </a>
                                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editLabel" data-id="{{ label['id'] }}" data-name="{{ label['name'] }}" data-slug="{{ label['slug'] }}">
@@ -45,28 +45,23 @@
                 {% endfor %}
                 </tbody>
             </table>
-            <div class="btn-group" role="group" style="align-content: center;">
-                {% if pagination.has_prev %}
-                    <a class="btn btn-default btn-group" role="group" href="{{ url_for('labeledit', page=pagination.page - 1) }}">&laquo;</a>
-                {% else %}
-                    <a class="btn btn-default btn-group" disabled="disabled" role="group" href="#">&laquo;</a>
-                {% endif %}
-                {% for p in pagination.iter_pages() %}
-                    {% if p %}
-                        {% if p == pagination.page %}
-                            <a class="btn btn-default active" href="{{ url_for('labeledit', page=p) }}">{{ p }}</a>
-                        {% else %}
-                            <a class="btn btn-default" role="group" href="{{ url_for('labeledit', page=p) }}">{{ p }}</a>
+            <nav>
+                <ul class="pagination">
+                    <li {% if not pagination.has_prev %}class="disabled"{% endif %}>
+                        <a {% if pagination.has_prev %}href="{{ url_for('labeledit', page=pagination.page - 1) }}"{% endif %} aria-label="Previous">&laquo;</a>
+                    </li>
+                    {% for p in pagination.iter_pages() %}
+                        {% if p %}
+                            <li {% if p == pagination.page %}class="active"{% endif %}>
+                                <a href="{{ url_for('labeledit', page=p) }}">{{ p }}</a>
+                            </li>
                         {% endif %}
-                    {% else %}
-                    {% endif %}
-                {% endfor %}
-                {% if pagination.has_next %}
-                    <a class="btn btn-default btn-group" role="group" href="{{ url_for('labeledit', page=pagination.page + 1) }}">&raquo;</a>
-                {% else %}
-                    <a class="btn btn-default btn-group" disabled="disabled" role="group" href="#">&raquo;</a>
-                {% endif %}
-            </div>
+                    {% endfor %}
+                    <li {% if not pagination.has_next %}class="disabled"{% endif %}>
+                        <a {% if pagination.has_next %}href="{{ url_for('labeledit', page=pagination.page + 1) }}"{% endif %} aria-label="Next">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
     <!-- 修改标签信息 -->
