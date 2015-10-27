@@ -1,18 +1,19 @@
 # coding=utf-8
 
 from app import db
-from ..models import User, Post, Page, Postlabel, Postmeta, Label, Meta
-from .subpost import delPostLabels, delPostMetas
-from ..catch import getPostsByUserId, getPostsByMetaId
+from ..models import User, Post, Page, Postlabel, Label, Meta, PostStatus
+from .subpost import update_post_meta, del_post_labels
+from ..catch import get_posts_by_meta_id, get_posts_by_user_id, get_post_by_id
+
 
 # 删除用户
-def delUser(userId):
+def delUser(userid):
 
     # 对ID为1的用户进行保护，以保证至少有一个用户能登陆
-    if userId is 1:
+    if userid is 1:
         return None
 
-    postList = getPostsByUserId(userId)
+    postList = get_posts_by_user_id(userid)
 
     # 该用户发表的文章设置为默认编辑发表
     if postList:
@@ -22,24 +23,29 @@ def delUser(userId):
         db.session.add_all(postList)
 
     # 删除用户信息
-    User.query.filter_by(user_id=userId).delete()
+    User.query.filter_by(user_id=userid).delete()
 
     db.session.commit()
 
 # 删除文章
-def delPost(postId):
+def del_post(postid):
 
-    # 更新相关分组信息
-    delPostMetas(postId)
+    post = get_post_by_id(postid)
+    if post.post_status == PostStatus['DELETED']:
+        # 更新相关标签信息
+        del_post_labels(postid)
 
-    # 更新相关标签信息
-    delPostLabels(postId)
+        # 删除文章
+        Post.query.filter_by(post_id=postid).delete()
 
-    # 删除文章
-    Post.query.filter_by(post_id=postId).delete()
+        # 更新相关分组信息
+        oldmeta = post.post_meta
+        update_post_meta(oldmeta)
+
+    else:
+        post.post_status = PostStatus['DELETED']
 
     db.session.commit()
-    db.session.close()
 
 # 删除页面
 def delPage(pageId):
@@ -52,10 +58,9 @@ def delPage(pageId):
 # 删除文章分类
 def delMeta(metaId):
 
-    postList = getPostsByMetaId(metaId)
+    postList = get_posts_by_meta_id(metaId)
 
     # 删除postList内的metaID的分组
-    Postmeta.query.filter_by(meta_id=metaId).delete()
 
     postMetaList = []
 
