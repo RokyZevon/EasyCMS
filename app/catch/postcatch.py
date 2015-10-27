@@ -1,35 +1,36 @@
 # coding=utf-8
+from app import db
 
-from ..models import Post, Postmeta, Postlabel, Page, PostStatus
+from ..models import Post, Postlabel, Page, PostStatus
 from .usercatch import get_user_by_id
 from .metacatch import get_meta_by_id
 import random
 
+
 # 以ID获取文章
-def getPostById(postId):
-    postinfo = {}
-    post = Post.query.filter_by(post_id=postId).first()
+def get_post_by_id(postid):
+    post = Post.query.filter_by(post_id=postid).first()
     return post
 
-# 获取全部文章
-def get_all_posts(page=1,num=5,type=0):
 
-    list = {}
+# 获取全部文章
+def get_all_posts(page=1, num=5, type=0, userid=0):
+
+    list = []
     postlist = 0
     if type == 0:
-        postlist = Post.query.paginate(
-        page, per_page=num
-    )
+        postlist = Post.query.order_by(Post.post_date.desc()).filter(Post.post_status>PostStatus['DELETED'])
     elif type == 1:
-        postlist = Post.query.filter_by(post_status=PostStatus['RELEASED']).paginate(
-        page, per_page=num
-    )
+        postlist = Post.query.order_by(Post.post_date.desc()).filter(Post.post_status>=PostStatus['RELEASED'])
     elif type == 2:
-        postlist = Post.query.filter_by(post_status=PostStatus['DRAFT']).paginate(
-        page, per_page=num
-    )
+        postlist = Post.query.order_by(Post.post_date.desc()).filter(Post.post_status>=PostStatus['UNAUDITED'], Post.post_status<=PostStatus['DRAFT'])
     elif type == 3:
-        postlist = Post.query.filter_by(post_status=PostStatus['DELETED']).paginate(
+        postlist = Post.query.order_by(Post.post_date.desc()).filter_by(post_status=PostStatus['DELETED'])
+
+    if userid != 0:
+        postlist = postlist.filter_by(user_id=userid)
+
+    postlist = postlist.paginate(
         page, per_page=num
     )
 
@@ -40,7 +41,9 @@ def get_all_posts(page=1,num=5,type=0):
         tmp = {}
         tmp['id'] = post.post_id
         tmp['title'] = post.post_title
+        tmp['userid'] = post.user_id
         tmp['auther'] = get_user_by_id(post.user_id).user_nicename
+        tmp['metaid'] = post.post_meta
         tmp['meta'] = get_meta_by_id(post.post_meta).meta_name
         tmp['talk'] = 0
         tmp['datatime'] = post.post_date.strftime("%Y-%m-%d %H:%M:%S")
@@ -67,30 +70,167 @@ def get_all_posts(page=1,num=5,type=0):
     return rnt
 
 # 获取某人文章
-def getPostsByUserId(userId):
+def get_posts_by_user_id(page=1, num=5, type=0, userid=0):
 
-    post = Post.query.filter_by(user_id=userId).first()
-    return post
+    list = []
+    postlist = Post.query.order_by(Post.post_date.desc()).filter_by(user_id=userid)
+
+    if type == 0:
+        postlist = postlist.filter(Post.post_status>=PostStatus['DELETED'])
+    elif type == 1:
+        postlist = postlist.filter(Post.post_status>=PostStatus['RELEASED'])
+    elif type == 2:
+        postlist = postlist.filter(Post.post_status>=PostStatus['UNAUDITED'], Post.post_status<=PostStatus['DRAFT'])
+    elif type == 3:
+        postlist = postlist.filter_by(post_status=PostStatus['DELETED'])
+
+    postlist = postlist.paginate(
+        page, per_page=num
+    )
+
+    rnt = {'pagination': postlist}
+    postlist = postlist.items
+
+    for post in postlist:
+        tmp = {}
+        tmp['id'] = post.post_id
+        tmp['title'] = post.post_title
+        tmp['userid'] = post.user_id
+        tmp['auther'] = get_user_by_id(post.user_id).user_nicename
+        tmp['metaid'] = post.post_meta
+        tmp['meta'] = get_meta_by_id(post.post_meta).meta_name
+        tmp['talk'] = 0
+        tmp['datatime'] = post.post_date.strftime("%Y-%m-%d %H:%M:%S")
+
+        if post.post_status == PostStatus['RELEASED']:
+            tmp['status'] = u'已发布'
+        elif post.post_status == PostStatus['DRAFT']:
+            tmp['status'] = u'草稿'
+        elif post.post_status == PostStatus['OVERHEAD']:
+            tmp['status'] = u'置顶'
+        elif post.post_status == PostStatus['DELETED']:
+            tmp['status'] = u'回收站'
+        elif post.post_status == PostStatus['UNAUDITED']:
+            tmp['status'] = u'未审核'
+        elif post.post_status == PostStatus['PRIVATE']:
+            tmp['status'] = u'私有'
+        else:
+            tmp['status'] = u'ERROR'
+
+        list.append(tmp)
+
+    rnt['list'] = list
+
+    return rnt
 
 # 获取某个分类文章
-def getPostsByMetaId(metaId):
+def get_posts_by_meta_id(metaid=1, page=1, num=5, type=0, userid=0):
 
-    postMetaList = Postmeta.query.filter_by(meta_id=metaId).all()
-    postList = []
-    for postMeta in postMetaList:
-        postList.append(getPostById(postMeta.post_id))
+    list = []
+    postlist = Post.query.order_by(Post.post_date.desc()).filter_by(post_meta=metaid)
 
-    return postList
+    if type == 0:
+        postlist = postlist.filter(Post.post_status>=PostStatus['DELETED'])
+    elif type == 1:
+        postlist = postlist.filter(Post.post_status>=PostStatus['RELEASED'])
+    elif type == 2:
+        postlist = postlist.filter(Post.post_status>=PostStatus['UNAUDITED'], Post.post_status<=PostStatus['DRAFT'])
+    elif type == 3:
+        postlist = postlist.filter_by(post_status=PostStatus['DELETED'])
+
+    postlist = postlist.paginate(
+        page, per_page=num
+    )
+
+    rnt = {'pagination': postlist}
+    postlist = postlist.items
+
+    for post in postlist:
+        tmp = {}
+        tmp['id'] = post.post_id
+        tmp['title'] = post.post_title
+        tmp['userid'] = post.user_id
+        tmp['auther'] = get_user_by_id(post.user_id).user_nicename
+        tmp['metaid'] = post.post_meta
+        tmp['meta'] = get_meta_by_id(post.post_meta).meta_name
+        tmp['talk'] = 0
+        tmp['datatime'] = post.post_date.strftime("%Y-%m-%d %H:%M:%S")
+
+        if post.post_status == PostStatus['RELEASED']:
+            tmp['status'] = u'已发布'
+        elif post.post_status == PostStatus['DRAFT']:
+            tmp['status'] = u'草稿'
+        elif post.post_status == PostStatus['OVERHEAD']:
+            tmp['status'] = u'置顶'
+        elif post.post_status == PostStatus['DELETED']:
+            tmp['status'] = u'回收站'
+        elif post.post_status == PostStatus['UNAUDITED']:
+            tmp['status'] = u'未审核'
+        elif post.post_status == PostStatus['PRIVATE']:
+            tmp['status'] = u'私有'
+        else:
+            tmp['status'] = u'ERROR'
+
+        list.append(tmp)
+
+    rnt['list'] = list
+
+    return rnt
 
 # 获取某个标签文章
-def getPostsByLabelId(labelId):
+def get_posts_by_label_id(labelid=1, page=1, num=5, type=0, userid=0):
 
-    postLabelList = Postlabel.query.filter_by(label_id=labelId).all()
-    postList = []
-    for postLabel in postLabelList:
-        postList.append(getPostById(postLabel.post_id))
+    postlist = Post.query.order_by(Post.post_date.desc()).join(Postlabel).filter(Postlabel.label_id==labelid)
+    list = []
 
-    return postList
+    if type == 0:
+        postlist = postlist.filter(Post.post_status>=PostStatus['DELETED'])
+    elif type == 1:
+        postlist = postlist.filter(Post.post_status>=PostStatus['RELEASED'])
+    elif type == 2:
+        postlist = postlist.filter(Post.post_status>=PostStatus['UNAUDITED'], Post.post_status<=PostStatus['DRAFT'])
+    elif type == 3:
+        postlist = postlist.filter_by(post_status=PostStatus['DELETED'])
+
+    postlist = postlist.paginate(
+        page, per_page=num
+    )
+
+    rnt = {'pagination': postlist}
+    postlist = postlist.items
+
+    for post in postlist:
+        tmp = {}
+        tmp['id'] = post.post_id
+        tmp['title'] = post.post_title
+        tmp['userid'] = post.user_id
+        tmp['auther'] = get_user_by_id(post.user_id).user_nicename
+        tmp['metaid'] = post.post_meta
+        tmp['meta'] = get_meta_by_id(post.post_meta).meta_name
+        tmp['talk'] = 0
+        tmp['datatime'] = post.post_date.strftime("%Y-%m-%d %H:%M:%S")
+
+        if post.post_status == PostStatus['RELEASED']:
+            tmp['status'] = u'已发布'
+        elif post.post_status == PostStatus['DRAFT']:
+            tmp['status'] = u'草稿'
+        elif post.post_status == PostStatus['OVERHEAD']:
+            tmp['status'] = u'置顶'
+        elif post.post_status == PostStatus['DELETED']:
+            tmp['status'] = u'回收站'
+        elif post.post_status == PostStatus['UNAUDITED']:
+            tmp['status'] = u'未审核'
+        elif post.post_status == PostStatus['PRIVATE']:
+            tmp['status'] = u'私有'
+        else:
+            tmp['status'] = u'ERROR'
+
+        list.append(tmp)
+
+    rnt['list'] = list
+
+    return rnt
+
 
 # 随机获得文章
 def get_posts_rand():
@@ -109,16 +249,16 @@ def maybe_you_like(postId):
     # 获得同标签的文章列表
     for postLabel in postLabelList:
         if postLabel.post_id is not postId:
-            postList.append(getPostById(postLabel.post_id))
+            postList.append(get_post_by_id(postLabel.post_id))
 
     return postList
 
-# 以ID获取页面
-def getPageById(postId):
 
-    postinfo = {}
-    post = Page.query.filter_by(post_id=postId).first()
-    return post
+# 以ID获取页面
+def get_page_by_id(pageid):
+
+    page = Page.query.filter_by(page_id=pageid).first()
+    return page
 
 # 获取全部页面
 def get_all_pages():
