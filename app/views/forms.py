@@ -74,14 +74,17 @@ class EditPostForm(Form):
     content = PageDownField(u'编辑内容')
     datetime = StringField(u'发表时间')
     password = PasswordField(u'密码', validators=[Length(0, 64)])
-    metas = SelectField(u'分类目录', coerce=int, choices=[(1, u"默认分类")])
-    # metas = QuerySelectField(u'分类目录', query_factory=Meta.query)
+    metas = SelectField(u'分类目录', coerce=int)
     status = SelectField(u'用户权限', coerce=int, choices=[(int(PostStatus['RELEASED']), u'已发布'),
                             (int(PostStatus['DRAFT']), u'草稿'), (int(PostStatus['PRIVATE']), u'私有'),
                                                        (int(PostStatus['OVERHEAD']), u'推荐')])
     labels = StringField(u'标签', validators=[Length(0, 64)])
     submit = SubmitField(u'发布')
     save = SubmitField(u'保存')
+
+    def __init__(self, *args, **kwargs):
+        Form.__init__(self)
+        self.metas.choices = [(meta.meta_id, meta.meta_name) for meta in Meta.query.order_by('meta_name')]
 
 
 # 仪表盘 删除文章提交表单
