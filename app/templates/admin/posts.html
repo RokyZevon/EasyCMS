@@ -4,252 +4,129 @@
     <br/>
     <div>
         <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#all" aria-controls="profile" role="tab" data-toggle="tab">全部</a></li>
-            <li role="presentation"><a href="#pub" aria-controls="messages" role="tab" data-toggle="tab">已发布</a></li>
-            <li role="presentation"><a href="#wait" aria-controls="settings" role="tab" data-toggle="tab">草稿</a></li>
+        <ul class="nav nav-pills">
+            <li role="presentation" {% if '0' == request.args.get('type') or not request.args.get('type')%}class="active"{% endif %}>
+                <a href="{{ url_for('posts', type=0, userid=request.args.get('userid'),
+                    metaid=request.args.get('metaid'), labelid=request.args.get('labelid')) }}">全部</a>
+            </li>
+            <li role="presentation" {% if '1' == request.args.get('type') %}class="active"{% endif %}>
+                <a href="{{ url_for('posts', type=1, userid=request.args.get('userid'),
+                    metaid=request.args.get('metaid'), labelid=request.args.get('labelid')) }}">已发布</a>
+            </li>
+            <li role="presentation" {% if '2' == request.args.get('type') %}class="active"{% endif %}>
+                <a href="{{ url_for('posts', type=2, userid=request.args.get('userid'),
+                    metaid=request.args.get('metaid'), labelid=request.args.get('labelid')) }}">草稿箱</a>
+            </li>
+            <li role="presentation" {% if '3' == request.args.get('type') %}class="active"{% endif %}>
+                <a href="{{ url_for('posts', type=3, userid=request.args.get('userid'),
+                    metaid=request.args.get('metaid'), labelid=request.args.get('labelid')) }}">回收站</a>
+            </li>
         </ul>
 
-        <!-- Tab panes -->
-        <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="all">
-                <table class="table table-hover">
-                    <thead>
+        <div>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>标题</th>
+                    <th>作者</th>
+                    <th>分类目录</th>
+                    <th>
+                        <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                    </th>
+                    <th>日期</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for post in list %}
                     <tr>
-                        <th><input type="checkbox"></th>
-                        <th>标题</th>
-                        <th>作者</th>
-                        <th>分类目录</th>
-                        <th>标签</th>
-                        <th><span class="glyphicon glyphicon-comment" aria-hidden="true"></span></th>
-                        <th>日期</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th><input type="checkbox"></th>
-                        <td>这个文章已经发布</td>
-                        <td>hypo</td>
-                        <td>默认分类</td>
-                        <td>-</td>
-                        <td>-</td>
+                        <th scope="row">{{ post['id'] }}</th>
+                        <td><a href="{{ url_for('post', id=post['id']) }}">{{ post['title'] }}</a></td>
+                        <td><a href="{{ url_for('posts', userid=post['userid']) }}">{{ post['auther'] }}</a></td>
+                        <td><a href="{{ url_for('posts', metaid=post['metaid']) }}">{{ post['meta'] }}</a></td>
+                        <td>{{ post['talk'] }}</td>
                         <td>
-                            <abbr title="2015/09/30 19:12:15">2015-09-30</abbr>
+                            <abbr title="{{ post['datatime'] }}">{{ post['datatime'] }}</abbr>
                             <br/>
-                            已发布
+                            {{ post['status'] }}
                         </td>
                         <td>
                             <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                <a class="btn btn-success" href="#">
+                                <a class="btn btn-success" href="{{ url_for('editpost',postid=post['id']) }}">
                                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                 </a>
-                                <a class="btn btn-danger" href="#">
+                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delPost" data-id="{{ post['id'] }}" data-title="{{ post['title'] }}">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                </a>
+                                </button>
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <th><input type="checkbox"></th>
-                        <td>这里的文章标题</td>
-                        <td>hypo</td>
-                        <td>默认分类</td>
-                        <td>-</td>
-                        <td><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> 4</td>
-                        <td>
-                            <abbr title="2015/09/30 19:12:15">2015-09-30</abbr>
-                            <br/>
-                            已发布
-                        </td>
-                        <td>
-                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                <a class="btn btn-success" href="#">
-                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                </a>
-                                <a class="btn btn-danger" href="#">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><input type="checkbox"></th>
-                        <td>这个文章还是草稿</td>
-                        <td>hypo</td>
-                        <td>默认分类</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>
-                            <abbr title="2015/09/30 19:12:15">2015-09-30</abbr>
-                            <br/>
-                            草稿
-                        </td>
-                        <td>
-                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                <a class="btn btn-success" href="#">
-                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                </a>
-                                <a class="btn btn-danger" href="#">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><input type="checkbox"></th>
-                        <td>这个文章等待审核</td>
-                        <td>hypo</td>
-                        <td>默认分类</td>
-                        <td>-</td>
-                        <td><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> 4</td>
-                        <td>
-                            <abbr title="2015/09/30 19:12:15">2015-09-30</abbr>
-                            <br/>
-                            待审核
-                        </td>
-                        <td>
-                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                <a class="btn btn-success" href="#">
-                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                </a>
-                                <a class="btn btn-danger" href="#">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="pub">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th><input type="checkbox"></th>
-                        <th>标题</th>
-                        <th>作者</th>
-                        <th>分类目录</th>
-                        <th>标签</th>
-                        <th><span class="glyphicon glyphicon-comment" aria-hidden="true"></span></th>
-                        <th>日期</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th><input type="checkbox"></th>
-                        <td>这里的文章标题</td>
-                        <td>hypo</td>
-                        <td>默认分类</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>
-                            <abbr title="2015/09/30 19:12:15">2015-09-30</abbr>
-                            <br/>
-                            已发布
-                        </td>
-                        <td>
-                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                <a class="btn btn-success" href="#">
-                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                </a>
-                                <a class="btn btn-danger" href="#">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><input type="checkbox"></th>
-                        <td>这里的文章标题</td>
-                        <td>hypo</td>
-                        <td>默认分类</td>
-                        <td>-</td>
-                        <td><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> 4</td>
-                        <td>
-                            <abbr title="2015/09/30 19:12:15">2015-09-30</abbr>
-                            <br/>
-                            已发布
-                        </td>
-                        <td>
-                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                <a class="btn btn-success" href="#">
-                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                </a>
-                                <a class="btn btn-danger" href="#">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="wait">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th><input type="checkbox"></th>
-                        <th>标题</th>
-                        <th>作者</th>
-                        <th>分类目录</th>
-                        <th>标签</th>
-                        <th><span class="glyphicon glyphicon-comment" aria-hidden="true"></span></th>
-                        <th>日期</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th><input type="checkbox"></th>
-                        <td>这个文章还是草稿</td>
-                        <td>hypo</td>
-                        <td>默认分类</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>
-                            <abbr title="2015/09/30 19:12:15">2015-09-30</abbr>
-                            <br/>
-                            草稿
-                        </td>
-                        <td>
-                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                <a class="btn btn-success" href="#">
-                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                </a>
-                                <a class="btn btn-danger" href="#">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><input type="checkbox"></th>
-                        <td>这个文章等待审核</td>
-                        <td>hypo</td>
-                        <td>默认分类</td>
-                        <td>-</td>
-                        <td><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> 4</td>
-                        <td>
-                            <abbr title="2015/09/30 19:12:15">2015-09-30</abbr>
-                            <br/>
-                            待审核
-                        </td>
-                        <td>
-                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                <a class="btn btn-success" href="#">
-                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                </a>
-                                <a class="btn btn-danger" href="#">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                {% endfor %}
+                </tbody>
+            </table>
+            <nav>
+                <ul class="pagination">
+                    <li {% if not pagination.has_prev %}class="disabled"{% endif %}>
+                        <a {% if pagination.has_prev %}href="{{ url_for('posts', page=pagination.page - 1,
+                                type=request.args.get('type'), userid=request.args.get('userid'),
+                    metaid=request.args.get('metaid'), labelid=request.args.get('labelid')) }}"{% endif %} aria-label="Previous">&laquo;</a>
+                    </li>
+                    {% for p in pagination.iter_pages() %}
+                        {% if p %}
+                            <li {% if p == pagination.page %}class="active"{% endif %}>
+                                <a href="{{ url_for('posts', page=p, type=request.args.get('type'), userid=request.args.get('userid'),
+                    metaid=request.args.get('metaid'), labelid=request.args.get('labelid')) }}">{{ p }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    <li {% if not pagination.has_next %}class="disabled"{% endif %}>
+                        <a {% if pagination.has_next %}href="{{ url_for('posts', page=pagination.page + 1,
+                                type=request.args.get('type'), userid=request.args.get('userid'),
+                    metaid=request.args.get('metaid'), labelid=request.args.get('labelid')) }}"{% endif %} aria-label="Next">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <!-- 删除文章 -->
+    <div class="modal fade" id="delPost" tabindex="-1" role="dialog" aria-labelledby="delPostLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="delPostLabel">删除文章</h4>
+                </div>
+                <form method="POST" action="/admin/posts">
+                    {{ delForm.hidden_tag() }}
+                    <div class="modal-body">
+                        <p style="color: red">请注意，您在进行一项危险的操作！</p>
+                        <p>您现在将删除文章 <b id="createDelTitle"></b></p>
+                        <p>您确认删除的文章唯一ID：</p>
+                        <div class="form-group">
+                            {{ delForm.delCreateId.label(class="control-label") }}
+                            {{ delForm.delCreateId(class="form-control") }}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        {{ delForm.delSubmit(class="btn btn-danger") }}
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+{% endblock %}
+{% block script %}
+    {{ super() }}
+    <script type="text/javascript">
+        $('#delPost').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
+            var title = button.data('title')
+            var modal = $(this)
+            modal.find('#delId').val(id)
+            document.getElementById("createDelTitle").innerHTML = title;
+        })
+    </script>
 {% endblock %}
