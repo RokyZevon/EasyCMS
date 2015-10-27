@@ -1,9 +1,16 @@
 # -*- coding=utf-8 -*-
 
 from app import db
-from ..models import Postmeta, Postlabel
-from ..catch import getLabelById
+from ..models import Postlabel, Post
+from ..catch import get_label_by_id, get_meta_by_id
 
+
+def update_post_meta(metaid):
+    meta = get_meta_by_id(metaid)
+    if meta:
+        meta.meta_num = len(Post.query.filter_by(post_meta=metaid).all())
+        db.session.add(meta)
+        db.session.commit()
 
 # 文章设置文章标签 and 文章更新文章标签
 def set_post_label(labelinfo):
@@ -14,7 +21,7 @@ def set_post_label(labelinfo):
     dellabellist = Postlabel.query.filter_by(post_id=postid).all()
 
     for dellabel in dellabellist:
-        label = getLabelById(dellabel.label_id)
+        label = get_label_by_id(dellabel.label_id)
         label.label_num -= 1
         db.session.add(label)
 
@@ -31,13 +38,21 @@ def set_post_label(labelinfo):
     db.session.commit()
 
 
-# 删除文章分组信息
-def delPostMetas(postId):
-
-    Postmeta.query.filter_by(post_id=postId).delete()
-
 # 删除文章标签信息
-def delPostLabels(postId):
+def del_post_labels(postid):
 
-    Postlabel.query.filter_by(post_id=postId).delete()
+    postlabels = Postlabel.query.filter_by(post_id=postid)
+    labels = postlabels.all()
+
+    for postlabel in labels:
+        label = get_label_by_id(postlabel.label_id)
+        label.label_num -= 1
+
+        if label.label_num == 0:
+            db.session.delete(label)
+
+    postlabels.delete()
+
+    db.session.commit()
+
 
