@@ -205,7 +205,7 @@ h6, .h6 {
 }
 .vcard-detail {
     width: 100%;
-    padding: 2px 0 2px 24px;
+    padding: 2px 0 2px 4px;
     overflow-x: hidden;
     white-space: nowrap;
     font-size: 14px;
