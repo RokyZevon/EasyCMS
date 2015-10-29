@@ -75,7 +75,7 @@ class EditPostForm(Form):
     datetime = StringField(u'发表时间')
     password = PasswordField(u'密码', validators=[Length(0, 64)])
     metas = SelectField(u'分类目录', coerce=int)
-    status = SelectField(u'用户权限', coerce=int, choices=[(int(PostStatus['RELEASED']), u'已发布'),
+    status = SelectField(u'状态', coerce=int, choices=[(int(PostStatus['RELEASED']), u'已发布'),
                             (int(PostStatus['DRAFT']), u'草稿'), (int(PostStatus['PRIVATE']), u'私有'),
                                                        (int(PostStatus['OVERHEAD']), u'推荐')])
     labels = StringField(u'标签', validators=[Length(0, 64)])
@@ -97,11 +97,12 @@ class DelPostForm(Form):
 class EditPageForm(Form):
     id = HiddenField()
     title = StringField(u'标题', validators=[Required(), Length(1, 64)])
-    slug = StringField(u'短地址', validators=[Required(), Length(1, 64)])
+    slug = StringField(u'短地址', validators=[Length(1, 64)])
     content = PageDownField(u'编辑内容')
     datetime = DateTimeField(u'发表时间')
     password = PasswordField(u'密码', validators=[Length(0, 64)])
-    status = SelectField(u'状态', coerce=int, choices=[(PostStatus['RELEASED'], u'已发布'), (PostStatus['DRAFT'], u'草稿'), (PostStatus['PRIVATE'], u'私有')])
+    status = SelectField(u'状态', coerce=int, choices=[(int(PostStatus['RELEASED']), u'已发布'),
+                                                 (int(PostStatus['DRAFT']), u'草稿'), (int(PostStatus['PRIVATE']), u'私有')])
     submit = SubmitField(u'发布')
     save = SubmitField(u'保存')
 # 仪表盘 删除页面提交表单
