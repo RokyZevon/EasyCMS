@@ -89,7 +89,8 @@ def editpost():
                     postinfo['status'] = PostStatus['UNAUDITED']
 
             if editform.save.data:
-                postinfo['status'] = PostStatus['DRAFT']
+                if not editform.id.data:
+                    postinfo['status'] = PostStatus['DRAFT']
 
             postinfo['meta'] = editform.metas.data
             postinfo['labels'] = editform.labels.data.split(',')
@@ -244,6 +245,9 @@ def editpage():
     editform = EditPageForm()
 
     if request.method == 'POST':
+
+        print editform.data
+        print editform.validate_on_submit()
 
         if editform.validate_on_submit():
             pageinfo = {}
