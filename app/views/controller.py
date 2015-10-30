@@ -58,7 +58,6 @@ def login():
 
         if user is not None and User.verify_password(user, loginform.password.data):
             login_user(user, loginform.remberme.data)
-            print request.args.get('next')
             return redirect(request.args.get('next') or url_for('index'))
 
         print user
