@@ -3,7 +3,7 @@
 from app import db
 from ..models import User, Post, Page, Postlabel, Label, Meta, PostStatus
 from .subpost import update_post_meta, del_post_labels
-from ..catch import get_posts_by_meta_id, get_posts_by_user_id, get_post_by_id
+from ..catch import get_posts_by_meta_id, get_posts_by_user_id, get_post_by_id, get_page_by_id
 
 
 # 删除用户
@@ -48,12 +48,17 @@ def del_post(postid):
     db.session.commit()
 
 # 删除页面
-def delPage(pageId):
+def del_page(pageid):
 
-    Page.query.filter_by(page_id=pageId).delete()
+    page = get_page_by_id(pageid)
+    if page.page_status == PostStatus['DELETED']:
+
+        # 删除页面
+        Page.query.filter_by(page_id=pageid).delete()
+    else:
+        page.page_status = PostStatus['DELETED']
 
     db.session.commit()
-    db.session.close()
 
 # 删除文章分类
 def delMeta(metaId):
