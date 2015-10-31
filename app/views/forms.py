@@ -99,7 +99,7 @@ class EditPageForm(Form):
     title = StringField(u'标题', validators=[Required(), Length(1, 64)])
     slug = StringField(u'短地址', validators=[Length(1, 64)])
     content = PageDownField(u'编辑内容')
-    datetime = DateTimeField(u'发表时间')
+    datetime = StringField(u'发表时间')
     password = PasswordField(u'密码', validators=[Length(0, 64)])
     status = SelectField(u'状态', coerce=int, choices=[(int(PostStatus['RELEASED']), u'已发布'),
                                                  (int(PostStatus['DRAFT']), u'草稿'), (int(PostStatus['PRIVATE']), u'私有')])
