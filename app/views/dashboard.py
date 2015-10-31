@@ -246,9 +246,6 @@ def editpage():
 
     if request.method == 'POST':
 
-        print editform.data
-        print editform.validate_on_submit()
-
         if editform.validate_on_submit():
             pageinfo = {}
             if editform.id.data:
@@ -258,6 +255,7 @@ def editpage():
             pageinfo['title'] = editform.title.data
             pageinfo['slug'] = editform.slug.data
             pageinfo['content'] = editform.content.data
+
             if editform.datetime.data:
                 tmp = editform.datetime.data.split(' ')
                 date = tmp[0].split('-')
@@ -280,7 +278,8 @@ def editpage():
                     pageinfo['status'] = PostStatus['UNAUDITED']
 
             if editform.save.data:
-                pageinfo['status'] = PostStatus['DRAFT']
+                if not editform.id.data:
+                    pageinfo['status'] = PostStatus['DRAFT']
 
             page = add_page(pageinfo)
             editform.id.data = page.page_id
@@ -301,7 +300,6 @@ def editpage():
                             mon[int(page.page_date.strftime("%m"))] + page.page_date.strftime("-%d %H:%M:%S")
             editform.password.data = page.page_password
             editform.status.data = page.page_status
-
 
     return render_template('admin/editpage.html', form=editform)
 
