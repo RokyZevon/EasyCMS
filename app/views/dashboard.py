@@ -231,10 +231,23 @@ def labeledit():
 
 
 # 仪表盘 页面管理
-@app.route('/admin/pages')
+@app.route('/admin/pages', methods=['GET', 'POST'])
 @login_required
 def pages():
-    return render_template('admin/pages.html')
+    delform = DelPageForm()
+
+    if request.method == 'POST':
+        if delform.validate_on_submit():
+            if delform.delId.data == delform.delCreateId.data:
+                del_page(int(delform.delId.data))
+
+    page = request.args.get('page', 1, type=int)
+    type = request.args.get('type', 0, type=int)
+    user = request.args.get('userid', 0, type=int)
+
+    list = get_all_pages(page=page, type=type, userid=user)
+
+    return render_template('admin/pages.html', list=list['list'], pagination=list['pagination'], delForm=delform)
 
 
 # 仪表盘 新建页面 编辑页面
@@ -253,7 +266,12 @@ def editpage():
             else:
                 pageinfo['userId'] = current_user.user_id
             pageinfo['title'] = editform.title.data
-            pageinfo['slug'] = editform.slug.data
+
+            if 'slug' in pageinfo:
+                pageinfo['slug'] = editform.slug.data
+            else:
+                pageinfo['slug'] = editform.title.data
+                
             pageinfo['content'] = editform.content.data
 
             if editform.datetime.data:
