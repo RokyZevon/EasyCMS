@@ -54,36 +54,36 @@ def add_user(userinfo):
     return user
 
 # 添加文章 and 修改文章
-def add_post(postInfo):
+def add_post(postinfo):
 
     post = Post()
     getid = False
 
     # 获取文章ID
-    if 'id' in postInfo:
-        post = get_post_by_id(postInfo['id'])
+    if 'id' in postinfo:
+        post = get_post_by_id(postinfo['id'])
         getid = True
 
-    if len(postInfo['title']) > 30:
-        postInfo['title'] = postInfo['title'][0:30]
-    post.post_title = postInfo['title']
+    if len(postinfo['title']) > 30:
+        postinfo['title'] = postinfo['title'][0:30]
+    post.post_title = postinfo['title']
 
-    if len(postInfo['content']) > 5000:
-        postInfo['content'] = postInfo['content'][0:5000]
-    post.post_content = postInfo['content']
+    if len(postinfo['content']) > 5000:
+        postinfo['content'] = postinfo['content'][0:5000]
+    post.post_content = postinfo['content']
 
-    post.post_date = postInfo['date']
+    post.post_date = postinfo['date']
 
-    if 'pass' in postInfo:
-        post.post_password = hashlib.md5(postInfo['pass']).hexdigest()
+    if 'pass' in postinfo:
+        post.post_password = hashlib.md5(postinfo['pass']).hexdigest()
 
-    post.post_status = postInfo['status']
+    post.post_status = postinfo['status']
 
-    if 'userId' in postInfo:
-        post.user_id = postInfo['userId']
+    if 'userId' in postinfo:
+        post.user_id = postinfo['userId']
 
     oldmeta = post.post_meta
-    post.post_meta = postInfo['meta']
+    post.post_meta = postinfo['meta']
 
     db.session.add(post)
     update_post_meta(oldmeta)
@@ -97,7 +97,7 @@ def add_post(postInfo):
     # 添加文章标签
     labellist = []
 
-    for labelname in postInfo['labels']:
+    for labelname in postinfo['labels']:
         if labelname:
             label = getLabelByName(labelname)
             if not label:
@@ -108,41 +108,44 @@ def add_post(postInfo):
 
     return post
 
+
 # 添加页面 and 修改页面
-def add_page(pageInfo):
+def add_page(pageinfo):
     page = Page()
-    getId = False
+    getid = False
 
     # 获取页面ID
-    if 'id' in pageInfo:
-        page = get_page_by_id(pageInfo['id'])
-        getId = True
+    if 'id' in pageinfo:
+        page = get_page_by_id(pageinfo['id'])
+        getid = True
 
-    if len(pageInfo['title']) > 30:
-        pageInfo['title'] = pageInfo['title'][0:30]
-    page.page_title = pageInfo['title']
+    if len(pageinfo['title']) > 30:
+        pageinfo['title'] = pageinfo['title'][0:30]
+    page.page_title = pageinfo['title']
 
     # 默认短地址为标题
-    if 'slug' in pageInfo:
-        page.page_slug = pageInfo['slug']
+    if 'slug' in pageinfo:
+        page.page_slug = pageinfo['slug']
     else:
         page.page_slug = page.page_title
 
-    if len(pageInfo['content']) > 5000:
-        pageInfo['content'] = pageInfo['content'][0:5000]
-    page.page_content = pageInfo['content']
+    if len(pageinfo['content']) > 5000:
+        pageinfo['content'] = pageinfo['content'][0:5000]
+    page.page_content = pageinfo['content']
 
-    page.page_date = pageInfo['date']
+    page.page_date = pageinfo['date']
 
-    if 'pass' in pageInfo:
-        page.page_password = hashlib.md5(pageInfo['pass']).hexdigest()
+    if 'pass' in pageinfo:
+        page.page_password = hashlib.md5(pageinfo['pass']).hexdigest()
 
-    page.page_status = pageInfo['status']
-    page.user_id = pageInfo['userId']
+    page.page_status = pageinfo['status']
+
+    if 'userId' in pageinfo:
+        page.user_id = pageinfo['userId']
 
     db.session.add(page)
 
-    if getId is True:
+    if getid is True:
         db.session.flush()
 
     db.session.commit()
