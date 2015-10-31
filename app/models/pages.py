@@ -15,7 +15,7 @@ class Page(db.Model):
     page_content_html = db.Column(db.Text)
     page_status = db.Column(db.Integer)
     page_password = db.Column(db.String(64))
-    page_date = db.Column(db.Date, nullable=False)
+    page_date = db.Column(db.DateTime, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 
     @staticmethod
