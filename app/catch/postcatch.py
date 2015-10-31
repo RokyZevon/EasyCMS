@@ -261,11 +261,57 @@ def get_page_by_id(pageid):
     return page
 
 # 获取全部页面
-def get_all_pages():
+def get_all_pages(page=1, type=0, num=5, userid=0):
 
-    postlist = {}
-    postList = Page.query.all()
-    return postList
+    list = []
+    pagelist = 0
+    if type == 0:
+        pagelist = Page.query.order_by(Page.page_date.desc()).filter(Page.page_status>PostStatus['DELETED'])
+    elif type == 1:
+        pagelist = Page.query.order_by(Page.page_date.desc()).filter(Page.page_status>=PostStatus['RELEASED'])
+    elif type == 2:
+        pagelist = Page.query.order_by(Page.page_date.desc()).filter(Page.page_status>=PostStatus['UNAUDITED'], Page.page_status<=PostStatus['DRAFT'])
+    elif type == 3:
+        pagelist = Page.query.order_by(Page.page_date.desc()).filter_by(page_status=PostStatus['DELETED'])
+
+    if userid != 0:
+        pagelist = pagelist.filter_by(user_id=userid)
+
+    pagelist = pagelist.paginate(
+        page, per_page=num
+    )
+
+    rnt = {'pagination': pagelist}
+    pagelist = pagelist.items
+
+    for page in pagelist:
+        tmp = {}
+        tmp['id'] = page.page_id
+        tmp['title'] = page.page_title
+        tmp['userid'] = page.user_id
+        tmp['auther'] = get_user_by_id(page.user_id).user_nicename
+        tmp['slug'] = page.page_slug
+        tmp['talk'] = 0
+        tmp['datatime'] = page.page_date.strftime("%Y-%m-%d %H:%M:%S")
+
+        if page.page_status == PostStatus['RELEASED']:
+            tmp['status'] = u'已发布'
+        elif page.page_status == PostStatus['DRAFT']:
+            tmp['status'] = u'草稿'
+        elif page.page_status == PostStatus['DELETED']:
+            tmp['status'] = u'回收站'
+        elif page.page_status == PostStatus['UNAUDITED']:
+            tmp['status'] = u'未审核'
+        elif page.page_status == PostStatus['PRIVATE']:
+            tmp['status'] = u'私有'
+        else:
+            tmp['status'] = u'ERROR'
+
+        list.append(tmp)
+
+    rnt['list'] = list
+
+    return rnt
 
 # 获取某人发表的页面
 def get_pages_by_user_id(userId):
