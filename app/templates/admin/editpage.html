@@ -1,7 +1,7 @@
-{% extends "admin/posts.html" %}
+{% extends "admin/base.html" %}
 {% block head %}
     {{ super() }}
-    <link href="../static/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="/static/style/bootstrap-datetimepicker.min.css" rel="stylesheet">
 {% endblock %}
 {% block content %}
     <h2>编辑页面</h2>
@@ -69,8 +69,8 @@
 {% endblock %}
 {% block script %}
     {{ super() }}
-    <script type="text/javascript" src="../static/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
-    <script type="text/javascript" src="../static/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap-datetimepicker.min.js') }}" charset="UTF-8"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap-datetimepicker.zh-CN.js') }}" charset="UTF-8"></script>
     {{ pagedown.include_pagedown() }}
 
     <script type="text/javascript">
@@ -83,27 +83,6 @@
             startView: 2,
             forceParse: 0,
             showMeridian: 1
-        });
-        $('.form_date').datetimepicker({
-            language:  'zh-CN',
-            weekStart: 1,
-            todayBtn:  1,
-            autoclose: 1,
-            todayHighlight: 1,
-            startView: 2,
-            minView: 2,
-            forceParse: 0
-        });
-        $('.form_time').datetimepicker({
-            language:  'zh-CN',
-            weekStart: 1,
-            todayBtn:  1,
-            autoclose: 1,
-            todayHighlight: 1,
-            startView: 1,
-            minView: 0,
-            maxView: 1,
-            forceParse: 0
         });
     </script>
 {% endblock %}
