@@ -1,64 +1,71 @@
 {% extends "admin/base.html" %}
 {% block content %}
     <h2>用户管理</h2>
-    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addUser">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
-        添加用户
-    </button>
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>登录名</th>
-            <th>昵称</th>
-            <th>邮箱</th>
-            <th>权限</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for user in list %}
-            <tr>
-                <th scope="row">{{ user['id'] }}</th>
-                <td><a href="{{ url_for('posts', userid=user['id']) }}">{{ user['login'] }}</a></td>
-                <td>{{ user['nicename'] }}</td>
-                <td>{{ user['email'] }}</td>
-                <td><span class="label {{ user['label'] }}"> + {{ user['rule'] }} + </span></td>
-                <td>
-                    <div class="btn-group" role="group" aria-label="...">
-                        <a type="button" class="btn btn-success btn-sm" href="{{ url_for('profile', userlogin=user['login']) }}">
-                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                        </a>
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editUser" data-id="{{ user['id'] }}" data-login="{{ user['login'] }}" data-name="{{ user['nicename'] }}" data-url="{{ user['url'] }}" data-rule="{{ user['ruleId'] }}">
-                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delUser" data-id="{{ user['id'] }}" data-login="{{ user['login'] }}">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <nav>
-        <ul class="pagination">
-            <li {% if not pagination.has_prev %}class="disabled"{% endif %}>
-                <a {% if pagination.has_prev %}href="{{ url_for('useredit', page=pagination.page - 1) }}"{% endif %} aria-label="Previous">&laquo;</a>
-            </li>
-            {% for p in pagination.iter_pages() %}
-                {% if p %}
-                    <li {% if p == pagination.page %}class="active"{% endif %}>
-                        <a href="{{ url_for('useredit', page=p) }}">{{ p }}</a>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            用户列表&nbsp;
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addUser">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>添加用户
+            </button>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>登录名</th>
+                    <th>昵称</th>
+                    <th>邮箱</th>
+                    <th>权限</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in list %}
+                    <tr>
+                        <th scope="row">{{ user['id'] }}</th>
+                        <td><a href="{{ url_for('posts', userid=user['id']) }}">{{ user['login'] }}</a></td>
+                        <td>{{ user['nicename'] }}</td>
+                        <td>{{ user['email'] }}</td>
+                        <td><span class="label {{ user['label'] }}"> + {{ user['rule'] }} + </span></td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="...">
+                                <a type="button" class="btn btn-success btn-sm" href="{{ url_for('profile', userlogin=user['login']) }}">
+                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                </a>
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editUser" data-id="{{ user['id'] }}" data-login="{{ user['login'] }}" data-name="{{ user['nicename'] }}" data-url="{{ user['url'] }}" data-rule="{{ user['ruleId'] }}">
+                                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delUser" data-id="{{ user['id'] }}" data-login="{{ user['login'] }}">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="panel-footer">
+            <nav>
+                <ul class="pagination">
+                    <li {% if not pagination.has_prev %}class="disabled"{% endif %}>
+                        <a {% if pagination.has_prev %}href="{{ url_for('useredit', page=pagination.page - 1) }}"{% endif %} aria-label="Previous">&laquo;</a>
                     </li>
-                {% endif %}
-            {% endfor %}
-            <li {% if not pagination.has_next %}class="disabled"{% endif %}>
-                <a {% if pagination.has_next %}href="{{ url_for('useredit', page=pagination.page + 1) }}"{% endif %} aria-label="Next">&raquo;</a>
-            </li>
-        </ul>
-    </nav>
-
+                    {% for p in pagination.iter_pages() %}
+                        {% if p %}
+                            <li {% if p == pagination.page %}class="active"{% endif %}>
+                                <a href="{{ url_for('useredit', page=p) }}">{{ p }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    <li {% if not pagination.has_next %}class="disabled"{% endif %}>
+                        <a {% if pagination.has_next %}href="{{ url_for('useredit', page=pagination.page + 1) }}"{% endif %} aria-label="Next">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
     <!-- 添加用户 -->
     <div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="addUserLabel">
         <div class="modal-dialog" role="document">
