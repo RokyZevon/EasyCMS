@@ -3,16 +3,22 @@
     <h2>标签</h2>
 
     <div class="row">
-        <div class="col-md-5">
-            <h4>热名标签</h4>
-            {% for label in yun %}
-                <a href="{{ url_for('posts', labelid=label['id'], _external=True) }}" style="font-size: {{ label['num'] * 2 + 9 }}px">
-                    {{ label['name'] }}
-                </a>&nbsp;
-            {% endfor %}
+    <div class="col-md-5">
+        <div class="panel panel-default">
+            <div class="panel-heading">热名标签</div>
+            <div class="panel-body">
+                {% for label in yun %}
+                    <a href="{{ url_for('posts', labelid=label['id'], _external=True) }}" style="font-size: {{ label['num'] * 2 + 9 }}px">
+                        {{ label['name'] }}
+                    </a>&nbsp;
+                {% endfor %}
+            </div>
         </div>
-        <nav class="col-md-7">
-            <h4>标签管理</h4>
+    </div>
+    <nav class="col-md-7">
+    <div class="panel panel-default">
+        <div class="panel-heading">标签列表</div>
+        <div class="panel-body">
             <table class="table table-hover">
                 <thead>
                 <tr>
@@ -45,6 +51,8 @@
                 {% endfor %}
                 </tbody>
             </table>
+        </div>
+        <div class="panel-footer">
             <nav>
                 <ul class="pagination">
                     <li {% if not pagination.has_prev %}class="disabled"{% endif %}>
