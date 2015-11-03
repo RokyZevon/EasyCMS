@@ -1,7 +1,7 @@
 # -*- coding=utf-8 -*-
 
 from app.models import User, Post, Page, Meta, Label
-from ..catch import get_post_by_id, get_user_by_id, getLabelByName, get_meta_by_id, get_label_by_id, get_page_by_id
+from ..catch import get_post_by_id, get_user_by_id, get_meta_by_id, get_label_by_id, get_page_by_id, get_label_by_name
 from app import db
 from .subpost import set_post_label, update_post_meta
 import hashlib
@@ -99,7 +99,7 @@ def add_post(postinfo):
 
     for labelname in postinfo['labels']:
         if labelname:
-            label = getLabelByName(labelname)
+            label = get_label_by_name(labelname)
             if not label:
                 label = add_label(dict(name=labelname, slug=labelname))
             labellist.append(label)
