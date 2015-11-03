@@ -16,3 +16,6 @@ class Meta(db.Model):
 
     def __repr__(self):
         return '<Meta %r>' % self.meta_id
+
+    def __unicode__(self):
+        return '{0}'.format(self.meta_name)
