@@ -1,88 +1,655 @@
-{% extends "blog.html" %}
-{% block title %}EasyCMS博客版{% endblock %}
-
-{% block content %}
-
-    <div class="blog-header">
-        <h1 class="blog-title">EasyCMS Blog</h1>
-        <p class="lead blog-description">The official example template of creating a blog with EasyCMS.</p>
+{% extends "base.html" %}
+{% block body %}
+    <div class="head-bg">
+        <div class="head-bg-img"></div>
+        <div class="head-bg-content">
+            <h1>Your Best Social Network Template</h1>
+            <p>Donec in rhoncus tortor. Sed tristique auctor ligula vel viverra</p>
+            <a class="btn color-1 size-1 hover-1" href="blog-detail-2.html"><i class="fa fa-facebook"></i>sign up via facebook</a>
+            <a class="be-register btn color-3 size-1 hover-6"><i class="fa fa-lock"></i>立即注册</a>
+        </div>
     </div>
-
-    <div class="row">
-
-        <div class="col-sm-8 blog-main">
-
-            <div class="blog-post">
-                <h2 class="blog-post-title">Sample blog post</h2>
-                <p class="blog-post-meta">January 1, 2014 by <a href="#">Mark</a></p>
-
-                <p>This blog post shows a few different types of content that's supported and styled with Bootstrap. Basic typography, images, and code are all supported.</p>
-                <hr>
-                <p>Cum sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.</p>
-                <blockquote>
-                    <p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                </blockquote>
-                <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
-                <h2>Heading</h2>
-                <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                <h3>Sub-heading</h3>
-                <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-                <pre><code>Example code block</code></pre>
-                <p>Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.</p>
-                <h3>Sub-heading</h3>
-                <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                <ul>
-                    <li>Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</li>
-                    <li>Donec id elit non mi porta gravida at eget metus.</li>
-                    <li>Nulla vitae elit libero, a pharetra augue.</li>
-                </ul>
-                <p>Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue.</p>
-                <ol>
-                    <li>Vestibulum id ligula porta felis euismod semper.</li>
-                    <li>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</li>
-                    <li>Maecenas sed diam eget risus varius blandit sit amet non magna.</li>
-                </ol>
-                <p>Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis.</p>
-            </div><!-- /.blog-post -->
-
-            <div class="blog-post">
-                <h2 class="blog-post-title">Another blog post</h2>
-                <p class="blog-post-meta">December 23, 2013 by <a href="#">Jacob</a></p>
-
-                <p>Cum sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.</p>
-                <blockquote>
-                    <p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                </blockquote>
-                <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
-                <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            </div><!-- /.blog-post -->
-
-            <div class="blog-post">
-                <h2 class="blog-post-title">New feature</h2>
-                <p class="blog-post-meta">December 14, 2013 by <a href="#">Chris</a></p>
-
-                <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                <ul>
-                    <li>Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</li>
-                    <li>Donec id elit non mi porta gravida at eget metus.</li>
-                    <li>Nulla vitae elit libero, a pharetra augue.</li>
-                </ul>
-                <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
-                <p>Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue.</p>
-            </div><!-- /.blog-post -->
-
-            <nav>
-                <ul class="pager">
-                    <li><a href="#">Previous</a></li>
-                    <li><a href="#">Next</a></li>
-                </ul>
-            </nav>
-
-        </div><!-- /.blog-main -->
-
-        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-            {% include "sidebar.html" %}
-        </div><!-- /.blog-sidebar -->
-
-    </div><!-- /.row -->
+    <div class="container-fluid custom-container">
+        <div class="row">
+            <div class="col-md-2 left-feild">
+                <form action="./" class="input-search">
+                    <input type="text" required placeholder="Enter keyword">
+                    <i class="fa fa-search"></i>
+                    <input type="submit" value="">
+                </form>
+            </div>
+            <div class="col-md-10 ">
+                <div class="for-be-dropdowns">
+                    <div class="be-drop-down">
+                        <i class="icon-projects"></i>
+                        <span class="be-dropdown-content"> Projects	</span>
+                        <ul class="drop-down-list">
+                            <li><a>Item - 1</a></li>
+                            <li><a>Item - 2</a></li>
+                            <li><a>Item - 3</a></li>
+                        </ul>
+                    </div>
+                    <div class="be-drop-down">
+                        <i class="icon-creative"></i>
+                        <span class="be-dropdown-content">All Creative Filds
+                        </span>
+                        <ul class="drop-down-list">
+                            <li><a>Item - 1</a></li>
+                            <li><a>Item - 2</a></li>
+                            <li><a>Item - 3</a></li>
+                        </ul>
+                    </div>
+                    <div class="be-drop-down">
+                        <i class="icon-features"></i>
+                        <span class="be-dropdown-content">Features
+                        </span>
+                        <ul class="drop-down-list">
+                            <li><a>Featured</a></li>
+                            <li><a>Most Appreciated</a></li>
+                            <li><a>Most Viewed</a></li>
+                            <li><a>Most Discussed</a></li>
+                            <li><a>Most Recent</a></li>
+                        </ul>
+                    </div>
+                    <div class="be-drop-down">
+                        <i class="icon-worldwide"></i>
+                        <span class="be-dropdown-content">Worldwide
+                        </span>
+                        <ul class="drop-down-list">
+                            <li><a>Item - 1</a></li>
+                            <li><a>Item - 2</a></li>
+                            <li><a>Item - 3</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid custom-container">
+        <div class="row">
+				
+            <div class="col-md-2 left-feild">
+                <div class="be-vidget">
+                    <h3 class="letf-menu-article">
+                        Popular Creative Filds
+                    </h3>
+                    <div class="creative_filds_block">
+                        <div class="ul">
+                            <a href="blog-detail-2.html">Graphic Design		</a>
+                            <a href="blog-detail-2.html">Photography			</a>
+                            <a href="blog-detail-2.html">Interaction Design	</a>
+                            <a href="blog-detail-2.html">Art Direction		</a>
+                            <a href="blog-detail-2.html">Illustration		</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="be-vidget">
+                    <h3 class="letf-menu-article">
+                        Popular Tags
+                    </h3>
+                    <div class="tags_block clearfix">
+                        <ul>
+                            <li><a href="blog-detail-2.html">photoshop</a></li>
+                            <li><a href="blog-detail-2.html">graphic</a></li>
+                            <li><a href="blog-detail-2.html">art</a></li>
+                            <li><a href="blog-detail-2.html">website</a></li>
+                            <li><a href="blog-detail-2.html">logo</a></li>
+                            <li><a href="blog-detail-2.html">identity</a></li>
+                            <li><a href="blog-detail-2.html">logo design</a></li>
+                            <li><a href="blog-detail-2.html">interactive</a></li>
+                            <li><a href="blog-detail-2.html">blue</a></li>
+                            <li><a href="blog-detail-2.html">branding</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="be-vidget">
+                    <h3 class="letf-menu-article">
+                        Filter By
+                    </h3>
+                    <div class="filter-block">
+                        <ul>
+                            <li><a><i class="fa fa-graduation-cap"></i>Schools</a>
+                                <div class="be-popup">
+                                    <h3 class="letf-menu-article">
+                                        Enter School
+                                    </h3>
+                                    <form action="./" class="input-search">
+                                        <input type="text" required placeholder="Start typing to see list">
+                                    </form>
+                                    <i class="fa fa-times"></i>
+                                </div>
+                            </li>
+                            <li><a><i class="fa fa-wrench"></i>Tools Used</a>
+                                <div class="be-popup">
+                                    <h3 class="letf-menu-article">
+                                        Tools
+                                    </h3>
+                                    <form action="./" class="input-search">
+                                        <input type="text" required placeholder="Start typing to see list">
+                                    </form>
+                                    <i class="fa fa-times"></i>
+                                </div>
+                            </li>
+                            <li><a><i class="fa fa-paint-brush"></i>Color</a>
+                                <div class="be-popup be-color-picker">
+                                    <h3 class="letf-menu-article">
+                                        Choose color
+                                    </h3>
+                                    <div class="for-colors">
+                                        <ul class="colors cfix">
+                                            <li class="color color-0-0"></li>
+                                            <li class="color color-0-1"></li>
+                                            <li class="color color-0-2"></li>
+                                            <li class="color color-0-3"></li>
+                                            <li class="color color-0-4"></li>
+                                            <li class="color color-0-5"></li>
+                                            <li class="color color-0-6"></li>
+                                            <li class="color color-0-7"></li>
+                                            <li class="color color-0-8"></li>
+                                            <li class="color color-0-9"></li>
+                                            <li class="color color-0-10"></li>
+                                            <li class="color color-0-11"></li>
+                                            <li class="color color-1-0"></li>
+                                            <li class="color color-1-1"></li>
+                                            <li class="color color-1-2"></li>
+                                            <li class="color color-1-3"></li>
+                                            <li class="color color-1-4"></li>
+                                            <li class="color color-1-5"></li>
+                                            <li class="color color-1-6"></li>
+                                            <li class="color color-1-7"></li>
+                                            <li class="color color-1-8"></li>
+                                            <li class="color color-1-9"></li>
+                                            <li class="color color-1-10"></li>
+                                            <li class="color color-1-11"></li>
+                                            <li class="color color-2-0"></li>
+                                            <li class="color color-2-1"></li>
+                                            <li class="color color-2-2"></li>
+                                            <li class="color color-2-3"></li>
+                                            <li class="color color-2-4"></li>
+                                            <li class="color color-2-5"></li>
+                                            <li class="color color-2-6"></li>
+                                            <li class="color color-2-7"></li>
+                                            <li class="color color-2-8"></li>
+                                            <li class="color color-2-9"></li>
+                                            <li class="color color-2-10"></li>
+                                            <li class="color color-2-11"></li>
+                                            <li class="color color-3-0"></li>
+                                            <li class="color color-3-1"></li>
+                                            <li class="color color-3-2"></li>
+                                            <li class="color color-3-3"></li>
+                                            <li class="color color-3-4"></li>
+                                            <li class="color color-3-5"></li>
+                                            <li class="color color-3-6"></li>
+                                            <li class="color color-3-7"></li>
+                                            <li class="color color-3-8"></li>
+                                            <li class="color color-3-9"></li>
+                                            <li class="color color-3-10"></li>
+                                            <li class="color color-3-11"></li>
+                                            <li class="color color-4-0"></li>
+                                            <li class="color color-4-1"></li>
+                                            <li class="color color-4-2"></li>
+                                            <li class="color color-4-3"></li>
+                                            <li class="color color-4-4"></li>
+                                            <li class="color color-4-5"></li>
+                                            <li class="color color-4-6"></li>
+                                            <li class="color color-4-7"></li>
+                                            <li class="color color-4-8"></li>
+                                            <li class="color color-4-9"></li>
+                                            <li class="color color-4-10"></li>
+                                            <li class="color color-4-11"></li>
+                                            <li class="color color-5-0"></li>
+                                            <li class="color color-5-1"></li>
+                                            <li class="color color-5-2"></li>
+                                            <li class="color color-5-3"></li>
+                                            <li class="color color-5-4"></li>
+                                            <li class="color color-5-5"></li>
+                                            <li class="color color-5-6"></li>
+                                            <li class="color color-5-7"></li>
+                                            <li class="color color-5-8"></li>
+                                            <li class="color color-5-9"></li>
+                                            <li class="color color-5-10"></li>
+                                            <li class="color color-5-11"></li>
+                                            <li class="color color-6-0"></li>
+                                            <li class="color color-6-1"></li>
+                                            <li class="color color-6-2"></li>
+                                            <li class="color color-6-3"></li>
+                                            <li class="color color-6-4"></li>
+                                            <li class="color color-6-5"></li>
+                                            <li class="color color-6-6"></li>
+                                            <li class="color color-6-7"></li>
+                                            <li class="color color-6-8"></li>
+                                            <li class="color color-6-9"></li>
+                                            <li class="color color-6-10"></li>
+                                            <li class="color color-6-11"></li>
+                                            <li class="color color-7-0"></li>
+                                            <li class="color color-7-1"></li>
+                                            <li class="color color-7-2"></li>
+                                            <li class="color color-7-3"></li>
+                                            <li class="color color-7-4"></li>
+                                            <li class="color color-7-5"></li>
+                                            <li class="color color-7-6"></li>
+                                            <li class="color color-7-7"></li>
+                                            <li class="color color-7-8"></li>
+                                            <li class="color color-7-9"></li>
+                                            <li class="color color-7-10"></li>
+                                            <li class="color color-7-11"></li>
+                                            <li class="color color-8-0"></li>
+                                            <li class="color color-8-1"></li>
+                                            <li class="color color-8-2"></li>
+                                            <li class="color color-8-3"></li>
+                                            <li class="color color-8-4"></li>
+                                            <li class="color color-8-5"></li>
+                                            <li class="color color-8-6"></li>
+                                            <li class="color color-8-7"></li>
+                                            <li class="color color-8-8"></li>
+                                            <li class="color color-8-9"></li>
+                                            <li class="color color-8-10"></li>
+                                            <li class="color color-8-11"></li>
+                                            <li class="color color-9-0"></li>
+                                            <li class="color color-9-1"></li>
+                                            <li class="color color-9-2"></li>
+                                            <li class="color color-9-3"></li>
+                                            <li class="color color-9-4"></li>
+                                            <li class="color color-9-5"></li>
+                                            <li class="color color-9-6"></li>
+                                            <li class="color color-9-7"></li>
+                                            <li class="color color-9-8"></li>
+                                            <li class="color color-9-9"></li>
+                                            <li class="color color-9-10"></li>
+                                            <li class="color color-9-11"></li>
+                                        </ul>
+                                    </div>
+                                    <i class="fa fa-times"></i>
+											
+                                </div>
+                            </li>
+                            <li><a><i class="fa fa-camera-retro"></i>Visit Gallery</a>
+                                <div class="be-popup">
+                                    <h3 class="letf-menu-article">
+                                        Galerry
+                                    </h3>
+                                    <form action="./" class="input-search">
+                                        <input type="text" required placeholder="Start typing to see list">
+                                    </form>
+                                    <i class="fa fa-times"></i>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="row _post-container_">
+                    <div class="custom-column-5">
+                        <div class="be-post">
+                            <a href="blog-detail-2.html" class="be-img-block">
+                                <img src="/static/img/p1.jpg" alt="omg">
+                            </a>
+                            <a href="blog-detail-2.html" class="be-post-title">The kitsch destruction of our world</a>
+                            <span>
+                                <a href="blog-detail-2.html" class="be-post-tag">Interaction Design</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">UI/UX</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">Web Design</a>
+                            </span>
+                            <div class="author-post">
+                                <img src="/static/img/a1.png" alt="" class="ava-author">
+                                <span>by <a href="blog-detail-2.html">Hoang Nguyen</a></span>
+                            </div>
+                            <div class="info-block">
+                                <span><i class="fa fa-thumbs-o-up"></i> 360</span>
+                                <span><i class="fa fa-eye"></i> 789</span>
+                                <span><i class="fa fa-comment-o"></i> 20</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-column-5">
+                        <div class="be-post">
+                            <a href="blog-detail-2.html" class="be-img-block">
+                                <img src="/static/img/p2.jpg" alt="omg">
+                            </a>
+                            <a href="blog-detail-2.html" class="be-post-title">Treebeard</a>
+                            <span>
+                                <a href="blog-detail-2.html" class="be-post-tag">Interaction Design</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">UI/UX</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">Web Design</a>
+                            </span>
+                            <div class="author-post">
+                                <img src="/static/img/a1.png" alt="" class="ava-author">
+                                <span>by <a href="blog-detail-2.html">Hoang Nguyen</a></span>
+                            </div>
+                            <div class="info-block">
+                                <span><i class="fa fa-thumbs-o-up"></i> 360</span>
+                                <span><i class="fa fa-eye"></i> 789</span>
+                                <span><i class="fa fa-comment-o"></i> 20</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-column-5">
+                        <div class="be-post">
+                            <a href="blog-detail-2.html" class="be-img-block">
+                                <img src="/static/img/p3.jpg" alt="omg">
+                            </a>
+                            <a href="blog-detail-2.html" class="be-post-title">Colors of Ramadan</a>
+                            <span>
+                                <a href="blog-detail-2.html" class="be-post-tag">Interaction Design</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">UI/UX</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">Web Design</a>
+                            </span>
+                            <div class="author-post">
+                                <img src="/static/img/a2.png" alt="" class="ava-author">
+                                <span>by <a href="blog-detail-2.html">Hoang Nguyen</a></span>
+                            </div>
+                            <div class="info-block">
+                                <span><i class="fa fa-thumbs-o-up"></i> 360</span>
+                                <span><i class="fa fa-eye"></i> 789</span>
+                                <span><i class="fa fa-comment-o"></i> 20</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-column-5">
+                        <div class="be-post">
+                            <a href="blog-detail-2.html" class="be-img-block">
+                                <img src="/static/img/p4.jpg" alt="omg">
+                            </a>
+                            <a href="blog-detail-2.html" class="be-post-title">Leaving Home - L'Officiel Ukraine</a>
+                            <span>
+                                <a href="blog-detail-2.html" class="be-post-tag">Interaction Design</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">UI/UX</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">Web Design</a>
+                            </span>
+                            <div class="author-post">
+                                <img src="/static/img/a3.png" alt="" class="ava-author">
+                                <span>by <a href="blog-detail-2.html">Hoang Nguyen</a></span>
+                            </div>
+                            <div class="info-block">
+                                <span><i class="fa fa-thumbs-o-up"></i> 360</span>
+                                <span><i class="fa fa-eye"></i> 789</span>
+                                <span><i class="fa fa-comment-o"></i> 20</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-column-5">
+                        <div class="be-post">
+                            <a href="blog-detail-2.html" class="be-img-block">
+                                <img src="/static/img/p5.jpg" alt="omg">
+                            </a>
+                            <a href="blog-detail-2.html" class="be-post-title">Drive Your World</a>
+                            <span>
+                                <a href="blog-detail-2.html" class="be-post-tag">Interaction Design</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">UI/UX</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">Web Design</a>
+                            </span>
+                            <div class="author-post">
+                                <img src="/static/img/a4.png" alt="" class="ava-author">
+                                <span>by <a href="blog-detail-2.html">Hoang Nguyen</a></span>
+                            </div>
+                            <div class="info-block">
+                                <span><i class="fa fa-thumbs-o-up"></i> 360</span>
+                                <span><i class="fa fa-eye"></i> 789</span>
+                                <span><i class="fa fa-comment-o"></i> 20</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-column-5">
+                        <div class="be-post">
+                            <a href="blog-detail-2.html" class="be-img-block">
+                                <img src="/static/img/p6.jpg" alt="omg">
+                            </a>
+                            <a href="blog-detail-2.html" class="be-post-title">Fran Ewald for The Diaries Project</a>
+                            <span>
+                                <a href="blog-detail-2.html" class="be-post-tag">Interaction Design</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">UI/UX</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">Web Design</a>
+                            </span>
+                            <div class="author-post">
+                                <img src="/static/img/a5.png" alt="" class="ava-author">
+                                <span>by <a href="blog-detail-2.html">Hoang Nguyen</a></span>
+                            </div>
+                            <div class="info-block">
+                                <span><i class="fa fa-thumbs-o-up"></i> 360</span>
+                                <span><i class="fa fa-eye"></i> 789</span>
+                                <span><i class="fa fa-comment-o"></i> 20</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-column-5">
+                        <div class="be-post">
+                            <a href="blog-detail-2.html" class="be-img-block">
+                                <img src="/static/img/p7.jpg" alt="omg">
+                            </a>
+                            <a href="blog-detail-2.html" class="be-post-title">raindrops monochrome</a>
+                            <span>
+                                <a href="blog-detail-2.html" class="be-post-tag">Interaction Design</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">UI/UX</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">Web Design</a>
+                            </span>
+                            <div class="author-post">
+                                <img src="/static/img/a6.png" alt="" class="ava-author">
+                                <span>by <a href="blog-detail-2.html">Hoang Nguyen</a></span>
+                            </div>
+                            <div class="info-block">
+                                <span><i class="fa fa-thumbs-o-up"></i> 360</span>
+                                <span><i class="fa fa-eye"></i> 789</span>
+                                <span><i class="fa fa-comment-o"></i> 20</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-column-5">
+                        <div class="be-post">
+                            <a href="blog-detail-2.html" class="be-img-block">
+                                <img src="/static/img/p8.jpg" alt="omg">
+                            </a>
+                            <a href="blog-detail-2.html" class="be-post-title">Racing Queensland</a>
+                            <span>
+                                <a href="blog-detail-2.html" class="be-post-tag">Interaction Design</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">UI/UX</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">Web Design</a>
+                            </span>
+                            <div class="author-post">
+                                <img src="/static/img/a7.png" alt="" class="ava-author">
+                                <span>by <a href="blog-detail-2.html">Hoang Nguyen</a></span>
+                            </div>
+                            <div class="info-block">
+                                <span><i class="fa fa-thumbs-o-up"></i> 360</span>
+                                <span><i class="fa fa-eye"></i> 789</span>
+                                <span><i class="fa fa-comment-o"></i> 20</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-column-5">
+                        <div class="be-post">
+                            <a href="blog-detail-2.html" class="be-img-block">
+                                <img src="/static/img/p9.jpg" alt="omg">
+                            </a>
+                            <a href="blog-detail-2.html" class="be-post-title">NAHA Finalist Hairstylist of the Year Allen Ruiz</a>
+                            <span>
+                                <a href="blog-detail-2.html" class="be-post-tag">Interaction Design</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">UI/UX</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">Web Design</a>
+                            </span>
+                            <div class="author-post">
+                                <img src="/static/img/a7.png" alt="" class="ava-author">
+                                <span>by <a href="blog-detail-2.html">Hoang Nguyen</a></span>
+                            </div>
+                            <div class="info-block">
+                                <span><i class="fa fa-thumbs-o-up"></i> 360</span>
+                                <span><i class="fa fa-eye"></i> 789</span>
+                                <span><i class="fa fa-comment-o"></i> 20</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-column-5">
+                        <div class="be-post">
+                            <a href="blog-detail-2.html" class="be-img-block">
+                                <img src="/static/img/p10.jpg" alt="omg">
+                            </a>
+                            <a href="blog-detail-2.html" class="be-post-title">tomorrow</a>
+                            <span>
+                                <a href="blog-detail-2.html" class="be-post-tag">Interaction Design</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">UI/UX</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">Web Design</a>
+                            </span>
+                            <div class="author-post">
+                                <img src="/static/img/a8.png" alt="" class="ava-author">
+                                <span>by <a href="blog-detail-2.html">Hoang Nguyen</a></span>
+                            </div>
+                            <div class="info-block">
+                                <span><i class="fa fa-thumbs-o-up"></i> 360</span>
+                                <span><i class="fa fa-eye"></i> 789</span>
+                                <span><i class="fa fa-comment-o"></i> 20</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-column-5">
+                        <div class="be-post">
+                            <a href="blog-detail-2.html" class="be-img-block">
+                                <img src="/static/img/p11.jpg" alt="omg">
+                            </a>
+                            <a href="blog-detail-2.html" class="be-post-title">Tropicalia</a>
+                            <span>
+                                <a href="blog-detail-2.html" class="be-post-tag">Interaction Design</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">UI/UX</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">Web Design</a>
+                            </span>
+                            <div class="author-post">
+                                <img src="/static/img/a5.png" alt="" class="ava-author">
+                                <span>by <a href="blog-detail-2.html">Hoang Nguyen</a></span>
+                            </div>
+                            <div class="info-block">
+                                <span><i class="fa fa-thumbs-o-up"></i> 360</span>
+                                <span><i class="fa fa-eye"></i> 789</span>
+                                <span><i class="fa fa-comment-o"></i> 20</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-column-5">
+                        <div class="be-post">
+                            <a href="blog-detail-2.html" class="be-img-block">
+                                <img src="/static/img/p12.jpg" alt="omg">
+                            </a>
+                            <a href="blog-detail-2.html" class="be-post-title">Face</a>
+                            <span>
+                                <a href="blog-detail-2.html" class="be-post-tag">Interaction Design</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">UI/UX</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">Web Design</a>
+                            </span>
+                            <div class="author-post">
+                                <img src="/static/img/a6.png" alt="" class="ava-author">
+                                <span>by <a href="blog-detail-2.html">Hoang Nguyen</a></span>
+                            </div>
+                            <div class="info-block">
+                                <span><i class="fa fa-thumbs-o-up"></i> 360</span>
+                                <span><i class="fa fa-eye"></i> 789</span>
+                                <span><i class="fa fa-comment-o"></i> 20</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-column-5">
+                        <div class="be-post">
+                            <a href="blog-detail-2.html" class="be-img-block">
+                                <img src="/static/img/p13.jpg" alt="omg">
+                            </a>
+                            <a href="blog-detail-2.html" class="be-post-title">Stay Ahead Series</a>
+                            <span>
+                                <a href="blog-detail-2.html" class="be-post-tag">Interaction Design</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">UI/UX</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">Web Design</a>
+                            </span>
+                            <div class="author-post">
+                                <img src="/static/img/a5.png" alt="" class="ava-author">
+                                <span>by <a href="blog-detail-2.html">Hoang Nguyen</a></span>
+                            </div>
+                            <div class="info-block">
+                                <span><i class="fa fa-thumbs-o-up"></i> 360</span>
+                                <span><i class="fa fa-eye"></i> 789</span>
+                                <span><i class="fa fa-comment-o"></i> 20</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-column-5">
+                        <div class="be-post">
+                            <a href="blog-detail-2.html" class="be-img-block">
+                                <img src="/static/img/p14.jpg" alt="omg">
+                            </a>
+                            <a href="blog-detail-2.html" class="be-post-title">Faber-Castell / Psychological Problems</a>
+                            <span>
+                                <a href="blog-detail-2.html" class="be-post-tag">Interaction Design</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">UI/UX</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">Web Design</a>
+                            </span>
+                            <div class="author-post">
+                                <img src="/static/img/a1.png" alt="" class="ava-author">
+                                <span>by <a href="blog-detail-2.html">Hoang Nguyen</a></span>
+                            </div>
+                            <div class="info-block">
+                                <span><i class="fa fa-thumbs-o-up"></i> 360</span>
+                                <span><i class="fa fa-eye"></i> 789</span>
+                                <span><i class="fa fa-comment-o"></i> 20</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-column-5">
+                        <div class="be-post">
+                            <a href="blog-detail-2.html" class="be-img-block">
+                                <img src="/static/img/p15.jpg" alt="omg">
+                            </a>
+                            <a href="blog-detail-2.html" class="be-post-title">Garry Simpson - Bridges - Intelligent Life Magazine</a>
+                            <span>
+                                <a href="blog-detail-2.html" class="be-post-tag">Interaction Design</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">UI/UX</a>,
+                                <a href="blog-detail-2.html" class="be-post-tag">Web Design</a>
+                            </span>
+                            <div class="author-post">
+                                <img src="/static/img/a9.png" alt="" class="ava-author">
+                                <span>by <a href="blog-detail-2.html">Hoang Nguyen</a></span>
+                            </div>
+                            <div class="info-block">
+                                <span><i class="fa fa-thumbs-o-up"></i> 360</span>
+                                <span><i class="fa fa-eye"></i> 789</span>
+                                <span><i class="fa fa-comment-o"></i> 20</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block register %}
+<div class="large-popup register">
+    <div class="large-popup-fixed"></div>
+    <div class="container large-popup-container">
+        <div class="row">
+            <div class="col-md-10 col-md-push-1 col-lg-8 col-lg-push-2 large-popup-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <i class="fa fa-times close-button"></i>
+                        <h5 class="large-popup-title">注册</h5>
+                    </div>
+                    <form action="/register" method="POST" class="popup-input-search">
+                        {{ registerform.hidden_tag() }}
+                        <div class="col-md-6">
+                            {{ registerform.login(class='input-signtype', placeholder='登录用户名') }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ registerform.password(class='input-signtype', placeholder='密码') }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ registerform.nicename(class='input-signtype', placeholder='昵称') }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ registerform.password2(class='input-signtype', placeholder='确认密码') }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ registerform.email(class='input-signtype', placeholder='常用邮箱') }}
+                        </div>
+                        <div class="col-md-6 for-signin">
+                            {{ registerform.submit(class="be-popup-sign-button") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
