@@ -4,6 +4,8 @@ class Config:
 
     SECRET_KEY = 'you-will-never-guess'
 
+
+
     @staticmethod
     def init_app(app):
         pass
