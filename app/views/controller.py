@@ -12,17 +12,34 @@ from ..factory import *
 # 主页
 @app.route('/')
 def index():
-    # posts = get_all_posts()
-    # postlist = posts['list']
+    loginform = LoginForm()
+    registerform = RegisterForm()
     postlist = []
 
-    return render_template('index.html', postList=postlist)
+    return render_template('index.html', postList=postlist, registerform=registerform, loginform=loginform)
 
 
 # 文章页
 @app.route('/p/<string:id>.html')
 def post(id):
-    return 'Post ' + id
+    loginform = LoginForm()
+    post = get_post_by_id(int(id))
+
+    if not post:
+        abort(404)
+
+    postinfo = {}
+
+    postinfo['title'] = post.post_title
+    meta = get_meta_by_id(post.post_meta)
+    postinfo['meta'] = meta.meta_name
+    postinfo['metaslug'] = meta.meta_slug
+    postinfo['auther'] = get_user_by_id(post.user_id).user_nicename
+    postinfo['date'] = post.post_date.strftime("%Y-%m-%d %H:%M:%S")
+    postinfo['content'] = post.post_content_html
+    postinfo['labels'] = get_post_labels(id)
+
+    return render_template('post.html', post=postinfo, loginform=loginform)
 
 
 # 独立页面
@@ -46,7 +63,6 @@ def meta(slug):
 # 登陆页面
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-
     loginform = LoginForm()
 
     if loginform.validate_on_submit():
@@ -76,7 +92,7 @@ def logout():
 
 
 # 注册页面
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['POST'])
 def register():
     registerform = RegisterForm()
 
@@ -105,34 +121,19 @@ def archive():
 def profile(userlogin):
     user = getUserByLoginName(userlogin)
 
+    loginform = LoginForm()
+
     if user is None:
         abort(404)
 
-    infoForm = EditUserInfoFrom()
-    passForm = EditUserPassFrom()
-    unableUserForm = UnableUserFrom()
-
-    if current_user.is_authenticated:
-        if current_user.isAdmin() or current_user == user:
-            infoForm.editILogin.data = user.user_login
-            infoForm.editINicename.data = user.user_nicename
-            if user.user_url is None or user.user_url == '':
-                infoForm.editIUrl.data = 'http://'
-            else:
-                infoForm.editIUrl.data = user.user_url
-            passForm.editLogin.data = user.user_login
-            unableUserForm.unableLogin.data = user.user_login
-
-    avatar ='http://gravatar.duoshuo.com/avatar/' + hashlib.md5(user.user_email).hexdigest() + '?s=230'
-    return render_template('profile.html', user=user, avatar=avatar,
-                           infoForm=infoForm, passForm=passForm, unableUserForm=unableUserForm)
+    avatar = 'http://gravatar.duoshuo.com/avatar/' + hashlib.md5(user.user_email).hexdigest() + '?s=230'
+    return render_template('profile.html', user=user, avatar=avatar, loginform=loginform)
 
 
 # 个人中心信息修改
 @app.route('/proEdit', methods=['POST'])
 @login_required
 def proEdit():
-
     infoForm = EditUserInfoFrom()
     passForm = EditUserPassFrom()
     unableUserForm = UnableUserFrom()
