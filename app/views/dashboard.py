@@ -101,21 +101,21 @@ def editpost():
     if request.method == 'GET':
         id = request.args.get('postid')
         if id:
-            post = get_post_by_id(id)
-
-            if not post:
-                abort(404)
+            # post = get_post_by_id(id)
+            post = Post.query.filter_by(post_id=id).first_or_404()
+            # if not post:
+            #    abort(404)
 
             editform.id.data = id
             editform.title.data = post.post_title
             editform.content.data = post.post_content
-            editform.datetime.data = post.post_date.strftime("%Y-") +\
-                            mon[int(post.post_date.strftime("%m"))] + post.post_date.strftime("-%d %H:%M:%S")
+            editform.datetime.data = post.post_date.strftime("%Y-") + \
+                                     mon[int(post.post_date.strftime("%m"))] + post.post_date.strftime("-%d %H:%M:%S")
             editform.metas.data = post.post_meta
             editform.labels.data = '1,2,3'
             editform.password.data = post.post_password
             editform.status.data = post.post_status
-
+    print editform.metas
     return render_template('admin/editpost.html', form=editform)
 
 
@@ -271,7 +271,7 @@ def editpage():
                 pageinfo['slug'] = editform.slug.data
             else:
                 pageinfo['slug'] = editform.title.data
-                
+
             pageinfo['content'] = editform.content.data
 
             if editform.datetime.data:
