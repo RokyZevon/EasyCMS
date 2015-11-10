@@ -66,6 +66,9 @@ class UnableUserFrom(Form):
     unableName = StringField(u'确认登录名', validators=[Required(), Length(1, 64)])
     unableSubmit = SubmitField(u'确认禁用')
 
+def meta_query():
+    return Meta.query.order_by('meta_name')
+
 
 # 仪表盘 文章提交表单
 class EditPostForm(Form):
@@ -74,7 +77,8 @@ class EditPostForm(Form):
     content = PageDownField(u'编辑内容')
     datetime = StringField(u'发表时间')
     password = PasswordField(u'密码', validators=[Length(0, 64)])
-    metas = SelectField(u'分类目录', coerce=int)
+    metas = QuerySelectField(u'分类目录', query_factory=meta_query, allow_blank=False)
+    # SelectField(, coerce=int)
     status = SelectField(u'状态', coerce=int, choices=[(int(PostStatus['RELEASED']), u'已发布'),
                             (int(PostStatus['DRAFT']), u'草稿'), (int(PostStatus['PRIVATE']), u'私有'),
                                                        (int(PostStatus['OVERHEAD']), u'推荐')])
@@ -83,8 +87,8 @@ class EditPostForm(Form):
     save = SubmitField(u'保存')
 
     def __init__(self, *args, **kwargs):
-        Form.__init__(self)
-        self.metas.choices = [(meta.meta_id, meta.meta_name) for meta in Meta.query.order_by('meta_name')]
+        super(EditPostForm, self).__init__(*args, **kwargs)
+        # self.metas.choices = [(meta.meta_id, meta.meta_name) for meta in Meta.query.order_by('meta_name')]
 
 
 # 仪表盘 删除文章提交表单
